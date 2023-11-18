@@ -2,7 +2,7 @@
 source: http://pygametutorials.wikidot.com/tutorials-two
 
 ## Drawing
-* In PyGame, images are stored as Surface. A display can be treated as an orginary image and simplifies screen management.
+* In PyGame, images are stored as `Surface`. A display can be treated as an ordinary image and simplifies screen management.
 
 * PyGame coordinate system
 	* Top left corner is (0,0), top right is (640, 0), bottom left is (0, 480), bottom right is (640, 480) if the window is set to (640, 480).
@@ -13,4 +13,4 @@ source: http://pygametutorials.wikidot.com/tutorials-two
 	2. blit the image on a display surface
 	3. update the display.
 
-* `Blitting`: process of putting one image onto another
+* `Blitting`: process of drawing one image onto another. [See the docs for `pygame.Surface.blit()`](https://www.pygame.org/docs/ref/surface.html#pygame.Surface.blit)
