@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import pathlib
 import os
-import sys
+
 class App:
 	def __init__(self) -> None:
 		self._running = True

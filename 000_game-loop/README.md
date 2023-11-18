@@ -25,7 +25,7 @@ That separation of tasks makes your game design easier and allow for easy change
 * OOP is popupar in PyGame due to the fact that it is easy to create classes for game objects like player, enemy, bullet etc.
 * App is the main class. To run a game, we call the on_execute() function, which contains a game loop.
 
-## Reading
+## Additional Reading
 * [magic methods](https://rszalski.github.io/magicmethods/#:~:text=What%20are%20magic%20methods%3F,as%20they%20need%20to%20be.)
 * ["__name__"](https://towardsdatascience.com/python-main-b729fab7a8c3#:~:text=Before%20executing%20a%20program%2C%20the,__name__%20will%20vary.)
 * ["__main__" and Top-level code environment](https://docs.python.org/3/library/__main__.html#:~:text=__main__%20is%20the,entry%20point%20to%20the%20application.)
