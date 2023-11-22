@@ -15,6 +15,7 @@ class Enemy (pg.sprite.Sprite):
 		self.rect.move_ip(0, 10)
 		if (self.rect.bottom > SCREEN_HEIGHT):
 			self.rect.top = 0
+			# randomize the starting position of the enemy
 			self.rect.center = (random.randint(30, 370), 0)
 
 	def draw(self, surface):
