@@ -10,12 +10,15 @@ The Pygame framework includes several modules with functions for drawing graphic
 
 ### Setting up a game
 
-Imports the pygame library and all the functaionlity defined in the pygame.locals module.
+Imports the pygame library and all the functionality defined in the pygame.locals module.
+
 ```
 import pygame
 from pygame.locals import *
 ```
+
 **The init() function in pygame initializes the pygame engine**. This line must be included before you begin writing any pygame code.
+
 ```python
 pygame.init()
 ```
@@ -24,6 +27,7 @@ pygame.init()
 **The Game Loop is where all the game events occur, update, and get drawn to the screen**. Once the initial setup and initialization of variables is out of the way, the Game Loop begins where the program keeps looping over and over until an event of type `QUIT` occurs.
 
 **A Game Loop is a simple `while` loop that runs indefinitely**. It looks like this:
+
 ```python
 #Game loop begins
 while True:
@@ -33,12 +37,14 @@ while True:
       .
       pygame.display.update()
 ```
+
 Changes in the game are not implemented until the `pygame.display.update()` function has been called. This **function updates the game window** with any changes that have been made within that specific iteration of the game loop. 
 
 The function **keeps our display screen updated with the latest changes** from every iteration. We place it at the very end so that all possible changes to the Sprites on the screen have already taken place.
 
 #### Quitting the Game Loop
 **Every game loop must have an end point**, or a game will run indefinetly. Here is an example:
+
 ```python
 while True:
     for event in pygame.event.get():
@@ -47,6 +53,7 @@ while True:
             sys.exit()
     pygame.display.update()
 ```
+
 Call both `pygame.quit()` and `sys.exit()` to **close the pygame window and the python script respectively**.
 
 ### Event Objects
@@ -72,7 +79,8 @@ DISPLAYSURF = pygame.display.set_mode((300,300))
 
 Pygame uses the RGB (Red, Green, Blue) system of colors. The values for each color range from 0 – 255, a total of 256 values.
 
-In Pygame, we create `Color` objects by passing in a tuple containing the RGB values. For example, 
+In Pygame, we create `Color` objects by passing in a tuple containing the RGB values. For example:
+
 ```python
 color1 = pygame.Color(0, 0, 0)         # Black
 color2 = pygame.Color(255, 255, 255)   # White
@@ -85,7 +93,7 @@ Computers can complete millions of loop cycles in under a second. This is too fa
 
 **If we do not impose a fps limitation, the computer will execute the game loop as many times as in can** within a second. This scenario is problematic, because the frame rate will fluctuate greatly throughout the game depending on what’s currently happening (number of objects on screen, player moving or not, etc.)
 
-To **limit fps we use the `tick(fps)` method**  where fps is an integer.
+To **limit fps we use the `tick(fps)` method** (a member of the `pygame.time.Clock` class) where fps is an integer.
 
 ```python
 FPS = pygame.time.Clock()
@@ -116,3 +124,10 @@ print(object1.collidepoint(50, 75))
 ```
 
 We can even **create Rects based on an image's dimensions**.
+
+## Additional Reading
+* [How to structure game projects (very cool)](https://joshanthony.info/2021/12/06/how-i-structure-my-game-projects/)
+
+* [Example of a Python game (notice the folder structure)](https://github.com/Mekire/pygame-mutiscene-template-with-movie/tree/master)
+
+* [Example of a Python game folder structure](https://python-forum.io/thread-6431.html)
