@@ -8,7 +8,7 @@ PyGame can handle time, video (both still images and vids), music, fonts, differ
 Game loop is the place where events, game logic and rendering onto the screen is performed.
 It should look similar to:
 
-```
+```python
 while True:
 	events()
 	loop()
