@@ -11,10 +11,10 @@ class Player (pg.sprite.Sprite):
 		self.image = pg.image.load(os.path.join(os.path.dirname(pathlib.Path(__file__).parent.absolute()), 'assets', 'images', 'player.png'))
 		# automatically create a rectangle from the image
 		self.rect = self.image.get_rect()
-		# define a starting position for the rectangle (this helps us align the Rect with the image)
+		# define a fixed starting position for the rectangle (this helps us align the Rect with the image)
 		self.rect.center = (160, 520)
 	
-	def update(self):
+	def move(self, speed):
 		pressed_keys = pg.key.get_pressed()
 	# this game does not require up or down movements, but this is included for completeness
 	# if pressed_keys[K_UP]:
@@ -30,6 +30,9 @@ class Player (pg.sprite.Sprite):
 			if pressed_keys[K_RIGHT]:
 				self.rect.move_ip(5, 0)
 
+# Blitting not needed for the individual object, as we are drawing in the main loop
+"""
 	def draw(self, surface):
 		# blit takes two inputs, first the surface to be drawn, and then the object with which we want to draw
-		surface.blit(self.image, self.rect)
+		surface.blit(self.image, self.rect) 
+"""

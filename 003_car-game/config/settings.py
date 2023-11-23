@@ -1,3 +1,5 @@
+import pygame as pg
+
 # Frames per second
 FPS = 60
 
@@ -11,3 +13,7 @@ WHITE = (255, 255, 255)
 # Screen information
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
+SPEED = 5
+
+# User events
+INC_SPEED = pg.USEREVENT + 1

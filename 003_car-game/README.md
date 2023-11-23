@@ -125,6 +125,11 @@ print(object1.collidepoint(50, 75))
 
 We can even **create Rects based on an image's dimensions**.
 
+
+The spritecollideany() function takes two parameters, the first must be a regular Sprite, like P1 or E1. The second must be a Sprite group, such as Enemies or all_sprites. This function compares the sprite passed in the first parameter, to see if it’s touching any of the sprites in the group passed in parameter two.
+
+Given a sprite and a group of sprites, this will return return any single sprite that collides with with the given sprite. If there are no collisions, then this returns None.
+
 ## Additional Reading
 * [How to structure game projects (very cool)](https://joshanthony.info/2021/12/06/how-i-structure-my-game-projects/)
 
