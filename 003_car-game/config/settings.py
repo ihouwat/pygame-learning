@@ -16,4 +16,4 @@ SCREEN_HEIGHT = 600
 SPEED = 5
 
 # User events
-INC_SPEED = pg.USEREVENT + 1
+INC_SPEED = pg.USEREVENT + 1 # create user event and add one to ensure it has a unique ID

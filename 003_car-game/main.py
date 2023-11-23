@@ -26,7 +26,7 @@ all_sprites = pg.sprite.Group()
 all_sprites.add(Player1)
 all_sprites.add(Enemy1)
 
-# trigger user event
+# trigger user event object on a regular interval
 pg.time.set_timer(INC_SPEED, 5000)
 
 # Game loop

@@ -125,10 +125,21 @@ print(object1.collidepoint(50, 75))
 
 We can even **create Rects based on an image's dimensions**.
 
+### Groups
+A Sprite group is a container that holds multiple Sprite objects. **Groups are useful because they allow us to perform an action on multiple Sprites at once**. For example, we can update the position of all Sprites in a group at once.
 
-The spritecollideany() function takes two parameters, the first must be a regular Sprite, like P1 or E1. The second must be a Sprite group, such as Enemies or all_sprites. This function compares the sprite passed in the first parameter, to see if it’s touching any of the sprites in the group passed in parameter two.
+Create a group like so and add Sprites to it:
+```python
+group = pygame.sprite.Group()
+group.add(someSprite1)
+group.add(someSprite2)
+```
 
-Given a sprite and a group of sprites, this will return return any single sprite that collides with with the given sprite. If there are no collisions, then this returns None.
+#### Collisions with Groups
+**One way to detect collisions is with the `spritecollideany()` function**.
+It takes two parameters, the first must be a regular Sprite. The second must be a Sprite group. This function compares the sprite passed in the first parameter, to see if it’s touching any of the sprites in the group passed in parameter two.
+
+The function will return any single sprite that collides with with the given group. If there are no collisions, then this returns `None`.
 
 ## Additional Reading
 * [How to structure game projects (very cool)](https://joshanthony.info/2021/12/06/how-i-structure-my-game-projects/)
