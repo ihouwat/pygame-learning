@@ -29,30 +29,30 @@ while True:
 			pg.quit()
 			sys.exit()
 	
-	# Refresh the screen and display the score
-	# Note it is important to draw the backround first, as Pygame has a layer system. 
+	# Refresh the screen and display the latest score
+	# Note it is important to draw the background first, as Pygame has a layer system. 
 	display_surf.blit(background, (0,0))
-	scores = font_small.render(str(config.SCORE), True, BLACK)
-	display_surf.blit(scores, (10,10))
+	score = font_small.render(str(config.SCORE), True, BLACK)
+	display_surf.blit(score, (10,10))
 
 	# move and redraw all sprites
 	for entity in all_sprites:
 		display_surf.blit(entity.image, entity.rect)
-		entity.move(SPEED) # not the cleanest interface since Player doesn't need this, but it works for now
+		entity.move(SPEED) # not the cleanest interface since the Enemy class uses SPEED, while the Player class doesn't, but it works for this small game
 	
-	# On collision between Player and any Enemy
+	# On collision between Player and any Enemy Sprite in the enemies group
 	if pg.sprite.spritecollideany(player1, enemies):
 		# Play a crash sound
 		pg.mixer.Sound(os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'assets', 'audio', 'crash.wav')).play()
 		time.sleep(0.5)
 
-		# turn the screen red and display the game over text
+		# color the screen red and display the game over text
 		display_surf.fill(RED)
 		display_surf.blit(game_over_text, (30, 250))
 		pg.display.update()
 
+		# remove all sprites from the group to prevent re-drawing
 		for entity in all_sprites:
-			# remove all sprites from the group to prevent re-drawing
 			entity.kill()
 		time.sleep(2)
 		pg.quit()
@@ -60,5 +60,5 @@ while True:
 
 	#  update the screen
 	pg.display.update()
-	# Ensure the game loop is running at 60 frames per second
+	# Ensure the game loop is running at the desired FPS rate
 	frames_per_sec.tick(FPS)
