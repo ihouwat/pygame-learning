@@ -1,5 +1,3 @@
-import pygame as pg
-
 # Frames per second
 FPS = 60
 

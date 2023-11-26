@@ -1,8 +1,10 @@
-import pygame as pg
-from pygame.locals import *
-from config.settings import SCREEN_WIDTH
 import os
 import pathlib
+
+import pygame as pg
+from config.settings import SCREEN_WIDTH
+from pygame.locals import K_LEFT, K_RIGHT
+
 
 class Player (pg.sprite.Sprite):
 	def __init__(self):

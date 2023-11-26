@@ -1,9 +1,11 @@
-import pygame as pg
-import random
-from config.settings import SCREEN_HEIGHT, SCREEN_WIDTH, SPEED
-import config.settings as config
 import os
 import pathlib
+import random
+
+import config.settings as config
+import pygame as pg
+from config.settings import SCREEN_HEIGHT, SCREEN_WIDTH, SPEED
+
 
 class Enemy (pg.sprite.Sprite):
 	def __init__(self):

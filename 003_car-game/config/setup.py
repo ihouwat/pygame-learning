@@ -1,8 +1,20 @@
+import os
+import pathlib
+
 import pygame as pg
-import os, pathlib
 from game_objects.Enemy import Enemy
 from game_objects.Player import Player
-from config.settings import FONT_NAME, FONT_REGULAR, BLACK, FONT_SMALL, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE
+
+from config.settings import (
+	BLACK,
+	FONT_NAME,
+	FONT_REGULAR,
+	FONT_SMALL,
+	SCREEN_HEIGHT,
+	SCREEN_WIDTH,
+	WHITE,
+)
+
 
 def initialize_game():
 	# create Sprites

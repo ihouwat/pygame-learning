@@ -1,11 +1,13 @@
-import pygame as pg 
-import sys, os, pathlib
-from pygame.locals import *
-from config.settings import WHITE, SCREEN_HEIGHT, SCREEN_WIDTH, FPS, SPEED, RED, BLACK
+import os
+import pathlib
+import sys
+import time
+
 import config.settings as config
 import config.setup as setup
-import time
-import pathlib
+import pygame as pg
+from config.settings import BLACK, FPS, RED, SPEED
+from pygame.locals import QUIT
 
 # initialize game
 pg.init()
@@ -25,6 +27,7 @@ while True:
 		# increase enemy speed if the inc_speed_event user event is triggered
 		if event.type == inc_speed_event:
 			SPEED += 0.5
+			print(f'Enemy speed increased to {SPEED}!')
 		if event.type == QUIT:
 			pg.quit()
 			sys.exit()
