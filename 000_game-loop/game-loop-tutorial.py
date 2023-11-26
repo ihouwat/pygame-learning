@@ -1,5 +1,6 @@
 import pygame
-from pygame.locals import *
+from pygame.locals import QUIT
+
 
 class App:
 	def __init__(self) -> None:
@@ -17,7 +18,7 @@ class App:
 	
 	# Scans for events, and sets _running to False to break the game loop.
 	def on_event(self, event) -> None:
-		if event.type == pygame.QUIT:
+		if event.type == QUIT:
 			print('Quitting the game')
 			self._running = False
 	

@@ -1,6 +1,6 @@
-from cevent import CEvent
 import pygame
-from pygame.locals import *
+from cevent import CEvent
+
 
 # inherit from CEvent class
 class App(CEvent):

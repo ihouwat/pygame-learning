@@ -1,7 +1,9 @@
-import pygame
-from pygame.locals import *
-import pathlib
 import os
+import pathlib
+
+import pygame
+from pygame.locals import QUIT
+
 
 class App:
 	def __init__(self) -> None:
@@ -17,7 +19,7 @@ class App:
 		self._image_surf = pygame.image.load(os.path.join(pathlib.Path(__file__).parent.absolute(), 'image.jpg')).convert()
 	
 	def on_event(self, event):
-		if event.type == pygame.QUIT:
+		if event.type == QUIT:
 			self._running = False
 	
 	def on_loop(self):
