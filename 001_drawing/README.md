@@ -14,3 +14,6 @@ source: http://pygametutorials.wikidot.com/tutorials-two
 	3. update the display.
 
 * `Blitting`: process of drawing one image onto another. [See the docs for `pygame.Surface.blit()`](https://www.pygame.org/docs/ref/surface.html#pygame.Surface.blit)
+
+## Additional Reading
+* [Pygame surface creation](https://coderslegacy.com/python/pygame-surface/)

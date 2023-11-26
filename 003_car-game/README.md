@@ -161,9 +161,7 @@ game_over = font.render("Game Over", True, BLACK)
 
 ## Additional Reading
 * [How to structure game projects (very cool)](https://joshanthony.info/2021/12/06/how-i-structure-my-game-projects/)
-
 * [Example of a Python game (notice the folder structure)](https://github.com/Mekire/pygame-mutiscene-template-with-movie/tree/master)
-
 * [Example of a Python game folder structure](https://python-forum.io/thread-6431.html)
-
 * [FPS and the Game Clock](https://gamedevacademy.org/pygame-fps-tutorial/)
+* [Improving performance in pygame](https://coderslegacy.com/improving-speed-performance-in-pygame/)
