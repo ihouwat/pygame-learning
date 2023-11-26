@@ -34,7 +34,7 @@ class App(CEvent):
 
 	#  initializes pygame, enters the main loop which checks for events, computes and renders the game, until the game is over. Before exiting, it cleans up the pygame modules.
 	def on_execute(self):
-		if self.on_init() == False:
+		if self.on_init() is False:
 			self._running = False
 			
 		while( self._running ):
