@@ -15,5 +15,9 @@ SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5
 
-# User events
-INC_SPEED = pg.USEREVENT + 1 # create user event and add one to ensure it has a unique ID
+SCORE = 0
+
+# Fonts
+FONT_NAME = "Verdana"
+FONT_REGULAR = 60
+FONT_SMALL = 20
