@@ -1,5 +1,5 @@
-import pygame
 from pygame.locals import *
+
 
 class CEvent:
 	def __init__(self):
