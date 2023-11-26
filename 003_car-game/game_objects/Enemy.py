@@ -1,6 +1,7 @@
 import pygame as pg
 import random
 from config.settings import SCREEN_HEIGHT, SCREEN_WIDTH, SPEED
+import config.settings as config
 import os
 import pathlib
 
@@ -16,9 +17,13 @@ class Enemy (pg.sprite.Sprite):
 		# move down the Y axis, speed is variable
 		self.rect.move_ip(0, speed)
 		if (self.rect.bottom > SCREEN_HEIGHT):
+			self.update_score()
 			self.rect.top = 0
 			# randomize the starting position on the X axis
 			self.rect.center = (random.randint(30, 370), 0)
+	
+	def update_score(self):
+		config.SCORE = config.SCORE + 1
 
 # Blitting not needed for the individual object, as we are drawing in the main loop
 """ 
