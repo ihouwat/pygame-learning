@@ -102,6 +102,14 @@ FPS.tick(60)
 
 **Aim for fps in a range of 30 - 60.**
 
+#### Diving into the Game Clock
+[source for this section](https://gamedevacademy.org/pygame-fps-tutorial/)
+In the context of Pygame, **a clock is not used for telling you the time of day, instead, it is used to track time within the game**.  This could be the time elapsed since the start of the game, the time taken to perform a single task, or the time since the last frame, to set a consistent FPS (frames per second). Note that this concept isn’t exclusive to Pygame FPS – many other game frameworks require similar implementations.
+
+The FPS is essentially the number of frames that are rendered to the player’s screen each second. **As rendering is part of our game loop, this means the FPS is tied directly to the number of times our game loop runs every second**.
+
+`tick()` function, which is part of the Clock class takes a target framerate and will pause the program until the next tick.
+
 ### Rects & Collision Detection
 In every game, **each object has fixed boundaries that define the space that it currently occupies**. These fixed boundaries are essential when the **object interacts or “collides” with other objects**.
 
@@ -141,9 +149,21 @@ It takes two parameters, the first must be a regular Sprite. The second must be 
 
 The function will return any single sprite that collides with with the given group. If there are no collisions, then this returns `None`.
 
+#### Important Features
+In addition to the essential features for creating a game, we can cover **backgrounds, sounds, fonts, and a scoring system** with PyGame.
+
+`render()`: will create graphics for a given string. Example:
+
+```python
+font = pygame.font.SysFont("Verdana", 60)
+game_over = font.render("Game Over", True, BLACK)
+```
+
 ## Additional Reading
 * [How to structure game projects (very cool)](https://joshanthony.info/2021/12/06/how-i-structure-my-game-projects/)
 
 * [Example of a Python game (notice the folder structure)](https://github.com/Mekire/pygame-mutiscene-template-with-movie/tree/master)
 
 * [Example of a Python game folder structure](https://python-forum.io/thread-6431.html)
+
+* [FPS and the Game Clock](https://gamedevacademy.org/pygame-fps-tutorial/)
