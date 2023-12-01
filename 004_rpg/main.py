@@ -56,8 +56,36 @@ class Player(pygame.sprite.Sprite):
 		self.direction = "RIGHT" # direction
 	
 	def move(self):
-		pass
-	
+		# we can check if the players has slowed down to a certain extent 
+		if abs(self.vel.x) > 0.3:
+			self.running = True 
+		else:
+			self.running = False
+
+		# returns the current key presses
+		pressed_keys = pygame.key.get_pressed()
+  
+		# Accelerates sthe player in the direction of the key press
+		if pressed_keys[K_LEFT]:
+			self.acc.x = -ACC
+		if pressed_keys[K_RIGHT]:
+			self.acc.x = ACC
+
+		# Formulas to calculate velocity while accounting for friction
+		# Gist of it is that acceleration is calculated based off velocity and friction, and the position is updated based off how much distance was covered (based on acceleration and velocity)
+		self.acc.x += self.vel.x * FRIC
+		self.vel += self.acc
+		self.pos += self.vel + 0.5 * self.acc # Updates the position with the new values
+
+		# This causes character warping from one point of the screen to the other
+		if self.pos.x > WIDTH:
+			self.pos.x = 0
+		if self.pos.x < 0:
+			self.pos.x = WIDTH
+
+		# Update rect pos
+		self.rect.midbottom = self.pos
+
 	def update(self):
 		pass
 
@@ -93,6 +121,7 @@ while True:
 	# Rendering
 	background.render()
 	ground.render()
+	player.move()
 	displaysurface.blit(player.image, player.rect)
 
 	pygame.display.update()
