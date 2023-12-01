@@ -54,8 +54,12 @@ class Player(pygame.sprite.Sprite):
 		self.vel = vec(0,0) # velocity
 		self.acc = vec(0,0) # acceleration
 		self.direction = "RIGHT" # direction
+		self.jumping = False # jumping
 	
 	def move(self):
+		# Keep a constant acceleration of 0.5 in the downard direction (gravity)
+		self.acc = vec(0, 0.5)
+
 		# we can check if the players has slowed down to a certain extent 
 		if abs(self.vel.x) > 0.3:
 			self.running = True 
@@ -93,7 +97,28 @@ class Player(pygame.sprite.Sprite):
 		pass
 
 	def jump(self):
-		pass
+		# the self.rect.x += 1 and self.rect.x -= 1 is there to check for collisions on the x-axis
+		self.rect.x += 1
+
+		# Check to see if the player is on the ground
+		hits = pygame.sprite.spritecollide(self, ground_group, False)
+
+		self.rect.x -= 1
+  
+		# If touching the ground, and not currently jumping, cause the player to jump
+		if hits and not self.jumping:
+			self.jumping = True
+			self.vel.y = -12 # negative y velocity means upwards
+
+	def gravity_check(self):
+		hits = pygame.sprite.spritecollide(player, ground_group, False)
+		if self.vel.y > 0: # check if the player has downwards velocity, meaning they are falling
+			if hits: # if there is a collision between the player and the ground
+				lowest = hits[0]
+				if self.pos.y < lowest.rect.bottom:
+					self.pos.y = lowest.rect.top + 1
+					self.vel.y = 0 # stop the player from falling
+					self.jumping = False # allow the player to jump again
 
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
@@ -104,8 +129,14 @@ background = Background()
 ground = Ground()
 player = Player()
 
+# Sprite groups
+ground_group = pygame.sprite.Group()
+ground_group.add(ground)
+
 # Game loop
 while True:
+	player.gravity_check() # first check if the player is on the ground
+
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
@@ -116,7 +147,8 @@ while True:
 			pass
 
 		if event.type == KEYDOWN:
-			pass
+			if event.key == pygame.K_SPACE:
+				player.jump()
 	
 	# Rendering
 	background.render()
