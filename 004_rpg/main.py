@@ -22,11 +22,28 @@ COUNT = 0
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("RPG") # Window title
 
+# util method to load images
+def load_image(fileName) -> pygame.Surface:
+	file_path = os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'images', fileName)
+	return pygame.image.load(file_path)
+
+# Run animation for the RIGHT
+run_ani_R = [load_image(x) for x in ["Player_Sprite_R.png", "Player_Sprite2_R.png",
+						"Player_Sprite3_R.png","Player_Sprite4_R.png",
+						"Player_Sprite5_R.png", "Player_Sprite6_R.png",
+						"Player_Sprite_R.png"]]
+
+# Run animation for the LEFT
+run_ani_L = [load_image(x) for x in ["Player_Sprite_L.png", "Player_Sprite2_L.png",
+						"Player_Sprite3_L.png","Player_Sprite4_L.png",
+						"Player_Sprite5_L.png", "Player_Sprite6_L.png",
+						"Player_Sprite_L.png"]]
+
 # Classes
 class Background(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
-		self.bgimage = pygame.image.load(os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'Background.png'))
+		self.bgimage = load_image('Background.png')
 		self.bgY = 0
 		self.bgX = 0
 	
@@ -36,7 +53,7 @@ class Background(pygame.sprite.Sprite):
 class Ground(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
-		self.image = pygame.image.load(os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'Ground.png'))
+		self.image = load_image('Ground.png')
 		self.rect = self.image.get_rect(center = (350, 350)) # rect is a must in order to interact with other objects
 	
 	def render(self):
@@ -45,7 +62,7 @@ class Ground(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
-		self.image = pygame.image.load(os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'Player_Sprite_R.png'))
+		self.image = load_image('Player_Sprite_R.png')
 		self.rect = self.image.get_rect()
 	
 		# Position and direction
@@ -55,6 +72,8 @@ class Player(pygame.sprite.Sprite):
 		self.acc = vec(0,0) # acceleration
 		self.direction = "RIGHT" # direction
 		self.jumping = False # jumping
+		self.running = False # running
+		self.move_frame = 0 # track the current grame of the character being displayed
 	
 	def move(self):
 		# Keep a constant acceleration of 0.5 in the downard direction (gravity)
@@ -68,7 +87,7 @@ class Player(pygame.sprite.Sprite):
 
 		# returns the current key presses
 		pressed_keys = pygame.key.get_pressed()
-  
+	
 		# Accelerates sthe player in the direction of the key press
 		if pressed_keys[K_LEFT]:
 			self.acc.x = -ACC
@@ -90,8 +109,32 @@ class Player(pygame.sprite.Sprite):
 		# Update rect pos
 		self.rect.midbottom = self.pos
 
+	# Update one frame per game cycle
 	def update(self):
-		pass
+		# Return to the base frame if at the end of a movement sequence
+		if self.move_frame > 6: # we only have six images in the animation, the more images the smoother the animation
+			self.move_frame = 0
+			return
+
+		# Move the character to the next grame if the player is running
+		if self.jumping is False and self.running is True:
+			# First determine the direction the player is going in
+			if self.vel.x > 0: # this means the player is moving to the right
+				self.image = run_ani_R[self.move_frame] # cycle through the list of images
+				self.direction = "RIGHT"
+			else:
+				self.image = run_ani_L[self.move_frame]
+				self.direction = "LEFT"
+    
+			self.move_frame += 1 # change the frame
+
+		# If the player is not moving, display the idle frame so we're not stuck in a running animation
+		if abs(self.vel.x) < 0.2 and self.move_frame != 0:
+			self.move_frame = 0
+			if self.direction == "RIGHT":
+				self.image = run_ani_R[self.move_frame]
+			elif self.direction == "LEFT":
+				self.image = run_ani_L[self.move_frame]
 
 	def attack(self):
 		pass
@@ -104,7 +147,7 @@ class Player(pygame.sprite.Sprite):
 		hits = pygame.sprite.spritecollide(self, ground_group, False)
 
 		self.rect.x -= 1
-  
+	
 		# If touching the ground, and not currently jumping, cause the player to jump
 		if hits and not self.jumping:
 			self.jumping = True
@@ -149,10 +192,16 @@ while True:
 		if event.type == KEYDOWN:
 			if event.key == pygame.K_SPACE:
 				player.jump()
+
+			# Escape key to quit, just for convenience
+			if event.key == pygame.K_ESCAPE:
+				pygame.quit()
+				sys.exit()
 	
 	# Rendering
 	background.render()
 	ground.render()
+	player.update()
 	player.move()
 	displaysurface.blit(player.image, player.rect)
 
