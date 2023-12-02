@@ -55,6 +55,11 @@ attack_ani_L = [load_image(x) for x in ["Player_Sprite_L.png", "Player_Attack_L.
 								"Player_Attack5_L.png", "Player_Attack5_L.png",
 								"Player_Sprite_L.png"]]
 
+# Health animation
+health_ani = [load_image(x) for x in ["heart0.png","heart.png",
+							"heart2.png", "heart3.png",
+							"heart4.png", "heart5.png"]]
+
 # Custom events
 hit_cooldown = pygame.USEREVENT + 1 # create a unique event we will use to implement an 'invulnerability' period after being hit by an enemy, so the player doesn't lose all their health in one frame
 
@@ -83,6 +88,7 @@ class Player(pygame.sprite.Sprite):
 		super().__init__()
 		self.image = load_image('Player_Sprite_R.png')
 		self.rect = self.image.get_rect()
+		self.health = 5
 	
 		# Position and direction
 		self.vx = 0
@@ -212,8 +218,23 @@ class Player(pygame.sprite.Sprite):
 		if self.cooldown is False:
 			self.cooldown = True # enable the cooldown
 			pygame.time.set_timer(hit_cooldown, 1000) # Reset the cooldown in 1 second
+			
+			self.health = self.health - 1
+			health.image = health_ani[self.health]
 			print("Player was hit")
-			pygame.display.update()
+
+			if self.health == 0:
+				print("Player died")
+				self.kill()
+				pygame.display.update()
+
+class HealthBar(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.image = load_image('heart5.png')
+
+	def render(self):
+		displaysurface.blit(self.image, (10, 10))
 
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
@@ -332,6 +353,7 @@ player_group.add(player)
 enemies = pygame.sprite.Group()
 castle = Castle()
 handler = EventHandler()
+health = HealthBar()
 
 # Sprite groups
 ground_group = pygame.sprite.Group()
@@ -390,7 +412,9 @@ while True:
 	
 	# Render Sprites
 	castle.update()
-	displaysurface.blit(player.image, player.rect)
+	if player.health > 0:
+		displaysurface.blit(player.image, player.rect)
+	health.render()
 
 	# Update Sprites
 	player.update()
