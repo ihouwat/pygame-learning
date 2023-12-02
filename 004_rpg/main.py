@@ -39,6 +39,22 @@ run_ani_L = [load_image(x) for x in ["Player_Sprite_L.png", "Player_Sprite2_L.pn
 						"Player_Sprite5_L.png", "Player_Sprite6_L.png",
 						"Player_Sprite_L.png"]]
 
+# Attack animation for the RIGHT
+attack_ani_R = [load_image(x) for x in ["Player_Sprite_R.png", "Player_Attack_R.png",
+								"Player_Attack2_R.png", "Player_Attack2_R.png",
+								"Player_Attack3_R.png", "Player_Attack3_R.png",
+								"Player_Attack4_R.png", "Player_Attack4_R.png",
+								"Player_Attack5_R.png", "Player_Attack5_R.png",
+								"Player_Sprite_R.png"]]
+
+# Attack animation for the LEFT
+attack_ani_L = [load_image(x) for x in ["Player_Sprite_L.png", "Player_Attack_L.png",
+								"Player_Attack2_L.png", "Player_Attack2_L.png",
+								"Player_Attack3_L.png", "Player_Attack3_L.png",
+								"Player_Attack4_L.png", "Player_Attack4_L.png",
+								"Player_Attack5_L.png", "Player_Attack5_L.png",
+								"Player_Sprite_L.png"]]
+
 # Classes
 class Background(pygame.sprite.Sprite):
 	def __init__(self):
@@ -74,9 +90,12 @@ class Player(pygame.sprite.Sprite):
 		self.jumping = False # jumping
 		self.running = False # running
 		self.move_frame = 0 # track the current grame of the character being displayed
+		# Combat
+		self.attacking = False
+		self.attack_frame = 0
 	
 	def move(self):
-		# Keep a constant acceleration of 0.5 in the downard direction (gravity)
+		# Keep a constant acceleration of 0.5 in the downard direction (gravity) and this also slows us down in the absence of keypresses
 		self.acc = vec(0, 0.5)
 
 		# we can check if the players has slowed down to a certain extent 
@@ -88,7 +107,7 @@ class Player(pygame.sprite.Sprite):
 		# returns the current key presses
 		pressed_keys = pygame.key.get_pressed()
 	
-		# Accelerates sthe player in the direction of the key press
+		# Accelerates the player in the direction of the key press
 		if pressed_keys[K_LEFT]:
 			self.acc.x = -ACC
 		if pressed_keys[K_RIGHT]:
@@ -125,7 +144,7 @@ class Player(pygame.sprite.Sprite):
 			else:
 				self.image = run_ani_L[self.move_frame]
 				self.direction = "LEFT"
-    
+		
 			self.move_frame += 1 # change the frame
 
 		# If the player is not moving, display the idle frame so we're not stuck in a running animation
@@ -137,7 +156,29 @@ class Player(pygame.sprite.Sprite):
 				self.image = run_ani_L[self.move_frame]
 
 	def attack(self):
-		pass
+		# If attack frame has reached end of sequence, return to base frame and end the attack
+		if self.attack_frame > 10:
+			self.attack_frame = 0
+			self.attacking = False
+
+		# Check direction for correct animation to display
+		if self.direction == "RIGHT":
+			self.image = attack_ani_R[self.attack_frame]
+		elif self.direction == "LEFT":
+			self.attack_correction()
+			self.image = attack_ani_L[self.attack_frame]
+	
+		# Update the attack frame
+		self.attack_frame += 1
+	
+	# Pygame doesn't support individual entities and non-rectangle collision detection.
+	# So when we turn our character from righ tto left and attack, the center point of the image changes, pushing the player back.
+	def attack_correction(self):
+		# correct an error with character position on the left attack frames
+		if self.attack_frame == 1:
+			self.pos.x -= 20
+		if self.attack_frame == 10:
+			self.pos.x += 20
 
 	def jump(self):
 		# the self.rect.x += 1 and self.rect.x -= 1 is there to check for collisions on the x-axis
@@ -192,6 +233,10 @@ while True:
 		if event.type == KEYDOWN:
 			if event.key == pygame.K_SPACE:
 				player.jump()
+		
+			if event.key == pygame.K_RETURN:
+				if player.attacking is False:
+					player.attacking = True # trigger the attack animation
 
 			# Escape key to quit, just for convenience
 			if event.key == pygame.K_ESCAPE:
@@ -202,6 +247,8 @@ while True:
 	background.render()
 	ground.render()
 	player.update()
+	if player.attacking is True:
+		player.attack() # ensure the attack animation plays until the frames have been executed
 	player.move()
 	displaysurface.blit(player.image, player.rect)
 
