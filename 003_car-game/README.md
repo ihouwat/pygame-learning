@@ -63,7 +63,7 @@ A Pygame **“Event” occurs when the user performs a specific action**, such a
 
 **Each event has a `type`, an attribute that tells us what kind of event has occurred**. `event.type == QUIT` from the code snippet above is an example of a `type`.
 
-We can **create custom events** as well.
+We can **create custom events** as well. [See this page for more](https://coderslegacy.com/python/pygame-userevents/).
 
 ### Creating a Display Screen
 For every game, we **create a window of a fixed size** by passing a tuple containing the width and height into `display.set_mode()`.
@@ -165,3 +165,4 @@ game_over = font.render("Game Over", True, BLACK)
 * [Example of a Python game folder structure](https://python-forum.io/thread-6431.html)
 * [FPS and the Game Clock](https://gamedevacademy.org/pygame-fps-tutorial/)
 * [Improving performance in pygame](https://coderslegacy.com/improving-speed-performance-in-pygame/)
+* [Custom events](https://coderslegacy.com/python/pygame-userevents/)

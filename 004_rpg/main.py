@@ -55,6 +55,9 @@ attack_ani_L = [load_image(x) for x in ["Player_Sprite_L.png", "Player_Attack_L.
 								"Player_Attack5_L.png", "Player_Attack5_L.png",
 								"Player_Sprite_L.png"]]
 
+# Custom events
+hit_cooldown = pygame.USEREVENT + 1 # create a unique event we will use to implement an 'invulnerability' period after being hit by an enemy, so the player doesn't lose all their health in one frame
+
 # Classes
 class Background(pygame.sprite.Sprite):
 	def __init__(self):
@@ -92,6 +95,7 @@ class Player(pygame.sprite.Sprite):
 		self.move_frame = 0 # track the current grame of the character being displayed
 		# Combat
 		self.attacking = False
+		self.cooldown = False
 		self.attack_frame = 0
 	
 	def move(self):
@@ -204,6 +208,13 @@ class Player(pygame.sprite.Sprite):
 					self.vel.y = 0 # stop the player from falling
 					self.jumping = False # allow the player to jump again
 
+	def player_hit(self):
+		if self.cooldown is False:
+			self.cooldown = True # enable the cooldown
+			pygame.time.set_timer(hit_cooldown, 1000) # Reset the cooldown in 1 second
+			print("Player was hit")
+			pygame.display.update()
+
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -236,6 +247,19 @@ class Enemy(pygame.sprite.Sprite):
 
 		# Update rect pos
 		self.rect.center = self.pos
+	
+	def update(self):
+		# Check for collision with the Player
+		hits = pygame.sprite.spritecollide(self, player_group, False)
+		
+		# Activates upon either of the conditions being true
+		if hits and player.attacking is True:
+			self.kill()
+			print("Enemy killed")
+
+		# If collision has ocurred and player not attacking, the player has been hit
+		elif hits and player.attacking is False:
+			player.player_hit()
 
 	def render(self):
 		# Display an enemy on the screen
@@ -245,6 +269,8 @@ class Enemy(pygame.sprite.Sprite):
 background = Background()
 ground = Ground()
 player = Player()
+player_group = pygame.sprite.Group()
+player_group.add(player)
 enemy = Enemy()
 
 # Sprite groups
@@ -276,6 +302,11 @@ while True:
 			if event.key == pygame.K_ESCAPE:
 				pygame.quit()
 				sys.exit()
+		
+		if event.type == hit_cooldown:
+			# once cooldown period has passed, disable cooldown and stop the timer so it doesn't trigger again
+			player.cooldown = False
+			pygame.time.set_timer(hit_cooldown, 0)
 	
 	# Render background and display
 	background.render()
@@ -290,6 +321,7 @@ while True:
 	if player.attacking is True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
 	player.move()
+	enemy.update()
 	enemy.move()
 
 	pygame.display.update()
