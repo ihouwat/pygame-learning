@@ -279,8 +279,14 @@ class EventHandler():
 	def __init__(self):
 		self.enemy_count = 0
 		self.battle = False
+		self.stage = 1
+		# Enemy generation
 		self.enemy_generation = pygame.USEREVENT + 2
-	
+		self.stage_enemies = []
+		# a formula to calculate the number of enemies generated per level
+		for x in range(1, 21):
+			self.stage_enemies.append(int(( x ** 2 / 2) + 1))
+
 	def stage_handler(self):
 		# Code for the stage selection window
 		self.root = Tk()
@@ -310,12 +316,20 @@ class EventHandler():
 		self.battle = True
 		# Empty for now
 
+	# Code for when the next stage (ie: level) is clicked
+	def next_stage(self):
+		self.stage += 1
+		self.enemy_count = 0
+		print("Stage: " + str(self.stage))
+		pygame.time.set_timer(self.enemy_generation, 1500 - (50 * self.stage)) # increase the enemy generation speed per stage
+
 # Instantiate classes
 background = Background()
 ground = Ground()
 player = Player()
 player_group = pygame.sprite.Group()
 player_group.add(player)
+enemies = pygame.sprite.Group()
 castle = Castle()
 handler = EventHandler()
 
@@ -340,6 +354,12 @@ while True:
 			# Interact with the stage handler
 			if event.key == pygame.K_e and 450 < player.rect.x < 550:
 				handler.stage_handler()
+
+			# Activate the next stage if no enemies are left
+			if event.key == pygame.K_n:
+				if handler.battle is True and len(enemies) == 0:
+					handler.next_stage()
+
 			if event.key == pygame.K_SPACE:
 				player.jump()
 		
@@ -356,6 +376,13 @@ while True:
 			# once cooldown period has passed, disable cooldown and stop the timer so it doesn't trigger again
 			player.cooldown = False
 			pygame.time.set_timer(hit_cooldown, 0)
+
+		if event.type == handler.enemy_generation:
+			# Keep adding enemies until you reach the max number of enemies per stage
+			if handler.enemy_count < handler.stage_enemies[handler.stage - 1]:
+				enemy = Enemy()
+				enemies.add(enemy)
+				handler.enemy_count += 1
 	
 	# Render background and display
 	background.render()
@@ -370,6 +397,10 @@ while True:
 	if player.attacking is True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
 	player.move()
+	for entity in enemies:
+		entity.update()
+		entity.move()
+		entity.render()
 
 	pygame.display.update()
 	FPS_CLOCK.tick(FPS)
