@@ -207,11 +207,45 @@ class Player(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
+		self.image = load_image('Enemy.png')
+		self.rect = self.image.get_rect()
+		self.pos = vec(0, 0)
+		self.vel = vec(0, 0)
+		self.direction = random.randint(0, 1) # 0 for Right direction, 1 for Left
+		self.vel.x = random.randint(2, 6) # randomized velocity of the enemy
+		# Set the initial enemy position
+		if self.direction == 0:
+			self.pos.x = 0
+			self.pos.y = 235
+		if self.direction == 1:
+			self.pos.x = 700
+			self.pos.y = 235
+
+	def move(self):
+		# Change directions right before reaching the edge of the screen
+		if self.pos.x > (WIDTH - 20):
+			self.direction = 1
+		elif self.pos.x < 0:
+			self.direction = 0
+
+		# Move the enemy in the direction it is facing by subtracting or adding velocity to the position x value
+		if self.direction == 0:
+			self.pos.x += self.vel.x
+		if self.direction == 1:
+			self.pos.x -= self.vel.x
+
+		# Update rect pos
+		self.rect.center = self.pos
+
+	def render(self):
+		# Display an enemy on the screen
+		displaysurface.blit(self.image, (self.pos.x, self.pos.y))
 
 # Instantiate classes
 background = Background()
 ground = Ground()
 player = Player()
+enemy = Enemy()
 
 # Sprite groups
 ground_group = pygame.sprite.Group()
@@ -243,14 +277,20 @@ while True:
 				pygame.quit()
 				sys.exit()
 	
-	# Rendering
+	# Render background and display
 	background.render()
 	ground.render()
+	
+	# Render Sprites
+	displaysurface.blit(player.image, player.rect)
+	enemy.render()
+
+	# Update Sprites
 	player.update()
 	if player.attacking is True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
 	player.move()
-	displaysurface.blit(player.image, player.rect)
+	enemy.move()
 
 	pygame.display.update()
 	FPS_CLOCK.tick(FPS)
