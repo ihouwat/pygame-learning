@@ -83,6 +83,34 @@ class Ground(pygame.sprite.Sprite):
 	def render(self):
 		displaysurface.blit(self.image, (self.rect.x, self.rect.y))
 
+
+class HealthBar(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.image = load_image('heart5.png')
+
+	def render(self):
+		displaysurface.blit(self.image, (10, 10))
+
+class StageDisplay(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.text = heading_font.render("Stage: " + str(handler.stage), True, color_dark)
+		self.rect = self.text.get_rect()
+		self.posx = -100 # initialize off screen
+		self.posy = 100
+		self.diplay = False
+
+	def move_display(self):
+		# Create the text to be displayed
+		self.text = heading_font.render("STAGE: " + str(handler.stage) , True , color_dark)
+		if self.posx < 700:
+			self.posx += 5
+			displaysurface.blit(self.text, (self.posx, self.posy))
+		else:
+			self.display = False
+			self.kill()
+
 class Player(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -228,14 +256,6 @@ class Player(pygame.sprite.Sprite):
 				self.kill()
 				pygame.display.update()
 
-class HealthBar(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = load_image('heart5.png')
-
-	def render(self):
-		displaysurface.blit(self.image, (10, 10))
-
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -353,6 +373,7 @@ player_group.add(player)
 enemies = pygame.sprite.Group()
 castle = Castle()
 handler = EventHandler()
+stage_display = StageDisplay()
 health = HealthBar()
 
 # Sprite groups
@@ -381,6 +402,8 @@ while True:
 			if event.key == pygame.K_n:
 				if handler.battle is True and len(enemies) == 0:
 					handler.next_stage()
+					stage_display = StageDisplay()
+					stage_display.diplay = True
 
 			if event.key == pygame.K_SPACE:
 				player.jump()
@@ -425,6 +448,8 @@ while True:
 		entity.update()
 		entity.move()
 		entity.render()
+	if stage_display.display is True:
+		stage_display.move_display()
 
 	pygame.display.update()
 	FPS_CLOCK.tick(FPS)
