@@ -265,13 +265,59 @@ class Enemy(pygame.sprite.Sprite):
 		# Display an enemy on the screen
 		displaysurface.blit(self.image, (self.pos.x, self.pos.y))
 
+class Castle(pygame.sprite.Sprite):
+		def __init__(self):
+			super().__init__()
+			self.hide = False
+			self.image = load_image('Castle.png')
+
+		def update(self):
+			if self.hide is False:
+				displaysurface.blit(self.image, (400, 80))
+
+class EventHandler():
+	def __init__(self):
+		self.enemy_count = 0
+		self.battle = False
+		self.enemy_generation = pygame.USEREVENT + 2
+	
+	def stage_handler(self):
+		# Code for the stage selection window
+		self.root = Tk()
+		self.root.geometry("200x170")
+
+		button1 = Button(self.root, text = "Twilight Dungeon", width=18, height=2, command=self.world1)
+		button2 = Button(self.root, text = "Skyward Dungeon", width=18, height=2, command=self.world2)
+		button3 = Button(self.root, text = "Hell Dungeon", width=18, height=2, command=self.world3)
+
+		button1.place(x=40,y=15)
+		button2.place(x=40,y=65)
+		button3.place(x=40,y=115)
+
+		self.root.mainloop()
+
+	def world1(self):
+		self.root.destroy()
+		pygame.time.set_timer(self.enemy_generation, 2000)
+		castle.hide = True
+		self.battle = True
+	
+	def world2(self):
+		self.battle = True
+		# Empty for now
+	
+	def world3(self):
+		self.battle = True
+		# Empty for now
+
 # Instantiate classes
 background = Background()
 ground = Ground()
 player = Player()
 player_group = pygame.sprite.Group()
 player_group.add(player)
-enemy = Enemy()
+castle = Castle()
+handler = EventHandler()
 
 # Sprite groups
 ground_group = pygame.sprite.Group()
@@ -291,6 +337,9 @@ while True:
 			pass
 
 		if event.type == KEYDOWN:
+			# Interact with the stage handler
+			if event.key == pygame.K_e and 450 < player.rect.x < 550:
+				handler.stage_handler()
 			if event.key == pygame.K_SPACE:
 				player.jump()
 		
@@ -313,16 +362,14 @@ while True:
 	ground.render()
 	
 	# Render Sprites
+	castle.update()
 	displaysurface.blit(player.image, player.rect)
-	enemy.render()
 
 	# Update Sprites
 	player.update()
 	if player.attacking is True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
 	player.move()
-	enemy.update()
-	enemy.move()
 
 	pygame.display.update()
 	FPS_CLOCK.tick(FPS)
