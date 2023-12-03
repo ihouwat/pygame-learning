@@ -215,8 +215,9 @@ class Player(pygame.sprite.Sprite):
 		self.attacking = False
 		self.cooldown = False
 		self.attack_frame = 0
-		self.mana = 0
+		self.mana = 6
 		self.experience = 0
+		self.magic_cooldown = False # cooldown for magic attacks
 	
 	def move(self):
 		# Keep a constant acceleration of 0.5 in the downard direction (gravity) and this also slows us down in the absence of keypresses
@@ -347,6 +348,39 @@ class Player(pygame.sprite.Sprite):
 				self.kill()
 				pygame.display.update()
 
+# Fireballs a player can shoot by using mana
+class FireBall(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.direction = player.direction
+		if self.direction == "RIGHT":
+			self.image = load_image('fireball1_R.png')
+		else:
+			self.image = load_image('fireball1_L.png')
+		# center the image around the player and add an offset to make sure that it appears from the center of the player
+		self.rect = self.image.get_rect(center=player.pos)
+		self.rect.x = player.pos.x
+		self.rect.y = player.pos.y - 40
+	
+	def fire(self):
+		player.magic_cooldown = True
+		# Runs the animation while the fireball is still within the screen
+		if -10 < self.rect.x < 710:
+			if self.direction == "RIGHT":
+				self.image = load_image('fireball1_R.png')
+			else:
+				self.image = load_image('fireball1_L.png')
+			displaysurface.blit(self.image, self.rect)
+
+			if self.direction == "RIGHT":
+				self.rect.move_ip(12, 0) # move in place
+			else:
+				self.rect.move_ip(-12, 0)	
+		else:
+			self.kill()
+			player.magic_cooldown = False
+			player.attacking = False
+
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -386,9 +420,12 @@ class Enemy(pygame.sprite.Sprite):
 	def update(self):
 		# Check for collision with the Player
 		hits = pygame.sprite.spritecollide(self, player_group, False)
+	
+		# Check for collisions with fireballs
+		f_hits = pygame.sprite.spritecollide(self, fireballs, False)
 		
 		# Activates upon either of the conditions being true
-		if hits and player.attacking is True:
+		if hits and player.attacking is True or f_hits:
 			if player.mana < 100:
 				player.mana += self.mana_to_release # release mana
 			player.experience += 1 # release experience to player
@@ -549,6 +586,7 @@ player_group = pygame.sprite.Group()
 player_group.add(player)
 enemies = pygame.sprite.Group()
 items = pygame.sprite.Group()
+fireballs = pygame.sprite.Group()
 castle = Castle()
 handler = EventHandler()
 stage_display = StageDisplay()
@@ -591,6 +629,14 @@ while True:
 				if handler.battle is True and len(enemies) == 0:
 					handler.next_stage()
 					stage_display.display = True
+			
+			# Fireball attack
+			if event.key == pygame.K_f and player.magic_cooldown is False:
+				if player.mana >= 6:
+					player.mana -=6
+					player.attacking = True
+					fireball = FireBall()
+					fireballs.add(fireball)
 
 			if event.key == pygame.K_SPACE:
 				player.jump()
@@ -639,6 +685,8 @@ while True:
 	if player.attacking is True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
 	player.move()
+	for ball in fireballs:
+			ball.fire()      
 	for entity in enemies:
 		entity.update()
 		entity.move()
