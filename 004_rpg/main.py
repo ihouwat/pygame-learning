@@ -5,6 +5,7 @@ import random
 from tkinter import * # Tkinter is a GUI library that comes with Python
 import os
 import pathlib
+import numpy as np
 
 # util method to load images
 def load_image(fileName) -> pygame.Surface:
@@ -342,7 +343,25 @@ class Enemy(pygame.sprite.Sprite):
 		if hits and player.attacking is True:
 			if player.mana < 100:
 				player.mana += self.mana_to_release # release mana
-			player.experience += 1 # gain experience
+			player.experience += 1 # release experience to player
+
+			# Release item
+			rand_num = np.random.uniform(0, 100) # uniform method ensures that there is no uneven spread of generated numbers
+			item_type = 0
+			if rand_num >= 0 and rand_num <= 5: # 6% chance of getting a heart
+				item_type = 1
+			elif rand_num > 5 and rand_num <= 15: # 10% chance of getting a coin
+				item_type = 2
+		
+			# Add to item group
+			if item_type != 0:
+				item = Item(item_type)
+				items.add(item)
+				# Set the item position to the enemy position
+				item.posx = self.pos.x
+				item.posy = self.pos.y
+
+			# Kill the enemy
 			self.kill()
 			print("Enemy killed")
 			handler.dead_enemy_count += 1
@@ -366,22 +385,34 @@ class Castle(pygame.sprite.Sprite):
 				displaysurface.blit(self.image, (400, 80))
 
 class Item(pygame.sprite.Sprite):
-  def __init__(self, item_type):
-    super().__init__()
+	def __init__(self, item_type):
+		super().__init__()
 		# not fan of this design (one class for all items), but it's a start
-    if item_type == 1:
-      self.image = load_image('heart.png')
-    elif item_type == 2:
-      self.image = load_image('coin.png')
-    self.rect = self.image.get_rect()
-    self.type = item_type # to keep track for future use
-    self.posx = 0
-    self.posy = 0
-    
-  def render(self):
-    self.rect.x = self.posx
-    self.rect.y = self.posy
-    displaysurface.blit(self.image, self.rect)
+		if item_type == 1:
+			self.image = load_image('heart.png')
+		elif item_type == 2:
+			self.image = load_image('coin.png')
+		self.rect = self.image.get_rect()
+		self.type = item_type # to keep track for future use
+		self.posx = 0
+		self.posy = 0
+		
+	def render(self):
+		self.rect.x = self.posx
+		self.rect.y = self.posy
+		displaysurface.blit(self.image, self.rect)
+
+	def update(self):
+		hits = pygame.sprite.spritecollide(self, player_group, False)
+		# if item comes in contact with Player
+		if hits:
+			if player.health < 5 and self.type == 1:
+				player.health += 1
+				health.image = health_ani[player.health]
+				self.kill()
+			if self.type == 2:
+				# add money to player
+				self.kill()
 
 class EventHandler():
 	def __init__(self):
@@ -447,6 +478,7 @@ player = Player()
 player_group = pygame.sprite.Group()
 player_group.add(player)
 enemies = pygame.sprite.Group()
+items = pygame.sprite.Group()
 castle = Castle()
 handler = EventHandler()
 stage_display = StageDisplay()
@@ -513,8 +545,8 @@ while True:
 	castle.update()
 	if player.health > 0:
 		displaysurface.blit(player.image, player.rect)
-  
-  # Status, health, and stage updates
+	
+	# Status, health, and stage updates
 	health.render()
 	displaysurface.blit(status_bar.surf, (580, 5))
 	status_bar.update_draw()
@@ -529,13 +561,15 @@ while True:
 		entity.update()
 		entity.move()
 		entity.render()
-  
-  # Update and render the stage displays
+	for item in items:
+		item.render()
+		item.update()
+	
+	# Update and render the stage displays
 	if stage_display.display is True:
 		stage_display.move_display()
 	if stage_display.cleared is True:
 		stage_display.stage_clear()
-  
 
 	pygame.display.update()
 	FPS_CLOCK.tick(FPS)
