@@ -459,6 +459,100 @@ class Enemy(pygame.sprite.Sprite):
 		# Display an enemy on the screen
 		displaysurface.blit(self.image, (self.pos.x, self.pos.y))
 
+class RangedEnemy(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.pos = vec(0, 0)
+		self.vel = vec(0, 0)
+		
+		self.direction = random.randint(0, 1) # 0 for Right direction, 1 for Left
+		self.vel.x = random.randint(2, 6) / 3 # randomized velocity of the enemy
+		self.mana_to_release = random.randint(2, 3) # randomized mana obtained from enemy after defeating it
+		self.wait = 0
+		self.wait_status = False
+
+		if self.direction == 0:
+			self.image = load_image('enemy2_R.png')
+		if self.direction == 1:
+			self.image = load_image('enemy2_L.png')
+		self.rect = self.image.get_rect()
+		
+		# Set the initial enemy position
+		if self.direction == 0:
+			self.pos.x = 0
+			self.pos.y = 250
+		
+		if self.direction == 1:
+			self.pos.x = 700
+			self.pos.y = 250
+	
+	def move(self):
+		if cursor.wait == 1: # do nothing if we are in pause mode
+			return
+		# Change directions right before reaching the edge of the screen
+		if self.pos.x > (WIDTH - 20):
+			self.direction = 1
+		elif self.pos.x < 0:
+			self.direction = 0
+
+		# The ranged enemy moves a bit, pauses, attacks, and then moves again
+		if self.wait > 50:
+			self.wait_status = True
+		elif int(self.wait) <= 0:
+			self.wait_status = False
+
+		if self.wait_status is True:
+			self.wait -= 1
+
+		# Move the enemy in the direction it is facing by subtracting or adding velocity to the position x value
+		if self.direction == 0:
+			self.pos.x += self.vel.x
+			self.wait += self.vel.x
+		if self.direction == 1:
+			self.pos.x -= self.vel.x
+			self.wait -= self.vel.x
+
+		# Update rect pos
+		self.rect.topleft = self.pos
+  
+	def update(self):
+		# Check for collision with the Player
+		hits = pygame.sprite.spritecollide(self, player_group, False)
+	
+		# Check for collisions with fireballs
+		f_hits = pygame.sprite.spritecollide(self, fireballs, False)
+		
+		# Activates upon either of the conditions being true
+		if hits and player.attacking is True or f_hits:
+			if player.mana < 100:
+				player.mana += self.mana_to_release # release mana
+			player.experience += 1 # release experience to player
+
+			# Release item
+			rand_num = np.random.uniform(0, 100) # uniform method ensures that there is no uneven spread of generated numbers
+			item_type = 0
+			if rand_num >= 0 and rand_num <= 5: # 6% chance of getting a heart
+				item_type = 1
+			elif rand_num > 5 and rand_num <= 15: # 10% chance of getting a coin
+				item_type = 2
+		
+			# Add to item group
+			if item_type != 0:
+				item = Item(item_type)
+				items.add(item)
+				# Set the item position to the enemy position
+				item.posx = self.pos.x
+				item.posy = self.pos.y
+
+			# Kill the enemy
+			self.kill()
+			print("Enemy killed")
+			handler.dead_enemy_count += 1
+
+	def render(self):
+		# Display an enemy on the screen
+		displaysurface.blit(self.image, self.rect)
+
 class Castle(pygame.sprite.Sprite):
 		def __init__(self):
 			super().__init__()
@@ -636,6 +730,11 @@ while True:
 				elif button.img_display == 0:
 					handler.home()
 
+		# Escape key to quit, just for convenience
+		if event.type == KEYDOWN and event.key == pygame.K_ESCAPE:
+			pygame.quit()
+			sys.exit()
+
 		if event.type == KEYDOWN and cursor.wait == 0: # only allow key presses if the game is not paused
 			# Interact with the stage handler
 			if event.key == pygame.K_e and 450 < player.rect.x < 550:
@@ -661,11 +760,6 @@ while True:
 			if event.key == pygame.K_RETURN:
 				if player.attacking is False:
 					player.attacking = True # trigger the attack animation
-
-			# Escape key to quit, just for convenience
-			if event.key == pygame.K_ESCAPE:
-				pygame.quit()
-				sys.exit()
 		
 		if event.type == hit_cooldown:
 			# once cooldown period has passed, disable cooldown and stop the timer so it doesn't trigger again
@@ -682,7 +776,9 @@ while True:
 		if event.type == handler.enemy_generation2:
 			# Keep adding enemies until you reach the max number of enemies per stage
 			if handler.enemy_count < handler.stage_enemies[handler.stage - 1]:
-				pass
+				enemy = RangedEnemy()
+				enemies.add(enemy)
+				handler.enemy_count += 1
 	
 	# Render background and display
 	background.render()
