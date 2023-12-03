@@ -121,7 +121,7 @@ class StatusBar(pygame.sprite.Sprite):
 		displaysurface.blit(text2, (585, 22))
 		displaysurface.blit(text3, (585, 37))
 		displaysurface.blit(text4, (585, 52))
-  
+	
 
 class StageDisplay(pygame.sprite.Sprite):
 	def __init__(self):
@@ -131,6 +131,7 @@ class StageDisplay(pygame.sprite.Sprite):
 		self.posx = -100 # initialize off screen
 		self.posy = 100
 		self.display = False
+		self.cleared = False
 
 	def move_display(self):
 		# Create the text to be displayed
@@ -140,7 +141,18 @@ class StageDisplay(pygame.sprite.Sprite):
 			displaysurface.blit(self.text, (self.posx, self.posy))
 		else:
 			self.display = False
-			self.kill()
+			self.posx = -100
+			self.posy = 100
+	
+	def stage_clear(self):
+		self.text = heading_font.render("STAGE CLEARED!" , True , color_dark)
+		if self.posx < 700:
+			self.posx += 10
+			displaysurface.blit(self.text, (self.posx, self.posy))
+		else:
+			self.cleared = False
+			self.posx = -100
+			self.posy = 100
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self):
@@ -334,6 +346,7 @@ class Enemy(pygame.sprite.Sprite):
 			player.experience += 1 # gain experience
 			self.kill()
 			print("Enemy killed")
+			handler.dead_enemy_count += 1
 
 		# If collision has ocurred and player not attacking, the player has been hit
 		elif hits and player.attacking is False:
@@ -356,6 +369,7 @@ class Castle(pygame.sprite.Sprite):
 class EventHandler():
 	def __init__(self):
 		self.enemy_count = 0
+		self.dead_enemy_count = 0
 		self.battle = False
 		self.stage = 1
 		# Enemy generation
@@ -398,8 +412,16 @@ class EventHandler():
 	def next_stage(self):
 		self.stage += 1
 		self.enemy_count = 0
+		self.dead_enemy_count = 0
 		print("Stage: " + str(self.stage))
 		pygame.time.set_timer(self.enemy_generation, 1500 - (50 * self.stage)) # increase the enemy generation speed per stage
+
+	def update(self):
+		# Check if all enemies have been defeated in order to clear the stage
+		if self.dead_enemy_count == self.stage_enemies[self.stage - 1]:
+			self.dead_enemy_count = 0
+			stage_display.cleared = True
+			stage_display.stage_clear()
 
 # Instantiate classes
 background = Background()
@@ -440,7 +462,6 @@ while True:
 			if event.key == pygame.K_n:
 				if handler.battle is True and len(enemies) == 0:
 					handler.next_stage()
-					stage_display = StageDisplay()
 					stage_display.display = True
 
 			if event.key == pygame.K_SPACE:
@@ -475,10 +496,14 @@ while True:
 	castle.update()
 	if player.health > 0:
 		displaysurface.blit(player.image, player.rect)
+  
+  # Status, health, and stage updates
 	health.render()
 	displaysurface.blit(status_bar.surf, (580, 5))
 	status_bar.update_draw()
+	handler.update()
 
+	# Update and render sprites
 	player.update()
 	if player.attacking is True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
@@ -487,8 +512,13 @@ while True:
 		entity.update()
 		entity.move()
 		entity.render()
+  
+  # Update and render the stage displays
 	if stage_display.display is True:
 		stage_display.move_display()
+	if stage_display.cleared is True:
+		stage_display.stage_clear()
+  
 
 	pygame.display.update()
 	FPS_CLOCK.tick(FPS)
