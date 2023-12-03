@@ -123,6 +123,46 @@ class StatusBar(pygame.sprite.Sprite):
 		displaysurface.blit(text3, (585, 37))
 		displaysurface.blit(text4, (585, 52))
 
+# Pause, play, and home buttons
+class PButton(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.vec = vec(620, 300)
+		self.img_display = 0
+	
+	def render(self, num):
+		if num == 0:
+			self.image = load_image('home_small.png')
+		elif num == 1:
+			if cursor.wait == 0:
+				self.image = load_image('pause_small.png')
+			else:
+				self.image = load_image('play_small.png')
+		displaysurface.blit(self.image, (620, 300))
+
+# Pygame doesn't support a way to detect buttons
+class Cursor(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.image = load_image('cursor.png')
+		self.rect = self.image.get_rect()
+		self.wait = 0
+	
+	def pause(self):
+		if self.wait == 1:
+			self.wait = 0
+		else:
+			self.wait = 1
+	
+	def hover(self):
+		if 620 <= mouse[0] <= 670 and 300 <= mouse[1] <= 345:
+			# if we're hovering over the buttons we're interested in, display our custom cursor image
+			pygame.mouse.set_visible(False)
+			cursor.rect.center = pygame.mouse.get_pos() # update position
+			displaysurface.blit(cursor.image, cursor.rect)
+		else:
+			pygame.mouse.set_visible(True)
+		
 class StageDisplay(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -146,6 +186,7 @@ class StageDisplay(pygame.sprite.Sprite):
 	
 	def stage_clear(self):
 		self.text = heading_font.render("STAGE CLEARED!" , True , color_dark)
+		button.img_display = 0 # swicth the button back to the home button
 		if self.posx < 700:
 			self.posx += 10
 			displaysurface.blit(self.text, (self.posx, self.posy))
@@ -213,6 +254,9 @@ class Player(pygame.sprite.Sprite):
 
 	# Update one frame per game cycle
 	def update(self):
+		# do nothing if we are in pause mode
+		if cursor.wait == 1: 
+			return
 		# Return to the base frame if at the end of a movement sequence
 		if self.move_frame > 6: # we only have six images in the animation, the more images the smoother the animation
 			self.move_frame = 0
@@ -239,6 +283,8 @@ class Player(pygame.sprite.Sprite):
 				self.image = run_ani_L[self.move_frame]
 
 	def attack(self):
+		if cursor.wait == 1: # do nothing if we are in pause mode
+			return
 		# If attack frame has reached end of sequence, return to base frame and end the attack
 		if self.attack_frame > 10:
 			self.attack_frame = 0
@@ -320,6 +366,8 @@ class Enemy(pygame.sprite.Sprite):
 			self.pos.y = 235
 
 	def move(self):
+		if cursor.wait == 1: # do nothing if we are in pause mode
+			return
 		# Change directions right before reaching the edge of the screen
 		if self.pos.x > (WIDTH - 20):
 			self.direction = 1
@@ -444,20 +492,24 @@ class EventHandler():
 
 	def world1(self):
 		self.root.destroy()
+		button.img_display = 1 # change the button to a play/pause button
 		pygame.time.set_timer(self.enemy_generation, 2000)
 		castle.hide = True
 		self.battle = True
 	
 	def world2(self):
 		self.battle = True
+		button.img_display = 1 # change the button to a play/pause button
 		# Empty for now
 	
 	def world3(self):
 		self.battle = True
+		button.img_display = 1 # change the button to a play/pause button
 		# Empty for now
 
 	# Code for when the next stage (ie: level) is clicked
 	def next_stage(self):
+		button.img_display = 1 # change the button to a play/pause button
 		self.stage += 1
 		self.enemy_count = 0
 		self.dead_enemy_count = 0
@@ -470,7 +522,25 @@ class EventHandler():
 			self.dead_enemy_count = 0
 			stage_display.cleared = True
 			stage_display.stage_clear()
-
+	
+	def home(self):
+		# reset battle code
+		pygame.time.set_timer(handler.enemy_generation, 0)
+		self.battle = False
+		self.enemy_count = 0
+		self.dead_enemy_count = 0
+		self.stage = 1
+	
+		# destroy any enemies or items lying around
+		for group in enemies, items:
+			for entity in group:
+				entity.kill()
+		
+		# bring back backgrounds
+		castle.hide = False
+		background.bgimage = load_image('Background.png')
+		ground.image = load_image('Ground.png')
+	
 # Instantiate classes
 background = Background()
 ground = Ground()
@@ -484,6 +554,8 @@ handler = EventHandler()
 stage_display = StageDisplay()
 health = HealthBar()
 status_bar = StatusBar()
+cursor = Cursor()
+button = PButton()
 
 # Sprite groups
 ground_group = pygame.sprite.Group()
@@ -492,6 +564,7 @@ ground_group.add(ground)
 # Game loop
 while True:
 	player.gravity_check() # first check if the player is on the ground
+	mouse = pygame.mouse.get_pos() # get the mouse position
 
 	for event in pygame.event.get():
 		if event.type == QUIT:
@@ -499,10 +572,16 @@ while True:
 			sys.exit()
 
 		# left click
-		if event.type == MOUSEBUTTONDOWN: 
-			pass
+		if event.type == MOUSEBUTTONDOWN:
+			if 620 < mouse[0] <= 670 and 300 < mouse[1] <= 345:
+				# Pause
+				if button.img_display == 1:
+					cursor.pause()
+				# Home
+				elif button.img_display == 0:
+					handler.home()
 
-		if event.type == KEYDOWN:
+		if event.type == KEYDOWN and cursor.wait == 0: # only allow key presses if the game is not paused
 			# Interact with the stage handler
 			if event.key == pygame.K_e and 450 < player.rect.x < 550:
 				handler.stage_handler()
@@ -540,6 +619,9 @@ while True:
 	# Render background and display
 	background.render()
 	ground.render()
+	# Render button and cursor
+	button.render(button.img_display)
+	cursor.hover()
 	
 	# Render Sprites
 	castle.update()
