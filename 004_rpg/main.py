@@ -144,6 +144,8 @@ class Player(pygame.sprite.Sprite):
 		self.attacking = False
 		self.cooldown = False
 		self.attack_frame = 0
+		self.mana = 0
+		self.experience = 0
 	
 	def move(self):
 		# Keep a constant acceleration of 0.5 in the downard direction (gravity) and this also slows us down in the absence of keypresses
@@ -277,7 +279,8 @@ class Enemy(pygame.sprite.Sprite):
 		self.pos = vec(0, 0)
 		self.vel = vec(0, 0)
 		self.direction = random.randint(0, 1) # 0 for Right direction, 1 for Left
-		self.vel.x = random.randint(2, 6) # randomized velocity of the enemy
+		self.vel.x = random.randint(2, 6) / 2 # randomized velocity of the enemy
+		self.mana_to_release = random.randint(1, 3) # randomized mana obtained from enemy after defeating it
 		# Set the initial enemy position
 		if self.direction == 0:
 			self.pos.x = 0
@@ -308,6 +311,9 @@ class Enemy(pygame.sprite.Sprite):
 		
 		# Activates upon either of the conditions being true
 		if hits and player.attacking is True:
+			if player.mana < 100:
+				player.mana += self.mana_to_release # release mana
+			player.experience += 1 # gain experience
 			self.kill()
 			print("Enemy killed")
 
