@@ -96,7 +96,6 @@ class Ground(pygame.sprite.Sprite):
 	def render(self):
 		displaysurface.blit(self.image, (self.rect.x, self.rect.y))
 
-
 class HealthBar(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -104,6 +103,25 @@ class HealthBar(pygame.sprite.Sprite):
 
 	def render(self):
 		displaysurface.blit(self.image, (10, 10))
+
+class StatusBar(pygame.sprite.Sprite):
+	def __init__(self):
+		super().__init__()
+		self.surf = pygame.Surface((90, 66))
+		self.rect = self.surf.get_rect(center=(500, 10))
+	
+	def update_draw(self):
+		text1 = smaller_font.render("STAGE: " + str(handler.stage), True, color_white)
+		text2 = smaller_font.render("EXP: " + str(player.experience), True, color_white)
+		text3 = smaller_font.render("MANA: " + str(player.mana), True, color_white)
+		text4 = smaller_font.render("FPS: " + str(int(FPS_CLOCK.get_fps())), True, color_white)
+
+		# draw the text onto the status bar
+		displaysurface.blit(text1, (585, 7))
+		displaysurface.blit(text2, (585, 22))
+		displaysurface.blit(text3, (585, 37))
+		displaysurface.blit(text4, (585, 52))
+  
 
 class StageDisplay(pygame.sprite.Sprite):
 	def __init__(self):
@@ -394,6 +412,7 @@ castle = Castle()
 handler = EventHandler()
 stage_display = StageDisplay()
 health = HealthBar()
+status_bar = StatusBar()
 
 # Sprite groups
 ground_group = pygame.sprite.Group()
@@ -457,8 +476,9 @@ while True:
 	if player.health > 0:
 		displaysurface.blit(player.image, player.rect)
 	health.render()
+	displaysurface.blit(status_bar.surf, (580, 5))
+	status_bar.update_draw()
 
-	# Update Sprites
 	player.update()
 	if player.attacking is True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
