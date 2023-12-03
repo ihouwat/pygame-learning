@@ -507,6 +507,8 @@ class EventHandler():
 		self.stage = 1
 		# Enemy generation
 		self.enemy_generation = pygame.USEREVENT + 2
+		self.enemy_generation2 = pygame.USEREVENT + 3 # to generate enemies in a different world
+		self.world = 0 # to keep track of which world we're in
 		self.stage_enemies = []
 		# a formula to calculate the number of enemies generated per level
 		for x in range(1, 21):
@@ -535,9 +537,16 @@ class EventHandler():
 		self.battle = True
 	
 	def world2(self):
-		self.battle = True
+		self.root.destroy()
+		background.bgimage = load_image('desert.jpg')
+		ground.image = load_image('desert_ground.png')
+
+		pygame.time.set_timer(self.enemy_generation2, 2500)
+	
+		self.world = 2
 		button.img_display = 1 # change the button to a play/pause button
-		# Empty for now
+		castle.hide = True
+		self.battle = True
 	
 	def world3(self):
 		self.battle = True
@@ -548,10 +557,15 @@ class EventHandler():
 	def next_stage(self):
 		button.img_display = 1 # change the button to a play/pause button
 		self.stage += 1
+
 		self.enemy_count = 0
 		self.dead_enemy_count = 0
 		print("Stage: " + str(self.stage))
-		pygame.time.set_timer(self.enemy_generation, 1500 - (50 * self.stage)) # increase the enemy generation speed per stage
+
+		if self.world == 1:
+			pygame.time.set_timer(self.enemy_generation, 1500 - (50 * self.stage)) # increase the enemy generation speed per stage
+		if self.world == 2:	
+			pygame.time.set_timer(self.enemy_generation2, 1500 - (50 * self.stage)) # increase the enemy generation speed per stage
 
 	def update(self):
 		# Check if all enemies have been defeated in order to clear the stage
@@ -563,10 +577,13 @@ class EventHandler():
 	def home(self):
 		# reset battle code
 		pygame.time.set_timer(handler.enemy_generation, 0)
+		pygame.time.set_timer(handler.enemy_generation2, 0)
+
 		self.battle = False
 		self.enemy_count = 0
 		self.dead_enemy_count = 0
-		self.stage = 1
+		self.stage = 0
+		self.world = 0
 	
 		# destroy any enemies or items lying around
 		for group in enemies, items:
@@ -661,6 +678,11 @@ while True:
 				enemy = Enemy()
 				enemies.add(enemy)
 				handler.enemy_count += 1
+		
+		if event.type == handler.enemy_generation2:
+			# Keep adding enemies until you reach the max number of enemies per stage
+			if handler.enemy_count < handler.stage_enemies[handler.stage - 1]:
+				pass
 	
 	# Render background and display
 	background.render()
