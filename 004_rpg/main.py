@@ -470,6 +470,7 @@ class RangedEnemy(pygame.sprite.Sprite):
 		self.mana_to_release = random.randint(2, 3) # randomized mana obtained from enemy after defeating it
 		self.wait = 0
 		self.wait_status = False
+		self.turning = False # when the enemy should turn around
 
 		if self.direction == 0:
 			self.image = load_image('enemy2_R.png')
@@ -489,6 +490,11 @@ class RangedEnemy(pygame.sprite.Sprite):
 	def move(self):
 		if cursor.wait == 1: # do nothing if we are in pause mode
 			return
+		# If the enemy is turning, call the turn method
+		if self.turning is True:
+			self.turn()
+			return
+
 		# Change directions right before reaching the edge of the screen
 		if self.pos.x > (WIDTH - 20):
 			self.direction = 1
@@ -496,19 +502,26 @@ class RangedEnemy(pygame.sprite.Sprite):
 			self.direction = 0
 
 		# The ranged enemy moves a bit, pauses, attacks, and then moves again
-		if self.wait > 50:
+		if int(self.wait) > 60:
 			self.wait_status = True
 		elif int(self.wait) <= 0:
 			self.wait_status = False
 
+		# Check if we need to turn around
+		if(self.direction_check()):
+			self.turn()
+			self.wait = 90 # ensures the enemy waits a bit before turning, otherwise it looks weird to turn immediately
+			self.turning = True
+
+		# Enemy is in waiting state
 		if self.wait_status is True:
 			self.wait -= 1
 
-		# Move the enemy in the direction it is facing by subtracting or adding velocity to the position x value
-		if self.direction == 0:
+		# If the enemy is not in waiting status, move the enemy in the direction it is facing by subtracting or adding velocity to the position x value
+		elif self.direction == 0:
 			self.pos.x += self.vel.x
 			self.wait += self.vel.x
-		if self.direction == 1:
+		elif self.direction == 1:
 			self.pos.x -= self.vel.x
 			self.wait -= self.vel.x
 
@@ -548,6 +561,31 @@ class RangedEnemy(pygame.sprite.Sprite):
 			self.kill()
 			print("Enemy killed")
 			handler.dead_enemy_count += 1
+
+	def direction_check(self):
+		# player is behind the enemy and enemy pointing forwards
+		if (player.pos.x - self.pos.x < 0 and self.direction == 0):
+			return 1
+		# player is in front of the enemy and enemy pointing backwards
+		if (player.pos.x - self.pos.x > 0 and self.direction == 1):
+			return 1
+		else:
+			return 0
+
+	def turn(self):
+		print(self.wait)
+		if self.wait > 0:
+			self.wait -= 1
+			return
+		elif int(self.wait) <= 0:
+			self.turning = False
+
+		if self.direction:
+			self.direction = 0
+			self.image = load_image('enemy2_R.png')
+		else:
+			self.direction = 1
+			self.image = load_image('enemy2_L.png')
 
 	def render(self):
 		# Display an enemy on the screen
@@ -676,7 +714,7 @@ class EventHandler():
 		self.battle = False
 		self.enemy_count = 0
 		self.dead_enemy_count = 0
-		self.stage = 0
+		self.stage = 1
 		self.world = 0
 	
 		# destroy any enemies or items lying around
