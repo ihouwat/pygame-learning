@@ -3,9 +3,13 @@ from pygame.locals import *
 import sys
 import random
 from tkinter import * # Tkinter is a GUI library that comes with Python
-from tkinter import filedialog
 import os
 import pathlib
+
+# util method to load images
+def load_image(fileName) -> pygame.Surface:
+	file_path = os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'images', fileName)
+	return pygame.image.load(file_path)
 
 pygame.init() # Begin pygame
 
@@ -19,13 +23,21 @@ FPS = 60
 FPS_CLOCK = pygame.time.Clock()
 COUNT = 0
 
-displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("RPG") # Window title
+# Custom events
+hit_cooldown = pygame.USEREVENT + 1 # create a unique event we will use to implement an 'invulnerability' period after being hit by an enemy, so the player doesn't lose all their health in one frame
 
-# util method to load images
-def load_image(fileName) -> pygame.Surface:
-	file_path = os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'images', fileName)
-	return pygame.image.load(file_path)
+# colors
+color_light = (170,170,170)
+color_dark = (100,100,100)
+color_white = (255,255,255) 
+
+# fonts
+heading_font = pygame.font.SysFont("Verdana", 40)
+regular_font = pygame.font.SysFont('Corbel',25)
+smaller_font = pygame.font.SysFont('Corbel',16) 
+load_text = regular_font.render('LOAD' , True , color_light)
+
+# Animation frames
 
 # Run animation for the RIGHT
 run_ani_R = [load_image(x) for x in ["Player_Sprite_R.png", "Player_Sprite2_R.png",
@@ -60,8 +72,9 @@ health_ani = [load_image(x) for x in ["heart0.png","heart.png",
 							"heart2.png", "heart3.png",
 							"heart4.png", "heart5.png"]]
 
-# Custom events
-hit_cooldown = pygame.USEREVENT + 1 # create a unique event we will use to implement an 'invulnerability' period after being hit by an enemy, so the player doesn't lose all their health in one frame
+# Setup
+displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("RPG") # Window title
 
 # Classes
 class Background(pygame.sprite.Sprite):
@@ -99,7 +112,7 @@ class StageDisplay(pygame.sprite.Sprite):
 		self.rect = self.text.get_rect()
 		self.posx = -100 # initialize off screen
 		self.posy = 100
-		self.diplay = False
+		self.display = False
 
 	def move_display(self):
 		# Create the text to be displayed
@@ -403,7 +416,7 @@ while True:
 				if handler.battle is True and len(enemies) == 0:
 					handler.next_stage()
 					stage_display = StageDisplay()
-					stage_display.diplay = True
+					stage_display.display = True
 
 			if event.key == pygame.K_SPACE:
 				player.jump()
