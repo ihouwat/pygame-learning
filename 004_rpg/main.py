@@ -121,7 +121,6 @@ class StatusBar(pygame.sprite.Sprite):
 		displaysurface.blit(text2, (585, 22))
 		displaysurface.blit(text3, (585, 37))
 		displaysurface.blit(text4, (585, 52))
-	
 
 class StageDisplay(pygame.sprite.Sprite):
 	def __init__(self):
@@ -365,6 +364,24 @@ class Castle(pygame.sprite.Sprite):
 		def update(self):
 			if self.hide is False:
 				displaysurface.blit(self.image, (400, 80))
+
+class Item(pygame.sprite.Sprite):
+  def __init__(self, item_type):
+    super().__init__()
+		# not fan of this design (one class for all items), but it's a start
+    if item_type == 1:
+      self.image = load_image('heart.png')
+    elif item_type == 2:
+      self.image = load_image('coin.png')
+    self.rect = self.image.get_rect()
+    self.type = item_type # to keep track for future use
+    self.posx = 0
+    self.posy = 0
+    
+  def render(self):
+    self.rect.x = self.posx
+    self.rect.y = self.posy
+    displaysurface.blit(self.image, self.rect)
 
 class EventHandler():
 	def __init__(self):
