@@ -381,6 +381,39 @@ class FireBall(pygame.sprite.Sprite):
 			player.magic_cooldown = False
 			player.attacking = False
 
+class Bolt(pygame.sprite.Sprite):
+	def __init__(self, x, y, direction):
+		super().__init__()
+		self.image = load_image('bolt.png')
+		self.rect = self.image.get_rect()
+		self.rect.x = x + 15
+		self.rect.y = y + 20
+		self.direction = direction
+	
+	def fire(self):
+		# Runs while the bolt is still within the screen
+		if -10 < self.rect.x < 710:
+			if self.direction == 0:
+				self.image = load_image('bolt.png')
+				displaysurface.blit(self.image, self.rect)
+			else:
+				self.image = load_image('bolt.png')
+				displaysurface.blit(self.image, self.rect)
+		
+			if self.direction == 0:
+				self.rect.move_ip(12, 0)
+			else:
+				self.rect.move_ip(-12, 0)
+		
+		else:
+			self.kill()
+
+		# Check for collision with player
+		hits = pygame.sprite.spritecollide(self, player_group, False)
+		if hits:
+			player.player_hit()
+			self.kill()
+	
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -513,8 +546,12 @@ class RangedEnemy(pygame.sprite.Sprite):
 			self.wait = 90 # ensures the enemy waits a bit before turning, otherwise it looks weird to turn immediately
 			self.turning = True
 
-		# Enemy is in waiting state
+		# Enemy is in waiting state and can fire a bolt
 		if self.wait_status is True:
+			rand_num = np.random.uniform(0, 60)
+			if int(rand_num) == 30:
+				bolt = Bolt(self.pos.x, self.pos.y, self.direction)
+				bolts.add(bolt)
 			self.wait -= 1
 
 		# If the enemy is not in waiting status, move the enemy in the direction it is facing by subtracting or adding velocity to the position x value
@@ -527,7 +564,7 @@ class RangedEnemy(pygame.sprite.Sprite):
 
 		# Update rect pos
 		self.rect.topleft = self.pos
-  
+	
 	def update(self):
 		# Check for collision with the Player
 		hits = pygame.sprite.spritecollide(self, player_group, False)
@@ -573,7 +610,6 @@ class RangedEnemy(pygame.sprite.Sprite):
 			return 0
 
 	def turn(self):
-		print(self.wait)
 		if self.wait > 0:
 			self.wait -= 1
 			return
@@ -736,6 +772,7 @@ player_group.add(player)
 enemies = pygame.sprite.Group()
 items = pygame.sprite.Group()
 fireballs = pygame.sprite.Group()
+bolts = pygame.sprite.Group()
 castle = Castle()
 handler = EventHandler()
 stage_display = StageDisplay()
@@ -842,7 +879,9 @@ while True:
 		player.attack() # ensure the attack animation plays until the frames have been executed
 	player.move()
 	for ball in fireballs:
-			ball.fire()      
+			ball.fire()
+	for bolt in bolts:
+		bolt.fire()     
 	for entity in enemies:
 		entity.update()
 		entity.move()
