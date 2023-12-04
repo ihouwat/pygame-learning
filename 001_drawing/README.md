@@ -15,5 +15,7 @@ source: http://pygametutorials.wikidot.com/tutorials-two
 
 * `Blitting`: process of drawing one image onto another. [See the docs for `pygame.Surface.blit()`](https://www.pygame.org/docs/ref/surface.html#pygame.Surface.blit)
 
+* use `convert()` when drawing `Surface` objects. When drawing surfaces to the screen, they are converted to the same pixel format as your final display. This conversion takes place every time we draw a surface, which takes time. To resolve this issue, when loading images in Pygame, we can convert them using this funcition. This removes the need to convert the image every time we draw it.
+
 ## Additional Reading
 * [Pygame surface creation](https://coderslegacy.com/python/pygame-surface/)
