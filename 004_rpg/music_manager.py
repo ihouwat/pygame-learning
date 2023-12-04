@@ -12,7 +12,6 @@ class MusicManager:
 		pygame.mixer.music.play(num)
 
 	def playsound(self, sound, vol):
-		print(sound)
 		sound.set_volume(vol)
 		sound.play()
 

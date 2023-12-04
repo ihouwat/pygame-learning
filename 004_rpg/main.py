@@ -797,6 +797,7 @@ class EventHandler():
 		castle.hide = False
 		background.bgimage = load_image('Background.png')
 		ground.image = load_image('Ground.png')
+		music_manager.playsoundtrack(soundtrack[0], -1, 0.05) # reset soundtrack
 	
 # Instantiate classes
 background = Background()
