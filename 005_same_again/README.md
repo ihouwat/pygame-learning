@@ -3,7 +3,7 @@
 ## Introduction
 **Same Again!** is a matching and language skills game for my kiddo. When she loves something, she'll keep asking for it, 'same again! same again!' :)
 
-The goal us to teach kiddo to match an item against four options. The item to be matched is an image. As the game becomes more difficult, the item is a spoken word that represents the correct image. The language is selected when we first start the game, and is one of English, Arabic, Portuguese, or French.
+The goal is to teach kiddo to match an item against four options. The item to be matched is an image. As the game becomes more difficult, the item is a spoken word that represents the correct image. The language is selected when we first start the game, and is one of English, Arabic, Portuguese, or French.
 
 ## Levels
 Progress to the next level by getting 5 answers correct.
