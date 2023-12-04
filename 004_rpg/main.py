@@ -6,12 +6,25 @@ from tkinter import * # Tkinter is a GUI library that comes with Python
 import os
 import pathlib
 import numpy as np
+from music_manager import MusicManager
+
+def get_file(*path_args) -> str:
+	file_path = os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), *path_args)
+	return file_path
 
 # util method to load images
-def load_image(fileName) -> pygame.Surface:
-	file_path = os.path.join(os.path.dirname(pathlib.Path(__file__).absolute()), 'images', fileName)
+def load_image(file_name) -> pygame.Surface:
+	file_path = get_file('images', file_name)
 	return pygame.image.load(file_path)
 
+def load_sound_file(file_name) -> str:
+	return get_file('sounds', file_name)
+
+def load_sound(file_name):
+	file_path = load_sound_file(file_name)
+	return pygame.mixer.Sound(file_path)
+
+pygame.mixer.pre_init(44100, 16, 1, 512) 
 pygame.init() # Begin pygame
 
 # Declare variables
@@ -26,6 +39,12 @@ COUNT = 0
 
 # Custom events
 hit_cooldown = pygame.USEREVENT + 1 # create a unique event we will use to implement an 'invulnerability' period after being hit by an enemy, so the player doesn't lose all their health in one frame
+
+# music and sound
+soundtrack = [load_sound_file(x) for x in ["background_village.wav", "battle_music.wav", "gameover.wav"]]
+swordtrack = [load_sound("sword1.wav"), load_sound("sword2.wav")]
+fsound = pygame.mixer.Sound(load_sound("fireball_sound.wav"))
+hit = pygame.mixer.Sound(load_sound("enemy_hit.wav"))
 
 # colors
 color_light = (170,170,170)
@@ -201,6 +220,7 @@ class Player(pygame.sprite.Sprite):
 		self.image = load_image('Player_Sprite_R.png')
 		self.rect = self.image.get_rect()
 		self.health = 5
+		self.slash = 0
 	
 		# Position and direction
 		self.vx = 0
@@ -291,6 +311,14 @@ class Player(pygame.sprite.Sprite):
 			self.attack_frame = 0
 			self.attacking = False
 
+		# control slashing sounds
+  
+		if self.attack_frame == 0:
+			music_manager.playsound(swordtrack[self.slash], 0.05)
+			self.slash += 1
+			if self.slash > 1:
+				self.slash = 0
+
 		# Check direction for correct animation to display
 		if self.direction == "RIGHT":
 			self.image = attack_ani_R[self.attack_frame]
@@ -341,11 +369,14 @@ class Player(pygame.sprite.Sprite):
 			
 			self.health = self.health - 1
 			health.image = health_ani[self.health]
+			music_manager.playsound(hit, 0.15)
 			print("Player was hit")
 
 			if self.health == 0:
 				print("Player died")
 				self.kill()
+				music_manager.stop()
+				music_manager.playsoundtrack(soundtrack[2], -1, 0.1) # game over music
 				pygame.display.update()
 
 # Fireballs a player can shoot by using mana
@@ -483,6 +514,7 @@ class Enemy(pygame.sprite.Sprite):
 			self.kill()
 			print("Enemy killed")
 			handler.dead_enemy_count += 1
+			music_manager.playsound(hit, 0.15)
 
 		# If collision has ocurred and player not attacking, the player has been hit
 		elif hits and player.attacking is False:
@@ -703,6 +735,7 @@ class EventHandler():
 		pygame.time.set_timer(self.enemy_generation, 2000)
 		castle.hide = True
 		self.battle = True
+		music_manager.playsoundtrack(soundtrack[1], -1, 0.05)
 	
 	def world2(self):
 		self.root.destroy()
@@ -715,11 +748,13 @@ class EventHandler():
 		button.img_display = 1 # change the button to a play/pause button
 		castle.hide = True
 		self.battle = True
-	
+		music_manager.playsoundtrack(soundtrack[1], -1, 0.05)
+
 	def world3(self):
 		self.battle = True
 		button.img_display = 1 # change the button to a play/pause button
-		# Empty for now
+		music_manager.playsoundtrack(soundtrack[1], -1, 0.05)
+  	# Empty for now
 
 	# Code for when the next stage (ie: level) is clicked
 	def next_stage(self):
@@ -785,6 +820,10 @@ button = PButton()
 ground_group = pygame.sprite.Group()
 ground_group.add(ground)
 
+# loading the soundtrack
+music_manager = MusicManager()
+music_manager.playsoundtrack(soundtrack[0], -1, 0.1)
+
 # Game loop
 while True:
 	player.gravity_check() # first check if the player is on the ground
@@ -828,6 +867,7 @@ while True:
 					player.attacking = True
 					fireball = FireBall()
 					fireballs.add(fireball)
+					music_manager.playsound(fsound, 0.3)
 
 			if event.key == pygame.K_SPACE:
 				player.jump()
@@ -851,7 +891,10 @@ while True:
 		if event.type == handler.enemy_generation2:
 			# Keep adding enemies until you reach the max number of enemies per stage
 			if handler.enemy_count < handler.stage_enemies[handler.stage - 1]:
-				enemy = RangedEnemy()
+				if handler.enemy_count % 2: # alternate between
+					enemy = RangedEnemy()
+				else:
+					enemy = Enemy()
 				enemies.add(enemy)
 				handler.enemy_count += 1
 	
