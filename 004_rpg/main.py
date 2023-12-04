@@ -15,7 +15,7 @@ def get_file(*path_args) -> str:
 # util method to load images
 def load_image(file_name) -> pygame.Surface:
 	file_path = get_file('images', file_name)
-	return pygame.image.load(file_path)
+	return pygame.image.load(file_path).convert_alpha()
 
 def load_sound_file(file_name) -> str:
 	return get_file('sounds', file_name)
@@ -36,6 +36,10 @@ FRIC = -0.10 # Friction
 FPS = 60
 FPS_CLOCK = pygame.time.Clock()
 COUNT = 0
+
+# Setup display surface
+displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("RPG") # Window title
 
 # Custom events
 hit_cooldown = pygame.USEREVENT + 1 # create a unique event we will use to implement an 'invulnerability' period after being hit by an enemy, so the player doesn't lose all their health in one frame
@@ -91,10 +95,6 @@ attack_ani_L = [load_image(x) for x in ["Player_Sprite_L.png", "Player_Attack_L.
 health_ani = [load_image(x) for x in ["heart0.png","heart.png",
 							"heart2.png", "heart3.png",
 							"heart4.png", "heart5.png"]]
-
-# Setup
-displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("RPG") # Window title
 
 # Classes
 class Background(pygame.sprite.Sprite):
@@ -825,7 +825,7 @@ music_manager = MusicManager()
 music_manager.playsoundtrack(soundtrack[0], -1, 0.1)
 
 # Game loop
-while True:
+while 1:
 	player.gravity_check() # first check if the player is on the ground
 	mouse = pygame.mouse.get_pos() # get the mouse position
 
