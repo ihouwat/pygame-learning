@@ -5,5 +5,5 @@ import pygame
 class Item(pygame.sprite.Sprite):
   image: pygame.Surface
   sound: pygame.mixer.Sound
+  word: str
   text_identifier: str
-  description: str
