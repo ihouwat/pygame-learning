@@ -1,0 +1,46 @@
+from models.item import Item
+
+game_items: list[Item] = [Item(**x) for x in [
+	{"text_identifier": "banana", "image": "img", "sound": "mp3", "description": "A banana"},
+	{"text_identifier": "apple", "image": "img", "sound": "mp3", "description": "An apple"},
+	{"text_identifier": "orange", "image": "img", "sound": "mp3", "description": "An orange"},
+	{"text_identifier": "pear", "image": "img", "sound": "mp3", "description": "A pear"},
+	{"text_identifier": "grapes", "image": "img", "sound": "mp3", "description": "Grapes"},
+	{"text_identifier": "strawberry", "image": "img", "sound": "mp3", "description": "A strawberry"},
+	{"text_identifier": "pineapple", "image": "img", "sound": "mp3", "description": "A pineapple"},
+	{"text_identifier": "watermelon", "image": "img", "sound": "mp3", "description": "A watermelon"},
+
+	{"text_identifier": "carrot", "image": "img", "sound": "mp3", "description": "A carrot"},
+	{"text_identifier": "potato", "image": "img", "sound": "mp3", "description": "A potato"},
+	{"text_identifier": "onion", "image": "img", "sound": "mp3", "description": "An onion"},
+	{"text_identifier": "tomato", "image": "img", "sound": "mp3", "description": "A tomato"},
+	{"text_identifier": "cucumber", "image": "img", "sound": "mp3", "description": "A cucumber"},
+	{"text_identifier": "pepper", "image": "img", "sound": "mp3", "description": "A pepper"},
+	{"text_identifier": "broccoli", "image": "img", "sound": "mp3", "description": "Broccoli"},
+	{"text_identifier": "lettuce", "image": "img", "sound": "mp3", "description": "Lettuce"},
+	{"text_identifier": "mushroom", "image": "img", "sound": "mp3", "description": "A mushroom"},
+	{"text_identifier": "corn", "image": "img", "sound": "mp3", "description": "Corn"},
+
+
+	{"text_identifier": "chair", "image": "img", "sound": "mp3", "description": "A chair"},
+	{"text_identifier": "table", "image": "img", "sound": "mp3", "description": "A table"},
+	{"text_identifier": "couch", "image": "img", "sound": "mp3", "description": "A couch"},
+	{"text_identifier": "bed", "image": "img", "sound": "mp3", "description": "A bed"},
+	{"text_identifier": "lamp", "image": "img", "sound": "mp3", "description": "A lamp"},
+	{"text_identifier": "television", "image": "img", "sound": "mp3", "description": "A television"},
+	{"text_identifier": "computer", "image": "img", "sound": "mp3", "description": "A computer"},
+	{"text_identifier": "refrigerator", "image": "img", "sound": "mp3", "description": "A refrigerator"},
+	{"text_identifier": "microwave", "image": "img", "sound": "mp3", "description": "A microwave"},
+	{"text_identifier": "toaster", "image": "img", "sound": "mp3", "description": "A toaster"},
+
+	{"text_identifier": "dog", "image": "img", "sound": "mp3", "description": "A dog"},
+	{"text_identifier": "cat", "image": "img", "sound": "mp3", "description": "A cat"},
+	{"text_identifier": "bird", "image": "img", "sound": "mp3", "description": "A bird"},
+	{"text_identifier": "fish", "image": "img", "sound": "mp3", "description": "A fish"},
+	{"text_identifier": "rabbit", "image": "img", "sound": "mp3", "description": "A rabbit"},
+	{"text_identifier": "hamster", "image": "img", "sound": "mp3", "description": "A hamster"},
+	{"text_identifier": "horse", "image": "img", "sound": "mp3", "description": "A horse"},
+	{"text_identifier": "turtle", "image": "img", "sound": "mp3", "description": "A turtle"},
+	{"text_identifier": "snake", "image": "img", "sound": "mp3", "description": "A snake"},
+	{"text_identifier": "frog", "image": "img", "sound": "mp3", "description": "A frog"},
+]]

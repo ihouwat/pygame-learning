@@ -29,7 +29,7 @@ The game is controlled by the mouse or keyboard.
 <!-- 
 Ideas:
 - do we need the timer/rotate options level?? seems to much for a toddler
-- baseitem class - has properties: image, sound, text, and equality implementation to compare against other items
+- with the item dataclass, do we pass the image and sound as a path or as a resource???
 - need dictionary to load images and sounds during the game (don't load images in classes!) - toggle language thru some enum
 
 ## Game States
