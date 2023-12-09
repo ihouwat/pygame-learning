@@ -26,13 +26,6 @@ The game starts with a menu screen. The menu screen has the following options:
 The game is controlled by the mouse or keyboard. 
 *The mouse is used to select the correct answer. The keyboard can also be used to select the correct answer (1, 2, 3, 4), to exit the game (Ctrl + q), or to open the menu (Esc).*
 
-<!-- 
-Ideas:
-- SCRATCH THAT IDEA -do we need the timer/rotate options level?? seems to much for a toddler
-- DONE need an Item class with these properties: image, sound, word, text_identifier
-- DONE need dictionary to load images and sounds during the game (don't load images in classes!) - toggle language thru some enum
-- with the item dataclass, do we pass the image and sound as a path or as a resource???
-
 ## Game States
 The game has the following states:
 * Menu: the menu screen
