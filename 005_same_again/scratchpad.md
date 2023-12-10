@@ -11,14 +11,17 @@ Progress:
 - DONE add one item to the game to test dataclass approach
 - DONE try one round of the game with only 4 items
 - DONE try one round of the game with 4 randomly picked items
-- add one more level to the game to see what we need to manage multiple levels
+- DONE add one more level to the game to see what we need to manage multiple levels
+
+- refactor the classes and cleanup code
+	- maybe have a dataclass for the pure data that you can inject into another class for the sprite representation?
+	- need class for rendering
+	- need class for puzzles, etc.
 
 - download more pngs and add attributions
-- extract the classes
-	- maybe have a dataclass for the pure data that you can inject into another class for the sprite representation?
-- create all levels (colored shapes, items, grayscale items, voice only target item)
-add the menu
-add languages
+- create more levels (colored shapes, items, grayscale items, voice only target item)
+- add the menu
+- add languages
 
 Game states
 * Menu: the menu screen
