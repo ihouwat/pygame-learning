@@ -11,10 +11,12 @@ Progress:
 - DONE add one item to the game to test dataclass approach
 - DONE try one round of the game with only 4 items
 - DONE try one round of the game with 4 randomly picked items
-	- once done need to download more pngs and add attributions
-extract the classes
-	- maybe have a dataclass for the pure data as opposed to the sprite representations?
-add one more round
+- add one more level to the game to see what we need to manage multiple levels
+
+- download more pngs and add attributions
+- extract the classes
+	- maybe have a dataclass for the pure data that you can inject into another class for the sprite representation?
+- create all levels (colored shapes, items, grayscale items, voice only target item)
 add the menu
 add languages
 
