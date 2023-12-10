@@ -20,3 +20,12 @@ class Item(pygame.sprite.Sprite):
   def update_rect(self, x: int, y: int):
     self.rect.x = x
     self.rect.y = y
+
+
+# data class for the pure item to create
+# @dataclass(kw_only=True, eq=True)
+# class Itemx():
+#   image_path: str
+#   # sound_path: pygame.mixer.Sound
+#   word: str
+#   text_identifier: str
