@@ -1,7 +1,6 @@
 
 import os
 import pathlib
-import sys
 
 import pygame
 
@@ -29,11 +28,3 @@ def load_pygame_image(*path_args) -> pygame.Surface:
   """
   file_path = get_file(*path_args)
   return pygame.image.load(file_path).convert_alpha()
-
-# PERHAPS MOVE TO SOME MANAGER CLASS
-def quit_game():
-  """
-  Quits game and exits program.
-  """
-  pygame.quit()
-  sys.exit()
