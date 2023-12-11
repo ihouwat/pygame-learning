@@ -18,9 +18,9 @@ SCREEN_HEIGHT = 800
 
 # PERHAPS MOVE TO SOME LEVEL MANAGER CLASS AND WE MIGHT NOT NEED THE GLOBALS AND AS MUCH LOGIC
 # - Some class or method to generate puzzles (items and target item). Keep in mind that the puzzle might be different by level
-# - Some class to manage renders (render sprites, update them, destroy them)
 # - Some class to manage user input
-# - Some class to manage levels and score
+# - DONE - Renderer ClassSome class to manage renders (render sprites, update them, destroy them)
+# - DONE - Game class: Some class to manage levels and score
 
 class SpriteHandler:
 
@@ -57,10 +57,17 @@ class Renderer:
     self.display_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Same Again")
 
-  def position_items_group(self, items: Group) -> None:  
-    x = 96
+  def update_screen(self, items: Group, matched_item: Sprite) -> None:
+    self.arrange_items(items)
+    self.render_screen(items, matched_item)
+
+  def arrange_items(self, items: Group) -> None:  
+    total_items_width = sum(item.rect.width for item in items)
+    # subtract total items width from screen width and divide by number of items + 1 to distribute spacing evenly between items
+    spacing = (SCREEN_WIDTH - total_items_width) / (len(items) + 1)
+    x = spacing
     y = SCREEN_HEIGHT - 300
-    spacing = 60
+
     for item in items:
       item.update_rect(x, y)
       x += item.rect.width + spacing
@@ -80,7 +87,7 @@ class Level(ABC):
   def __str__(self) -> str:
     return f'Level Manager for level {self.level}'
   
-  def generate_puzzle(self, items_group: Group) -> None:
+  def generate_puzzle(self) -> None:
     ...
 
 class ItemLevel(Level):
@@ -88,10 +95,9 @@ class ItemLevel(Level):
     super().__init__(level, max_score)
     self.description = 'Match a colored image to another image in a list of images'
   
-  # REFACTOR: THIS FUNCTION IS REDUNDANT, AND IT IS BOTH RESETTING AND GENERATING SPRITES.
-  def generate_puzzle(self, items_group: Group) -> None:
+  # REFACTOR: THIS FUNCTION IS REDUNDANT
+  def generate_puzzle(self) -> None:
     print('generating puzzle for level 1')
-    SpriteHandler.reset_sprite_group(items_group)
     new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     return item_to_match, new_group
@@ -101,9 +107,8 @@ class GrayscaleItemLevel(Level):
     super().__init__(level, max_score)
     self.description = 'Match a grayscale image to another image in a list of grayscale images'
   
-  def generate_puzzle(self, items_group: Group) -> None:
+  def generate_puzzle(self) -> None:
     print('generating puzzle for level 2')
-    SpriteHandler.reset_sprite_group(items_group)
     new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     
@@ -131,11 +136,10 @@ class Game:
     self.items: Group = pygame.sprite.Group()
     self.matched_item: Item = None
     self.renderer: Renderer = renderer
-
-  def start(self) -> None:
+  
     self.create_puzzle()
 
-  # ADD TO EVENT HANDLING CLASS????
+  # ADD TO EVENT HANDLING CLASS OR RENDERER CLASS????
   def check_match(self, items: Group, matched_item: Sprite, coordinates) -> bool:
     selected_item = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
     print('selected item: ', selected_item )
@@ -146,17 +150,15 @@ class Game:
     return False
 
   def process_point_gain(self) -> None:
-    """ Increments points, resets screen, and levels up if necessary """
+    """ Increments points and levels up if the max score is reached. """
 
     self.score = self.increment_score(self.score)
     print('updated score: ', self.score)
 
-    # REDUNDANT CODE WITH RESETTING AND GENERATING PUZZLES.
     if self.score < self.current_level.max_score:
       self.create_puzzle()
     else:
       self.level_up()
-      self.create_puzzle()
 
   def increment_score(self, score: int) -> int:
     return score + 1
@@ -166,11 +168,12 @@ class Game:
     self.level_number += 1
     self.score = 0
     self.current_level = self.levels[self.level_number - 1]
+    self.create_puzzle()
   
   def create_puzzle(self) -> None:
-    self.matched_item, self.items = self.current_level.generate_puzzle(self.items)
-    self.renderer.position_items_group(self.items)
-    self.renderer.render_screen(self.items, self.matched_item)
+    SpriteHandler.reset_sprite_group(self.items)
+    self.matched_item, self.items = self.current_level.generate_puzzle()
+    self.renderer.update_screen(self.items, self.matched_item)
   
   def quit():
     """
@@ -186,7 +189,6 @@ levels = [
         ]
 renderer = Renderer()
 game = Game(renderer=renderer, levels=levels)
-game.start()
 
 while 1:
   for event in pygame.event.get():
