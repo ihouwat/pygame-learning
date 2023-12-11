@@ -15,8 +15,10 @@ Progress:
 
 - refactor the classes and cleanup code
 	- maybe have a dataclass for the pure data that you can inject into another class for the sprite representation?
-	- need class for rendering
+	- DONE need class for rendering
 	- need class for puzzles, etc.
+	- need to decouple rendering from the game logic??
+	- perhaps need a class for user event handling...
 
 - download more pngs and add attributions
 - create more levels (colored shapes, items, grayscale items, voice only target item)
