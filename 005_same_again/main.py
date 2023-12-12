@@ -21,6 +21,7 @@ SCREEN_HEIGHT = 800
 # - Some class to manage user input
 # - DONE - Renderer ClassSome class to manage renders (render sprites, update them, destroy them)
 # - DONE - Game class: Some class to manage levels and score
+# - Change Level to Puzzle and then a Level takes in a puzzle, max score, and level number
 
 class SpriteHandler:
 
@@ -78,7 +79,8 @@ class Renderer:
     for sprite in items:
       self.display_surface.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
 
-class Level(ABC):
+# SHOULD BECOME A PUZZLE CLASS AND NOT HAVE TO WORRY ABOUT LEVELS OR SCORE
+class Puzzle(ABC):
   def __init__(self, level: int, max_score: int):
     self.level: int = level
     self.max_score: int = max_score
@@ -90,7 +92,7 @@ class Level(ABC):
   def generate_puzzle(self) -> None:
     ...
 
-class ItemLevel(Level):
+class ItemPuzzle(Puzzle):
   def __init__(self, level: int, max_score: int):
     super().__init__(level, max_score)
     self.description = 'Match a colored image to another image in a list of images'
@@ -102,7 +104,7 @@ class ItemLevel(Level):
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     return item_to_match, new_group
     
-class GrayscaleItemLevel(Level):
+class GrayscaleItemPuzzle(Puzzle):
   def __init__(self, level: int, max_score: int):
     super().__init__(level, max_score)
     self.description = 'Match a grayscale image to another image in a list of grayscale images'
@@ -121,18 +123,18 @@ class GrayscaleItemLevel(Level):
     for sprite in group:
       sprite.image = pygame.transform.grayscale(sprite.image)
 
-class SpokenWordLevel(Level):
+class SpokenWordPuzzle(Puzzle):
   pass
 
-class ShapesLevel(Level):
+class ShapesPuzzle(Puzzle):
   pass
 
 class Game:
-  def __init__(self, renderer: Renderer, levels: list[Level]):
+  def __init__(self, renderer: Renderer, levels: list[Puzzle]):
     self.score: int = 0
     self.level_number: int = 1
-    self.levels: list[Level] = levels
-    self.current_level: Level = self.levels[self.level_number - 1]
+    self.levels: list[Puzzle] = levels
+    self.current_level: Puzzle = self.levels[self.level_number - 1]
     self.items: Group = pygame.sprite.Group()
     self.matched_item: Item = None
     self.renderer: Renderer = renderer
@@ -183,9 +185,10 @@ class Game:
     sys.exit()
 
 # MOVE TO SOME SETUP FUNCTION
+# TURN INTO A CONFIGURATION TUPLE OR LEVEL willCLASS (PUZZLE, MAX_SCORE, LEVEL_NUMBER)
 levels = [ 
-          ItemLevel(level=1, max_score=5),
-          GrayscaleItemLevel(level=2, max_score=5)
+          ItemPuzzle(level=1, max_score=5),
+          GrayscaleItemPuzzle(level=2, max_score=5)
         ]
 renderer = Renderer()
 game = Game(renderer=renderer, levels=levels)
