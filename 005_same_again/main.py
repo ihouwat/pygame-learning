@@ -32,10 +32,15 @@ class Option(Enum):
 class SpriteHandler:
 
   @staticmethod
-  def create_items_group(list_of_items: list, max_number: int, option: Option = None) -> Group:
-    items = SpriteHandler.pick_items_from_list(list_of_items, max_number)
-    
+  def create_sprite_group(list_of_items: list, max_number: int, option: Option = None) -> Group:
+    items: list = SpriteHandler.pick_items_from_list(list_of_items, max_number)
+    group: Group = SpriteHandler.create_group(items, option)
+    return group
+
+  @staticmethod
+  def create_group(items: list, option: Option) -> Group:
     group = pygame.sprite.Group()
+
     for item in items:
       src_image = load_pygame_image('assets', 'images', item['image'])
 
@@ -43,14 +48,15 @@ class SpriteHandler:
         src_image=pygame.transform.grayscale(src_image)
 
       group.add(Item(
-        image=src_image,
-        text_identifier=item['text_identifier'],
-        word=item['word']
-      ))
+      image=src_image,
+      text_identifier=item['text_identifier'],
+      word=item['word']
+    ))
+
     return group
   
   @staticmethod
-  def pick_items_from_list(list_of_items: list, max_number: int):
+  def pick_items_from_list(list_of_items: list, max_number: int) -> list:
     used_indexes = set()
     items = []
 
@@ -68,7 +74,7 @@ class SpriteHandler:
     return random.choice(items.sprites())
   
   @staticmethod
-  def reset_sprite_group(group: Group):
+  def reset_sprite_group(group: Group) -> None:
     for sprite in group:
       sprite.kill()
 
@@ -118,7 +124,7 @@ class ItemPuzzle(Puzzle):
   # REFACTOR: THIS FUNCTION IS REDUNDANT
   def generate(self):
     print('generating item puzzle')
-    new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4)
+    new_group = SpriteHandler.create_sprite_group(list_of_items=game_items, max_number=4)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     return item_to_match, new_group
     
@@ -130,7 +136,7 @@ class GrayscaleItemPuzzle(Puzzle):
   
   def generate(self):
     print('generating grayscale item puzzle')
-    new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4, option=Option.GRAYSCALE)
+    new_group = SpriteHandler.create_sprite_group(list_of_items=game_items, max_number=4, option=Option.GRAYSCALE)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     return item_to_match, new_group
 
