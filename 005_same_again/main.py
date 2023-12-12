@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from enum import Enum
 import random
 from typing import Tuple
 
@@ -19,29 +20,45 @@ SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 
 # PERHAPS MOVE TO SOME LEVEL MANAGER CLASS AND WE MIGHT NOT NEED THE GLOBALS AND AS MUCH LOGIC
-# - Some class or method to generate puzzles (items and target item). Keep in mind that the puzzle might be different by level
+# - DPME Some class or method to generate puzzles (items and target item). Keep in mind that the puzzle might be different by level
 # - Some class to manage user input
 # - DONE - Renderer ClassSome class to manage renders (render sprites, update them, destroy them)
 # - DONE - Game class: Some class to manage levels and score
 # - DONE Change Level to Puzzle and then a Level takes in a puzzle, max score, and level number
 
+class Option(Enum):
+  GRAYSCALE = 'grayscale'
+
 class SpriteHandler:
 
   @staticmethod
-  def create_items_group(list_of_items: list, max_number: int) -> Group:
+  def create_items_group(list_of_items: list, max_number: int, option: Option = None) -> Group:
+    items = SpriteHandler.pick_items_from_list(list_of_items, max_number)
+    
+    group = pygame.sprite.Group()
+    for item in items:
+      src_image = load_pygame_image('assets', 'images', item['image'])
+
+      if option == Option.GRAYSCALE:
+        src_image=pygame.transform.grayscale(src_image)
+
+      group.add(Item(
+        image=src_image,
+        text_identifier=item['text_identifier'],
+        word=item['word']
+      ))
+    return group
+  
+  @staticmethod
+  def pick_items_from_list(list_of_items: list, max_number: int):
     used_indexes = set()
-    items = pygame.sprite.Group()
+    items = []
 
     while len(items) < max_number:
       item_index = random.randint(0, len(list_of_items) - 1)
       if item_index not in used_indexes:
         used_indexes.add(item_index)
-        sprite = Item(
-            image=load_pygame_image('assets', 'images', list_of_items[item_index]['image']),
-            text_identifier=list_of_items[item_index]['text_identifier'],
-            word=list_of_items[item_index]['word']
-          )
-        items.add(sprite)
+        items.append(list_of_items[item_index])
       else:
         continue
     return items
@@ -113,17 +130,9 @@ class GrayscaleItemPuzzle(Puzzle):
   
   def generate(self):
     print('generating grayscale item puzzle')
-    new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4)
+    new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4, option=Option.GRAYSCALE)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
-    
-    # NEED TO MAKE THIS INTO A CONFIGURATION AND RENDER THE IMAGES AS GRAY WHEN WE FIRST CREATE THE SPRITES
-    # OTHERWISE WE GET A KEYERROR WHEN WE TRY TO KILL THE SPRITES 
-    self.turn_items_to_gray(new_group)
     return item_to_match, new_group
-
-  def turn_items_to_gray(self, group: Group) -> None:
-    for sprite in group:
-      sprite.image = pygame.transform.grayscale(sprite.image)
 
 class SpokenWordPuzzle(Puzzle):
   pass
@@ -191,7 +200,6 @@ class Game:
     sys.exit()
 
 # MOVE TO SOME SETUP FUNCTION
-# TURN INTO A CONFIGURATION TUPLE OR LEVEL willCLASS (PUZZLE, MAX_SCORE, LEVEL_NUMBER)
 levels = [ 
           Level(puzzle=ItemPuzzle(), level_number=1, max_score=5),
           Level(puzzle=GrayscaleItemPuzzle(), level_number=2, max_score=5)
