@@ -1,5 +1,7 @@
-from abc import ABC
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 import random
+from typing import Tuple
 
 from funcs import load_pygame_image
 from models.item import Item
@@ -21,7 +23,7 @@ SCREEN_HEIGHT = 800
 # - Some class to manage user input
 # - DONE - Renderer ClassSome class to manage renders (render sprites, update them, destroy them)
 # - DONE - Game class: Some class to manage levels and score
-# - Change Level to Puzzle and then a Level takes in a puzzle, max score, and level number
+# - DONE Change Level to Puzzle and then a Level takes in a puzzle, max score, and level number
 
 class SpriteHandler:
 
@@ -79,38 +81,38 @@ class Renderer:
     for sprite in items:
       self.display_surface.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
 
-# SHOULD BECOME A PUZZLE CLASS AND NOT HAVE TO WORRY ABOUT LEVELS OR SCORE
+@dataclass
 class Puzzle(ABC):
-  def __init__(self, level: int, max_score: int):
-    self.level: int = level
-    self.max_score: int = max_score
-    self.description: str = None
-  
-  def __str__(self) -> str:
-    return f'Level Manager for level {self.level}'
-  
-  def generate_puzzle(self) -> None:
+
+  @property
+  @abstractmethod
+  def description(self) -> str:
+    pass
+
+  def generate(self) -> Tuple[Sprite, Group]:
     ...
 
 class ItemPuzzle(Puzzle):
-  def __init__(self, level: int, max_score: int):
-    super().__init__(level, max_score)
-    self.description = 'Match a colored image to another image in a list of images'
+  
+  @property
+  def description(self) -> str:
+    return'Match a colored image to another image in a list of images'
   
   # REFACTOR: THIS FUNCTION IS REDUNDANT
-  def generate_puzzle(self) -> None:
-    print('generating puzzle for level 1')
+  def generate(self):
+    print('generating item puzzle')
     new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     return item_to_match, new_group
     
 class GrayscaleItemPuzzle(Puzzle):
-  def __init__(self, level: int, max_score: int):
-    super().__init__(level, max_score)
-    self.description = 'Match a grayscale image to another image in a list of grayscale images'
   
-  def generate_puzzle(self) -> None:
-    print('generating puzzle for level 2')
+  @property
+  def description(self) -> str:
+    return 'Match a grayscale image to another image in a list of grayscale images'
+  
+  def generate(self):
+    print('generating grayscale item puzzle')
     new_group = SpriteHandler.create_items_group(list_of_items=game_items, max_number=4)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     
@@ -129,12 +131,22 @@ class SpokenWordPuzzle(Puzzle):
 class ShapesPuzzle(Puzzle):
   pass
 
+@dataclass
+class Level:
+  puzzle: int
+  max_score: int
+  level_number: int
+  score: int = 0
+  
+  def increment_score(self, points: int) -> int:
+    self.score = self.score + points
+    print(f'new score for {self.level_number}: {self.score}')
+    return self.score
+
 class Game:
   def __init__(self, renderer: Renderer, levels: list[Puzzle]):
-    self.score: int = 0
-    self.level_number: int = 1
     self.levels: list[Puzzle] = levels
-    self.current_level: Puzzle = self.levels[self.level_number - 1]
+    self.current_level: Level = self.levels[0]
     self.items: Group = pygame.sprite.Group()
     self.matched_item: Item = None
     self.renderer: Renderer = renderer
@@ -154,27 +166,21 @@ class Game:
   def process_point_gain(self) -> None:
     """ Increments points and levels up if the max score is reached. """
 
-    self.score = self.increment_score(self.score)
-    print('updated score: ', self.score)
+    new_score = self.current_level.increment_score(1)
 
-    if self.score < self.current_level.max_score:
+    if new_score < self.current_level.max_score:
       self.create_puzzle()
     else:
       self.level_up()
-
-  def increment_score(self, score: int) -> int:
-    return score + 1
   
   def level_up(self) -> None:
     print('level up')
-    self.level_number += 1
-    self.score = 0
-    self.current_level = self.levels[self.level_number - 1]
+    self.current_level = self.levels[self.current_level.level_number] # level_number is 1 based, so just pass it in to get the right level from the list
     self.create_puzzle()
   
   def create_puzzle(self) -> None:
     SpriteHandler.reset_sprite_group(self.items)
-    self.matched_item, self.items = self.current_level.generate_puzzle()
+    self.matched_item, self.items = self.current_level.puzzle.generate()
     self.renderer.update_screen(self.items, self.matched_item)
   
   def quit():
@@ -187,8 +193,8 @@ class Game:
 # MOVE TO SOME SETUP FUNCTION
 # TURN INTO A CONFIGURATION TUPLE OR LEVEL willCLASS (PUZZLE, MAX_SCORE, LEVEL_NUMBER)
 levels = [ 
-          ItemPuzzle(level=1, max_score=5),
-          GrayscaleItemPuzzle(level=2, max_score=5)
+          Level(puzzle=ItemPuzzle(), level_number=1, max_score=5),
+          Level(puzzle=GrayscaleItemPuzzle(), level_number=2, max_score=5)
         ]
 renderer = Renderer()
 game = Game(renderer=renderer, levels=levels)
