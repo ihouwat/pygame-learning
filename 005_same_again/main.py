@@ -104,7 +104,7 @@ class Renderer:
     for sprite in items:
       self.display_surface.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class Puzzle(ABC):
 
   @property
@@ -146,7 +146,7 @@ class SpokenWordPuzzle(Puzzle):
 class ShapesPuzzle(Puzzle):
   pass
 
-@dataclass
+@dataclass (kw_only=True)
 class Level:
   puzzle: int
   max_score: int
@@ -157,6 +157,9 @@ class Level:
     self.score = self.score + points
     print(f'new score for {self.level_number}: {self.score}')
     return self.score
+
+  def is_completed(self) -> bool:
+    return self.score == self.max_score
 
 class Game:
   def __init__(self, renderer: Renderer, levels: list[Puzzle]):
@@ -181,12 +184,12 @@ class Game:
   def process_point_gain(self) -> None:
     """ Increments points and levels up if the max score is reached. """
 
-    new_score = self.current_level.increment_score(1)
+    self.current_level.increment_score(points=1)
 
-    if new_score < self.current_level.max_score:
-      self.create_puzzle()
-    else:
+    if self.current_level.is_completed():
       self.level_up()
+    else:
+      self.create_puzzle()
   
   def level_up(self) -> None:
     print('level up')
