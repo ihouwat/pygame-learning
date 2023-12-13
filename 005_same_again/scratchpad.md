@@ -12,17 +12,20 @@ Progress:
 - DONE try one round of the game with only 4 items
 - DONE try one round of the game with 4 randomly picked items
 - DONE add one more level to the game to see what we need to manage multiple levels
-
-- refactor the classes and cleanup code
+- DONE refactor the classes and cleanup code
 	- maybe have a dataclass for the pure data that you can inject into another class for the sprite representation?
 	- DONE need class for rendering
 	- DONE need class for puzzles, etc.
-	- need to decouple rendering from the game logic??
+	- NOT NEEDED: need to decouple rendering from the game logic?? (rendering logic is simple enough)
+	- DONE perhaps need a class for user event handling...
+- DONE generate docstrings
 
-	- NEXT perhaps need a class for user event handling...
-
+- create more levels
+	- colored shapes
+	- DONE colored items
+	- DONE grayscale items
+	- voice only target item
 - download more pngs and add attributions
-- create more levels (colored shapes, items, grayscale items, voice only target item)
 - add the menu
 - add languages
 
