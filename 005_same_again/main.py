@@ -27,8 +27,13 @@ class SpriteHandler:
   """ Handles the creation of sprites and sprite groups. """
 
   @staticmethod
-  def create_sprite_group(list_of_items: list, max_number: int, option: Option = None) -> Group:
+  def create_sprite_group(max_number: int, list_of_items: list = None, option: Option = None) -> Group:
     """ Creates a sprite group given a list of items."""
+    
+    # default list of items to be used in most cases, but can be overridden
+    if list_of_items is None:
+      list_of_items = game_items
+      
     items: list = SpriteHandler.pick_items_from_list(list_of_items, max_number)
     group: Group = SpriteHandler.create_group(items, option)
     return group
@@ -125,16 +130,30 @@ class Puzzle(ABC):
     
     Attributes:
     description(str): A description of the puzzle.
+    option(Option): An option to be applied to the puzzle.
+    max_number_of_items(int): The maximum number of items to be used in the puzzle.
     """
 
   @property
   @abstractmethod
   def description(self) -> str:
     pass
+  
+  @property
+  @abstractmethod
+  def option(self) -> Option:
+    pass
+  
+  @property
+  @abstractmethod
+  def max_number_of_items(self) -> int:
+    pass
 
   def generate(self) -> Tuple[Sprite, Group]:
     """ Generates a new puzzle."""
-    ...
+    new_group = SpriteHandler.create_sprite_group(max_number=self.max_number_of_items, option=self.option)
+    item_to_match = SpriteHandler.pick_item_to_match(new_group)
+    return item_to_match, new_group
 
 class ItemPuzzle(Puzzle):
   """ Puzzle implementation for matching colored images."""
@@ -143,14 +162,14 @@ class ItemPuzzle(Puzzle):
   def description(self) -> str:
     return'Match a colored image to another image in a list of images'
   
-  # REFACTOR: THIS FUNCTION IS REDUNDANT
-  def generate(self):
-    """ Generates a new item puzzle."""
-    print('generating item puzzle')
-    new_group = SpriteHandler.create_sprite_group(list_of_items=game_items, max_number=4)
-    item_to_match = SpriteHandler.pick_item_to_match(new_group)
-    return item_to_match, new_group
-    
+  @property
+  def option(self) -> Option:
+    return None
+  
+  @property
+  def max_number_of_items(self) -> int:
+    return 4
+
 class GrayscaleItemPuzzle(Puzzle):
   """ Puzzle implementation for matching grayscale images."""
 
@@ -158,12 +177,13 @@ class GrayscaleItemPuzzle(Puzzle):
   def description(self) -> str:
     return 'Match a grayscale image to another image in a list of grayscale images'
   
-  def generate(self):
-    """ Generates a new grayscale item puzzle."""
-    print('generating grayscale item puzzle')
-    new_group = SpriteHandler.create_sprite_group(list_of_items=game_items, max_number=4, option=Option.GRAYSCALE)
-    item_to_match = SpriteHandler.pick_item_to_match(new_group)
-    return item_to_match, new_group
+  @property
+  def option(self) -> Option:
+    return Option.GRAYSCALE
+  
+  @property
+  def max_number_of_items(self) -> int:
+    return 4
 
 class SpokenWordPuzzle(Puzzle):
   """ Puzzle implementation for matching spoken words."""

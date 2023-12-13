@@ -25,6 +25,9 @@ Progress:
 	- DONE colored items
 	- DONE grayscale items
 	- voice only target item
+
+
+- refactor by moving classes into separate files
 - download more pngs and add attributions
 - add the menu
 - add languages
