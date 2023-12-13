@@ -204,7 +204,7 @@ class Level:
     score (int): The current score.
   """
 
-  puzzle: int
+  puzzle: Puzzle
   max_score: int
   level_number: int
   score: int = 0
