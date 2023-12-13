@@ -187,9 +187,16 @@ class Game:
     self.current_level.increment_score(points=1)
 
     if self.current_level.is_completed():
-      self.level_up()
+      if(self.completed_all_levels()):
+        self.quit()
+      else:
+        self.level_up()
     else:
       self.create_puzzle()
+
+  def completed_all_levels(self):
+      print('You have completed all levels!')
+      return self.current_level.level_number == len(self.levels)
   
   def level_up(self) -> None:
     print('level up')
@@ -201,10 +208,11 @@ class Game:
     self.matched_item, self.items = self.current_level.puzzle.generate()
     self.renderer.update_screen(self.items, self.matched_item)
   
-  def quit():
+  def quit(self):
     """
     Quits game and exits program.
     """
+    print('quitting game')
     pygame.quit()
     sys.exit()
 
