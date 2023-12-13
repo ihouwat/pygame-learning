@@ -155,7 +155,7 @@ class Level:
   
   def increment_score(self, points: int) -> int:
     self.score = self.score + points
-    print(f'new score for {self.level_number}: {self.score}')
+    print(f'new score for level {self.level_number}: {self.score}')
     return self.score
 
   def is_completed(self) -> bool:
