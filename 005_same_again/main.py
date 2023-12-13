@@ -171,8 +171,7 @@ class Game:
   
     self.create_puzzle()
 
-  # ADD TO EVENT HANDLING CLASS OR RENDERER CLASS????
-  def check_match(self, items: Group, matched_item: Sprite, coordinates) -> bool:
+  def match_detected(self, items: Group, matched_item: Sprite, coordinates) -> bool:
     selected_item = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
     print('selected item: ', selected_item )
     if(selected_item):
@@ -216,27 +215,34 @@ class Game:
     pygame.quit()
     sys.exit()
 
+class EventHandler():
+  def __init__(self, game: Game):
+    self.game = game
+  
+  def handle(self, events: list[pygame.event.Event]):
+    for event in events:
+      if event.type == pygame.QUIT:
+        game.quit()
+      
+      if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_ESCAPE:
+          game.quit()
+
+      # on left click
+      if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.button == 1:
+          if(game.match_detected(game.items, game.matched_item, event.pos)):
+            game.process_point_gain()
+
 # MOVE TO SOME SETUP FUNCTION
 levels = [ 
           Level(puzzle=ItemPuzzle(), level_number=1, max_score=5),
           Level(puzzle=GrayscaleItemPuzzle(), level_number=2, max_score=5)
         ]
 game = Game(renderer=Renderer(), levels=levels)
+event_handler = EventHandler(game=game)
 
 while 1:
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-      game.quit()
-    
-    if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_ESCAPE:
-        game.quit()
-
-    # on left click
-    if event.type == pygame.MOUSEBUTTONDOWN:
-      if event.button == 1:
-        if(game.check_match(game.items, game.matched_item, event.pos)):
-          game.process_point_gain()
-              
+  event_handler.handle(events=pygame.event.get())  
   pygame.display.update()
   frames_per_sec.tick(30)
