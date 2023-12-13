@@ -188,6 +188,7 @@ class Game:
 
     if self.current_level.is_completed():
       if(self.completed_all_levels()):
+        print('You have completed all levels!')
         self.quit()
       else:
         self.level_up()
@@ -195,7 +196,6 @@ class Game:
       self.create_puzzle()
 
   def completed_all_levels(self):
-      print('You have completed all levels!')
       return self.current_level.level_number == len(self.levels)
   
   def level_up(self) -> None:
@@ -221,8 +221,7 @@ levels = [
           Level(puzzle=ItemPuzzle(), level_number=1, max_score=5),
           Level(puzzle=GrayscaleItemPuzzle(), level_number=2, max_score=5)
         ]
-renderer = Renderer()
-game = Game(renderer=renderer, levels=levels)
+game = Game(renderer=Renderer(), levels=levels)
 
 while 1:
   for event in pygame.event.get():
