@@ -20,6 +20,7 @@ SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 
 class Option(Enum):
+  """ Represents an option to be applied to a sprite."""
   GRAYSCALE = 'grayscale'
 
 class SpriteHandler:
