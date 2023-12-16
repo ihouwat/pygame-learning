@@ -7,7 +7,7 @@ from typing import Tuple
 from funcs import load_pygame_image
 from models.item import Item
 import pygame
-from config.setup import GameItemConfig, GAMEOBJECTTYPE, game_items
+from config.setup import GameItemConfig, GameObjectType, game_items
 from pygame.sprite import Group, Sprite
 import sys
 
@@ -27,19 +27,13 @@ class Option(Enum):
 class SpriteHandler:
   """ Handles the creation of sprites and sprite groups. """
   
-  game_items: list[GameItemConfig] = game_items
-  
   @staticmethod
-  def create_sprite_group(max_number: int, option: Option = None) -> Group:
+  def create_sprite_group(max_number: int, items: list[GameItemConfig], option: Option = None) -> Group:
     """ Creates a sprite group given a list of items."""
-    
-    if option == Option.SHAPES:
-      filtered_list = game_items[GAMEOBJECTTYPE.SHAPE]
-    else:
-      filtered_list = game_items[GAMEOBJECTTYPE.ITEM]
-    items: list = SpriteHandler.pick_items_from_list(filtered_list, max_number)
-    group: Group = SpriteHandler.create_group(items, option)
-    return group
+
+    narrowed_down_items: list = SpriteHandler.pick_items_from_list(items, max_number)
+    sprite_group: Group = SpriteHandler.create_group(narrowed_down_items, option)
+    return sprite_group
 
   @staticmethod
   def create_group(items: list[GameItemConfig], option: Option) -> Group:
@@ -93,10 +87,15 @@ class SpriteHandler:
     return random.choice(items.sprites())
   
   @staticmethod
-  def reset_sprite_group(group: Group) -> None:
+  def kill_sprite_group(group: Group) -> None:
     """ Removes all sprites from a sprite group."""
     for sprite in group:
       sprite.kill()
+  
+  @staticmethod
+  def kill_sprite(sprite: Sprite) -> None:
+    """ Removes a sprite from a sprite group."""
+    sprite.kill()
 
 class Renderer:
   """ Handles the rendering of the game."""
@@ -137,7 +136,12 @@ class Puzzle(ABC):
     description(str): A description of the puzzle.
     option(Option): An option to be applied to the puzzle.
     max_number_of_items(int): The maximum number of items to be used in the puzzle.
+    puzzle_options(list[GameItemConfig]): A list of items to be used in the puzzle.
     """
+
+  @classmethod
+  def items(self) -> dict[GameObjectType, GameItemConfig]:
+    return game_items
 
   @property
   @abstractmethod
@@ -153,10 +157,15 @@ class Puzzle(ABC):
   @abstractmethod
   def max_number_of_items(self) -> int:
     pass
+  
+  @property
+  @abstractmethod
+  def puzzle_options(self) -> list[GameItemConfig]:
+    pass
 
   def generate(self) -> Tuple[Sprite, Group]:
     """ Generates a new puzzle."""
-    new_group = SpriteHandler.create_sprite_group(max_number=self.max_number_of_items, option=self.option)
+    new_group = SpriteHandler.create_sprite_group(max_number=self.max_number_of_items, items=self.puzzle_options, option=self.option)
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     return item_to_match, new_group
 
@@ -174,6 +183,10 @@ class ItemPuzzle(Puzzle):
   @property
   def max_number_of_items(self) -> int:
     return 4
+  
+  @property
+  def puzzle_options(self) -> GameObjectType:
+    return Puzzle.items()[GameObjectType.ITEM]
 
 class GrayscaleItemPuzzle(Puzzle):
   """ Puzzle implementation for matching grayscale images."""
@@ -189,12 +202,16 @@ class GrayscaleItemPuzzle(Puzzle):
   @property
   def max_number_of_items(self) -> int:
     return 4
-
+  
+  @property
+  def puzzle_options(self) -> GameObjectType:
+    return Puzzle.items()[GameObjectType.ITEM]
+  
 class SpokenWordPuzzle(Puzzle):
   """ Puzzle implementation for matching spoken words."""
   pass
 
-class ShapesPuzzle(Puzzle):
+class ColoredShapesPuzzle(Puzzle):
   """ Puzzle implementation for matching basic shapes."""
 
   @property
@@ -208,6 +225,10 @@ class ShapesPuzzle(Puzzle):
   @property
   def max_number_of_items(self) -> int:
     return 4
+  
+  @property
+  def puzzle_options(self) -> GameObjectType:
+    return Puzzle.items()[GameObjectType.SHAPE]
 
 @dataclass (kw_only=True)
 class Level:
@@ -224,6 +245,11 @@ class Level:
   max_score: int
   level_number: int
   score: int = 0
+  
+  def reset_sprites(self) -> None:
+    """ Generate new sprites based on puzzle."""
+    return self.puzzle.generate()
+    
   
   def increment_score(self, points: int) -> int:
     """ Increments the score by a given number of points."""
@@ -242,7 +268,7 @@ class Game:
     self.levels: list[Puzzle] = levels
     self.current_level: Level = self.levels[0]
     self.items: Group = pygame.sprite.Group()
-    self.item_to_match: Item = None
+    self.item_to_match: Item = pygame.sprite.Sprite()
     self.renderer: Renderer = renderer
   
     self.create_puzzle()
@@ -289,9 +315,14 @@ class Game:
   
   def create_puzzle(self) -> None:
     """ Creates a new puzzle and resets screen."""
-    SpriteHandler.reset_sprite_group(self.items)
+    self.reset_sprites()
     self.item_to_match, self.items = self.current_level.puzzle.generate()
     self.renderer.update_screen(self.items, self.item_to_match)
+    
+  def reset_sprites(self) -> None:
+    """ Generate new sprites based on puzzle."""
+    SpriteHandler.kill_sprite(self.item_to_match)
+    SpriteHandler.kill_sprite_group(self.items)
   
   def quit(self):
     """ Quits game and exits program. """
@@ -327,8 +358,9 @@ class EventHandler():
 
 # MOVE TO SOME SETUP FUNCTION
 levels = [ 
-          Level(puzzle=ShapesPuzzle(), level_number=1, max_score=5),
-          Level(puzzle=GrayscaleItemPuzzle(), level_number=2, max_score=5)
+          Level(puzzle=ColoredShapesPuzzle(), level_number=1, max_score=5),
+          Level(puzzle=ItemPuzzle(), level_number=2, max_score=5),
+          Level(puzzle=GrayscaleItemPuzzle(), level_number=3, max_score=5)
         ]
 game = Game(renderer=Renderer(), levels=levels)
 event_handler = EventHandler(game=game)

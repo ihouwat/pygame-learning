@@ -55,7 +55,7 @@ class GameItemConfig(NamedTuple):
   sound: str
   word: str
 
-class GAMEOBJECTTYPE(Enum):
+class GameObjectType(Enum):
   ITEM = 'items'
   SHAPE = 'shapes'
 
@@ -81,7 +81,6 @@ def create_shape(shape: Shape, color):
   surface = pygame.Surface((100, 100))
   if shape == Shape.CIRCLE:
     pygame.draw.circle(surface, color, (100 // 2,100 // 2), 50)
-    print('here')
   elif shape == Shape.SQUARE:
     pygame.draw.rect(surface, color, (0, 0, 100, 100))
   elif shape == Shape.TRIANGLE:
@@ -99,7 +98,7 @@ shapes_config: list[GameItemConfig] = [
   for color in colors
 ]
 
-game_items: dict[GAMEOBJECTTYPE, GameItemConfig] = {
-  GAMEOBJECTTYPE.ITEM: items_config,
-  GAMEOBJECTTYPE.SHAPE: shapes_config
+game_items: dict[GameObjectType, GameItemConfig] = {
+  GameObjectType.ITEM: items_config,
+  GameObjectType.SHAPE: shapes_config
 }
