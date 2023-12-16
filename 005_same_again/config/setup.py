@@ -1,4 +1,8 @@
-from models.item import Item
+from enum import Enum
+from typing import NamedTuple
+from config.settings import WHITE, BLUE, RED, GREEN, YELLOW
+
+import pygame
 
 # game_items: list[Item] = [Item(**x) for x in [
 # 	{"text_identifier": "banana", "image": "img", "sound": "mp3", "word": "Banana"},
@@ -45,10 +49,57 @@ from models.item import Item
 # 	{"text_identifier": "frog", "image": "img", "sound": "mp3", "word": "A frog"},
 # ]]
 
-game_items = [
-  {"text_identifier": "banana", "image": "banana.png", "sound": "mp3", "word": "Banana"},
-  {"text_identifier": "strawberry", "image": "strawberry.png", "sound": "mp3", "word": "Strawberry"},
-  {"text_identifier": "pear", "image": "pear.png", "sound": "mp3", "word": "Pear"},
-  {"text_identifier": "apple", "image": "apple.png", "sound": "mp3", "word": "Apple"},
-  {"text_identifier": "pineapple", "image": "pineapple.png", "sound": "mp3", "word": "Pineapple"},
+class GameItemConfig(NamedTuple):
+  text_identifier: str
+  image: str | pygame.Surface
+  sound: str
+  word: str
+
+class GAMEOBJECTTYPE(Enum):
+  ITEM = 'items'
+  SHAPE = 'shapes'
+
+items_config: list[GameItemConfig] = [
+  GameItemConfig(**x)
+  for x in [
+    {"text_identifier": "banana", "image": "banana.png", "sound": "mp3", "word": "Banana"},
+    {"text_identifier": "strawberry", "image": "strawberry.png", "sound": "mp3", "word": "Strawberry"},
+    {"text_identifier": "pear", "image": "pear.png", "sound": "mp3", "word": "Pear"},
+    {"text_identifier": "apple", "image": "apple.png", "sound": "mp3", "word": "Apple"},
+    {"text_identifier": "pineapple", "image": "pineapple.png", "sound": "mp3", "word": "Pineapple"},
+  ]
 ]
+
+class Shape(Enum):
+  CIRCLE = 'Circle'
+  SQUARE = 'Square'
+  TRIANGLE = 'Triangle'
+
+colors = [BLUE, RED, GREEN, WHITE, YELLOW]
+
+def create_shape(shape: Shape, color):
+  surface = pygame.Surface((100, 100))
+  if shape == Shape.CIRCLE:
+    pygame.draw.circle(surface, color, (100 // 2,100 // 2), 50)
+    print('here')
+  elif shape == Shape.SQUARE:
+    pygame.draw.rect(surface, color, (0, 0, 100, 100))
+  elif shape == Shape.TRIANGLE:
+    pygame.draw.polygon(surface, color, [(0, 100), (50, 0), (100, 100)])
+  return surface
+
+shapes_config: list[GameItemConfig] = [
+  GameItemConfig(
+        text_identifier=shape.value,
+        image=create_shape(shape, color),
+        sound=shape.value,
+        word=shape.value
+    )
+  for shape in Shape
+  for color in colors
+]
+
+game_items: dict[GAMEOBJECTTYPE, GameItemConfig] = {
+  GAMEOBJECTTYPE.ITEM: items_config,
+  GAMEOBJECTTYPE.SHAPE: shapes_config
+}
