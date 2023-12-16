@@ -21,7 +21,12 @@ Progress:
 - DONE generate docstrings
 
 - create more levels
-	- colored shapes
+
+
+# start level with a random shape with different colors
+# next level would be many shapes with one color
+# next level is many shapes with many colors
+	- DONE colored shapes
 	- DONE colored items
 	- DONE grayscale items
 	- voice only target item

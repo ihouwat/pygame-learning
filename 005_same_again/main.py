@@ -7,7 +7,7 @@ from typing import Tuple
 from funcs import load_pygame_image
 from models.item import Item
 import pygame
-from config.setup import game_items
+from config.setup import GameItemConfig, GAMEOBJECTTYPE, game_items
 from pygame.sprite import Group, Sprite
 import sys
 
@@ -22,24 +22,27 @@ SCREEN_HEIGHT = 800
 class Option(Enum):
   """ Represents an option to be applied to a sprite."""
   GRAYSCALE = 'grayscale'
+  SHAPES = 'shapes'
 
 class SpriteHandler:
   """ Handles the creation of sprites and sprite groups. """
-
+  
+  game_items: list[GameItemConfig] = game_items
+  
   @staticmethod
-  def create_sprite_group(max_number: int, list_of_items: list = None, option: Option = None) -> Group:
+  def create_sprite_group(max_number: int, option: Option = None) -> Group:
     """ Creates a sprite group given a list of items."""
     
-    # default list of items to be used in most cases, but can be overridden
-    if list_of_items is None:
-      list_of_items = game_items
-      
-    items: list = SpriteHandler.pick_items_from_list(list_of_items, max_number)
+    if option == Option.SHAPES:
+      filtered_list = game_items[GAMEOBJECTTYPE.SHAPE]
+    else:
+      filtered_list = game_items[GAMEOBJECTTYPE.ITEM]
+    items: list = SpriteHandler.pick_items_from_list(filtered_list, max_number)
     group: Group = SpriteHandler.create_group(items, option)
     return group
 
   @staticmethod
-  def create_group(items: list, option: Option) -> Group:
+  def create_group(items: list[GameItemConfig], option: Option) -> Group:
     """ Creates a sprite group out of a list of items.
     
     Args:
@@ -47,23 +50,25 @@ class SpriteHandler:
       option (Option): An option to be applied to the sprite.
     """
     group = pygame.sprite.Group()
-
     for item in items:
-      src_image = load_pygame_image('assets', 'images', item['image'])
+      if option == Option.SHAPES:
+        src_image = item.image
+      else:
+        src_image = load_pygame_image('assets', 'images', item.image)
 
       if option == Option.GRAYSCALE:
         src_image=pygame.transform.grayscale(src_image)
 
       group.add(Item(
       image=src_image,
-      text_identifier=item['text_identifier'],
-      word=item['word']
+      text_identifier=item.text_identifier,
+      word=item.word
     ))
 
     return group
   
   @staticmethod
-  def pick_items_from_list(list_of_items: list, max_number: int) -> list:
+  def pick_items_from_list(list_of_items: list[GameItemConfig], max_number: int) -> list:
     """ Picks a random number of items from a list of items. 
     
     Args:
@@ -119,7 +124,7 @@ class Renderer:
   def render_screen(self, items: Group, item_to_match: Sprite) -> None:
     """ Renders the screen with a new set of items and a target item."""
     self.display_surface.fill((0, 0, 0))
-    self.display_surface.blit(item_to_match.image, ((SCREEN_WIDTH / 2) - item_to_match.rect.width / 2, 0))
+    self.display_surface.blit(item_to_match.image, ((SCREEN_WIDTH / 2) - (item_to_match.rect.width / 2), 100))
     for sprite in items:
       self.display_surface.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
 
@@ -191,7 +196,18 @@ class SpokenWordPuzzle(Puzzle):
 
 class ShapesPuzzle(Puzzle):
   """ Puzzle implementation for matching basic shapes."""
-  pass
+
+  @property
+  def description(self) -> str:
+    return 'Match a shape to another shape in a list of shapes'
+  
+  @property
+  def option(self) -> Option:
+    return Option.SHAPES
+  
+  @property
+  def max_number_of_items(self) -> int:
+    return 4
 
 @dataclass (kw_only=True)
 class Level:
@@ -311,7 +327,7 @@ class EventHandler():
 
 # MOVE TO SOME SETUP FUNCTION
 levels = [ 
-          Level(puzzle=ItemPuzzle(), level_number=1, max_score=5),
+          Level(puzzle=ShapesPuzzle(), level_number=1, max_score=5),
           Level(puzzle=GrayscaleItemPuzzle(), level_number=2, max_score=5)
         ]
 game = Game(renderer=Renderer(), levels=levels)
