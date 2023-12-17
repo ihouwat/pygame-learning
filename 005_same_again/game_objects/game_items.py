@@ -2,6 +2,12 @@ import pygame
 from config.interfaces import Color, GameItemConfig, GameObjectType, ItemType, Shape
 from config.settings import colors
 
+""" Game items will be used to create sprites for the puzzles that will be used in the game. 
+  There are two types of game items:
+    1. Items: A sprite that represents an object from an image.
+    2. Shapes: A sprite that represents a shape drawn with the Pygame API.
+"""
+
 # game_items: list[Item] = [Item(**x) for x in [
 # 	{"text_identifier": "banana", "image": "img", "sound": "mp3", "word": "Banana"},
 # 	{"text_identifier": "apple", "image": "img", "sound": "mp3", "word": "Apple"},
