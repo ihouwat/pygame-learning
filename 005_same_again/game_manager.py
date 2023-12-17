@@ -1,4 +1,3 @@
-import sys
 
 import pygame
 from engine.renderer import Renderer
@@ -71,9 +70,3 @@ class GameManager:
     """ Remove all sprites."""
     SpriteHandler.kill_sprite(self.item_to_match)
     SpriteHandler.kill_sprite_group(self.items)
-  
-  def quit(self):
-    """ Quits game and exits program. """
-    print('quitting game')
-    pygame.quit()
-    sys.exit()
