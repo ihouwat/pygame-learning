@@ -44,6 +44,16 @@ class SpriteHandler:
     """
     group = pygame.sprite.Group()
     for item in items:
+      group.add(Item(
+      image=SpriteHandler.retrieve_image(option, item),
+      text_identifier=item.text_identifier,
+      word=item.word
+    ))
+
+    return group
+
+  @staticmethod
+  def retrieve_image(option: Option, item: GameItemConfig) -> pygame.Surface:
       if option == Option.SHAPES:
         src_image = item.image
       else:
@@ -52,13 +62,7 @@ class SpriteHandler:
       if option == Option.GRAYSCALE:
         src_image=pygame.transform.grayscale(src_image)
 
-      group.add(Item(
-      image=src_image,
-      text_identifier=item.text_identifier,
-      word=item.word
-    ))
-
-    return group
+      return src_image
   
   @staticmethod
   def pick_items_from_list(list_of_items: list, max_number: int) -> list:

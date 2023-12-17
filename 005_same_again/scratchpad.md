@@ -27,17 +27,18 @@ Progress:
 	- DONE many types of colored items (ex: fruits, vehicles, animals, etc.)
 	- DONE grayscale items
 	- DONE one type of colored items (ex: only fruits)
-	- voice only target item
 
+
+	- voice only target item
 
 - refactor by moving classes into separate files
 - download more pngs and add attributions
 - add the menu
-- add languages
+- record and add languages
 
 Game states
 * Menu: the menu screen
 * Game: the game screen
-* Pause: the game is paused
+* Pause: the game is paused (no need, we will not be using a timer)
 * Game Over: the game is over (nah we don't want that with a kiddo :) )
 
