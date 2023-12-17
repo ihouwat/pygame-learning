@@ -6,7 +6,7 @@ from enum import Enum
 from typing import Tuple
 
 import pygame
-from config.setup import Color, GameItemConfig, GameObjectType, Shape, game_items
+from config.setup import Color, GameItemConfig, GameObjectType, ItemType, Shape, game_items
 from funcs import load_pygame_image
 from models.item import Item
 from pygame.sprite import Group, Sprite
@@ -70,7 +70,7 @@ class SpriteHandler:
     """
     used_indexes = set()
     items = []
-    print('list of items: ', list_of_items, 'max number: ', max_number)
+
     while len(items) < max_number:
       item_index = random.randint(0, len(list_of_items) - 1)
       if item_index not in used_indexes:
@@ -170,7 +170,7 @@ class Puzzle(ABC):
     item_to_match = SpriteHandler.pick_item_to_match(new_group)
     return item_to_match, new_group
 
-class ItemPuzzle(Puzzle):
+class ManyItemTypesPuzzle(Puzzle):
   """ Puzzle implementation for matching colored images."""
 
   @property
@@ -270,6 +270,26 @@ class SingleColorManyShapes(Puzzle):
   def puzzle_options(self) -> GameObjectType:
     color = random.choice(list(Color))
     return  [x for x in Puzzle.items()[GameObjectType.SHAPE] if x.color == color.value]
+
+class SingleItemTypePuzzle(Puzzle):
+  """ Puzzle implementation for matching a single type of item."""
+  
+  @property
+  def description(self) -> str:
+    return 'Match a colored item to a list of items of the same type'
+  
+  @property
+  def option(self) -> Option:
+    return None
+  
+  @property
+  def max_number_of_items(self) -> int:
+    return 4
+  
+  @property
+  def puzzle_options(self) -> GameObjectType:
+    type = random.choice([type for type in list(ItemType) if type != ItemType.SHAPE])
+    return  [x for x in Puzzle.items()[GameObjectType.ITEM] if x.type == type]
 
 @dataclass (kw_only=True)
 class Level:
@@ -402,11 +422,12 @@ puzzles: list[Puzzle] = [
   SingleShapeManyColorsPuzzle(), 
   SingleColorManyShapes(),
   ColoredShapesPuzzle(),
-  ItemPuzzle(),
+  SingleItemTypePuzzle(),
+  ManyItemTypesPuzzle(),
   GrayscaleItemPuzzle()
 ]
 
-levels = [ Level(puzzle=puzzle, level_number=i+1, max_score=5) for i, puzzle in enumerate(puzzles) ]
+levels = [ Level(puzzle=puzzle, level_number=i+1, max_score=4) for i, puzzle in enumerate(puzzles) ]
 game = Game(renderer=Renderer(), levels=levels)
 event_handler = EventHandler(game=game)
 

@@ -21,13 +21,12 @@ Progress:
 - DONE generate docstrings
 
 - create more levels
-
-
 	- DONE many shapes with one color
 	- DONE many shapes with many colors
 	- DONE one shape with many colors
-	- DONE colored items
+	- DONE many types of colored items (ex: fruits, vehicles, animals, etc.)
 	- DONE grayscale items
+	- DONE one type of colored items (ex: only fruits)
 	- voice only target item
 
 

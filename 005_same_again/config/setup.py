@@ -50,17 +50,6 @@ from config.settings import BLUE, GREEN, RED, WHITE, YELLOW
 # 	{"text_identifier": "frog", "image": "img", "sound": "mp3", "word": "A frog"},
 # ]]
 
-class GameItemConfig(NamedTuple):
-  text_identifier: str
-  image: str | pygame.Surface
-  sound: str
-  word: str
-  color: str
-  type: str
-
-class GameObjectType(Enum):
-  ITEM = 'items'
-  SHAPE = 'shapes'
 
 class Color(Enum):
   RED = 'Red'
@@ -69,12 +58,30 @@ class Color(Enum):
   YELLOW = 'Yellow'
   WHITE = 'White'
 
+colors = {
+  Color.BLUE: BLUE, 
+  Color.RED: RED,
+  Color.GREEN: GREEN,
+  Color.WHITE: WHITE,
+  Color.YELLOW: YELLOW
+}
+
 class ItemType(Enum):
   FRUIT = 'fruit'
-  VEGETABLE = 'vegetable'
-  FURNITURE = 'furniture'
-  ANIMAL = 'animal'
   SHAPE = 'shape'
+
+class GameItemConfig(NamedTuple):
+  text_identifier: str
+  image: str | pygame.Surface
+  sound: str
+  word: str
+  color: Color
+  type: ItemType
+
+class GameObjectType(Enum):
+  ITEM = 'items'
+  SHAPE = 'shapes'
+
 
 items_config: list[GameItemConfig] = [
   GameItemConfig(**x)
@@ -92,14 +99,6 @@ class Shape(Enum):
   SQUARE = 'Square'
   TRIANGLE = 'Triangle',
   RECTANGLE = 'Rectangle'
-  
-colors = {
-  Color.BLUE: BLUE, 
-  Color.RED: RED,
-  Color.GREEN: GREEN,
-  Color.WHITE: WHITE,
-  Color.YELLOW: YELLOW
-}
 
 def create_shape(shape: Shape, color):
   surface = pygame.Surface((100, 100))
