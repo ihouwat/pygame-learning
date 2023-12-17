@@ -54,15 +54,16 @@ class SpriteHandler:
 
   @staticmethod
   def retrieve_image(option: Option, item: GameItemConfig) -> pygame.Surface:
-      if option == Option.SHAPES:
-        src_image = item.image
-      else:
-        src_image = load_pygame_image('assets', 'images', item.image)
+    """ Retrieves the image for a sprite based on an option."""
+    if option == Option.SHAPES:
+      src_image = item.image
+    else:
+      src_image = load_pygame_image('assets', 'images', item.image)
 
-      if option == Option.GRAYSCALE:
-        src_image=pygame.transform.grayscale(src_image)
+    if option == Option.GRAYSCALE:
+      src_image=pygame.transform.grayscale(src_image)
 
-      return src_image
+    return src_image
   
   @staticmethod
   def pick_items_from_list(list_of_items: list, max_number: int) -> list:
