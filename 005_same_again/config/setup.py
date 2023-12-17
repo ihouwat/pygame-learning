@@ -1,8 +1,9 @@
 from enum import Enum
 from typing import NamedTuple
-from config.settings import WHITE, BLUE, RED, GREEN, YELLOW
 
 import pygame
+
+from config.settings import BLUE, GREEN, RED, WHITE, YELLOW
 
 # game_items: list[Item] = [Item(**x) for x in [
 # 	{"text_identifier": "banana", "image": "img", "sound": "mp3", "word": "Banana"},
@@ -54,28 +55,51 @@ class GameItemConfig(NamedTuple):
   image: str | pygame.Surface
   sound: str
   word: str
+  color: str
+  type: str
 
 class GameObjectType(Enum):
   ITEM = 'items'
   SHAPE = 'shapes'
 
+class Color(Enum):
+  RED = 'Red'
+  GREEN = 'Green'
+  BLUE = 'Blue'
+  YELLOW = 'Yellow'
+  WHITE = 'White'
+
+class ItemType(Enum):
+  FRUIT = 'fruit'
+  VEGETABLE = 'vegetable'
+  FURNITURE = 'furniture'
+  ANIMAL = 'animal'
+  SHAPE = 'shape'
+
 items_config: list[GameItemConfig] = [
   GameItemConfig(**x)
   for x in [
-    {"text_identifier": "banana", "image": "banana.png", "sound": "mp3", "word": "Banana"},
-    {"text_identifier": "strawberry", "image": "strawberry.png", "sound": "mp3", "word": "Strawberry"},
-    {"text_identifier": "pear", "image": "pear.png", "sound": "mp3", "word": "Pear"},
-    {"text_identifier": "apple", "image": "apple.png", "sound": "mp3", "word": "Apple"},
-    {"text_identifier": "pineapple", "image": "pineapple.png", "sound": "mp3", "word": "Pineapple"},
+    {"text_identifier": "banana", "image": "banana.png", "sound": "mp3", "word": "Banana", "color": Color.YELLOW, "type": ItemType.FRUIT},
+    {"text_identifier": "strawberry", "image": "strawberry.png", "sound": "mp3", "word": "Strawberry", "color": Color.RED, "type":ItemType.FRUIT},
+    {"text_identifier": "pear", "image": "pear.png", "sound": "mp3", "word": "Pear", "color": Color.RED, "type": ItemType.FRUIT},
+    {"text_identifier": "apple", "image": "apple.png", "sound": "mp3", "word": "Apple", "color": Color.GREEN, "type": ItemType.FRUIT},
+    {"text_identifier": "pineapple", "image": "pineapple.png", "sound": "mp3", "word": "Pineapple", "color": Color.YELLOW, "type": ItemType.FRUIT},
   ]
 ]
 
 class Shape(Enum):
   CIRCLE = 'Circle'
   SQUARE = 'Square'
-  TRIANGLE = 'Triangle'
-
-colors = [BLUE, RED, GREEN, WHITE, YELLOW]
+  TRIANGLE = 'Triangle',
+  RECTANGLE = 'Rectangle'
+  
+colors = {
+  Color.BLUE: BLUE, 
+  Color.RED: RED,
+  Color.GREEN: GREEN,
+  Color.WHITE: WHITE,
+  Color.YELLOW: YELLOW
+}
 
 def create_shape(shape: Shape, color):
   surface = pygame.Surface((100, 100))
@@ -85,17 +109,22 @@ def create_shape(shape: Shape, color):
     pygame.draw.rect(surface, color, (0, 0, 100, 100))
   elif shape == Shape.TRIANGLE:
     pygame.draw.polygon(surface, color, [(0, 100), (50, 0), (100, 100)])
+  elif shape == Shape.RECTANGLE:
+    pygame.draw.rect(surface, color, (0, 25, 100, 50))
+
   return surface
 
 shapes_config: list[GameItemConfig] = [
   GameItemConfig(
         text_identifier=shape.value,
-        image=create_shape(shape, color),
+        image=create_shape(shape, color_value),
         sound=shape.value,
-        word=shape.value
+        word=shape.value,
+        color=color_name.value,
+        type=ItemType.SHAPE.value
     )
   for shape in Shape
-  for color in colors
+  for color_name, color_value in colors.items()
 ]
 
 game_items: dict[GameObjectType, GameItemConfig] = {

@@ -1,15 +1,15 @@
+import random
+import sys
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
-import random
 from typing import Tuple
 
+import pygame
+from config.setup import Color, GameItemConfig, GameObjectType, Shape, game_items
 from funcs import load_pygame_image
 from models.item import Item
-import pygame
-from config.setup import GameItemConfig, GameObjectType, game_items
 from pygame.sprite import Group, Sprite
-import sys
 
 pygame.init()
 
@@ -30,7 +30,6 @@ class SpriteHandler:
   @staticmethod
   def create_sprite_group(max_number: int, items: list[GameItemConfig], option: Option = None) -> Group:
     """ Creates a sprite group given a list of items."""
-
     narrowed_down_items: list = SpriteHandler.pick_items_from_list(items, max_number)
     sprite_group: Group = SpriteHandler.create_group(narrowed_down_items, option)
     return sprite_group
@@ -40,7 +39,7 @@ class SpriteHandler:
     """ Creates a sprite group out of a list of items.
     
     Args:
-      items (list): A list of items to be converted to sprites.
+      items (list[GameItemConfig]): A list of gmae items to be used to create the sprite group.
       option (Option): An option to be applied to the sprite.
     """
     group = pygame.sprite.Group()
@@ -62,8 +61,8 @@ class SpriteHandler:
     return group
   
   @staticmethod
-  def pick_items_from_list(list_of_items: list[GameItemConfig], max_number: int) -> list:
-    """ Picks a random number of items from a list of items. 
+  def pick_items_from_list(list_of_items: list, max_number: int) -> list:
+    """ Picks a random number of items from a list of game items. 
     
     Args:
       list_of_items (list): A list of items to pick from.
@@ -71,7 +70,7 @@ class SpriteHandler:
     """
     used_indexes = set()
     items = []
-
+    print('list of items: ', list_of_items, 'max number: ', max_number)
     while len(items) < max_number:
       item_index = random.randint(0, len(list_of_items) - 1)
       if item_index not in used_indexes:
@@ -79,6 +78,7 @@ class SpriteHandler:
         items.append(list_of_items[item_index])
       else:
         continue
+    print(items)
     return items
 
   @staticmethod
@@ -133,10 +133,11 @@ class Puzzle(ABC):
     Represents a puzzle that can be played in the game.
     
     Attributes:
+    items(dict[GameObjectType, GameItemConfig]): A dictionary of items to be used in the puzzle.
     description(str): A description of the puzzle.
     option(Option): An option to be applied to the puzzle.
     max_number_of_items(int): The maximum number of items to be used in the puzzle.
-    puzzle_options(list[GameItemConfig]): A list of items to be used in the puzzle.
+    puzzle_options(list[GameItemConfig]): A filtered list of options to construct the puzzle.
     """
 
   @classmethod
@@ -174,7 +175,7 @@ class ItemPuzzle(Puzzle):
 
   @property
   def description(self) -> str:
-    return'Match a colored image to another image in a list of images'
+    return'Match a colored image to a list of images'
   
   @property
   def option(self) -> Option:
@@ -193,7 +194,7 @@ class GrayscaleItemPuzzle(Puzzle):
 
   @property
   def description(self) -> str:
-    return 'Match a grayscale image to another image in a list of grayscale images'
+    return 'Match a grayscale image to a list of grayscale images'
   
   @property
   def option(self) -> Option:
@@ -212,11 +213,11 @@ class SpokenWordPuzzle(Puzzle):
   pass
 
 class ColoredShapesPuzzle(Puzzle):
-  """ Puzzle implementation for matching basic shapes."""
+  """ Puzzle implementation for matching basic shapes with different colors."""
 
   @property
   def description(self) -> str:
-    return 'Match a shape to another shape in a list of shapes'
+    return 'Match a colored shape to a list of colored shapes'
   
   @property
   def option(self) -> Option:
@@ -229,6 +230,46 @@ class ColoredShapesPuzzle(Puzzle):
   @property
   def puzzle_options(self) -> GameObjectType:
     return Puzzle.items()[GameObjectType.SHAPE]
+
+class SingleShapeManyColorsPuzzle(Puzzle):
+  """ Puzzle implementation for matching shapes.""" 
+  
+  @property
+  def description(self) -> str:
+    return 'Match a colored shape to a list of shapes of various colors'
+  
+  @property
+  def option(self) -> Option:
+    return Option.SHAPES
+  
+  @property
+  def max_number_of_items(self) -> int:
+    return 4
+  
+  @property
+  def puzzle_options(self) -> GameObjectType:
+    random_shape = random.choice(list(Shape))
+    return [x for x in Puzzle.items()[GameObjectType.SHAPE] if x.text_identifier == random_shape.value]
+
+class SingleColorManyShapes(Puzzle):
+  """ Puzzle implementation for matching shapes."""
+  
+  @property
+  def description(self) -> str:
+    return 'Match a colored shape to a list of shapes'
+  
+  @property
+  def option(self) -> Option:
+    return Option.SHAPES
+  
+  @property
+  def max_number_of_items(self) -> int:
+    return 4
+  
+  @property
+  def puzzle_options(self) -> GameObjectType:
+    color = random.choice(list(Color))
+    return  [x for x in Puzzle.items()[GameObjectType.SHAPE] if x.color == color.value]
 
 @dataclass (kw_only=True)
 class Level:
@@ -320,7 +361,7 @@ class Game:
     self.renderer.update_screen(self.items, self.item_to_match)
     
   def reset_sprites(self) -> None:
-    """ Generate new sprites based on puzzle."""
+    """ Remove all sprites."""
     SpriteHandler.kill_sprite(self.item_to_match)
     SpriteHandler.kill_sprite_group(self.items)
   
@@ -357,11 +398,15 @@ class EventHandler():
             game.process_point_gain()
 
 # MOVE TO SOME SETUP FUNCTION
-levels = [ 
-          Level(puzzle=ColoredShapesPuzzle(), level_number=1, max_score=5),
-          Level(puzzle=ItemPuzzle(), level_number=2, max_score=5),
-          Level(puzzle=GrayscaleItemPuzzle(), level_number=3, max_score=5)
-        ]
+puzzles: list[Puzzle] = [
+  SingleShapeManyColorsPuzzle(), 
+  SingleColorManyShapes(),
+  ColoredShapesPuzzle(),
+  ItemPuzzle(),
+  GrayscaleItemPuzzle()
+]
+
+levels = [ Level(puzzle=puzzle, level_number=i+1, max_score=5) for i, puzzle in enumerate(puzzles) ]
 game = Game(renderer=Renderer(), levels=levels)
 event_handler = EventHandler(game=game)
 
