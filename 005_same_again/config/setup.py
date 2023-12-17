@@ -1,9 +1,10 @@
 from enum import Enum
-from typing import NamedTuple
 
 import pygame
 
-from config.settings import BLUE, GREEN, RED, WHITE, YELLOW
+from config.interfaces import Color, colors, GameItemConfig, GameObjectType, ItemType
+from game_objects.models.puzzle import Puzzle
+from game_objects.entities.puzzles import ColoredShapesPuzzle, ColorPuzzle, ManyItemTypesPuzzle, ShapePuzzle, SingleItemTypePuzzle, GrayscaleItemPuzzle, SpokenWordPuzzle
 
 # game_items: list[Item] = [Item(**x) for x in [
 # 	{"text_identifier": "banana", "image": "img", "sound": "mp3", "word": "Banana"},
@@ -50,37 +51,6 @@ from config.settings import BLUE, GREEN, RED, WHITE, YELLOW
 # 	{"text_identifier": "frog", "image": "img", "sound": "mp3", "word": "A frog"},
 # ]]
 
-
-class Color(Enum):
-  RED = 'Red'
-  GREEN = 'Green'
-  BLUE = 'Blue'
-  YELLOW = 'Yellow'
-  WHITE = 'White'
-
-colors = {
-  Color.RED: RED,
-  Color.GREEN: GREEN,
-  Color.BLUE: BLUE, 
-  Color.YELLOW: YELLOW,
-  Color.WHITE: WHITE
-}
-
-class ItemType(Enum):
-  FRUIT = 'Fruit'
-  SHAPE = 'Shape'
-
-class GameItemConfig(NamedTuple):
-  text_identifier: str
-  image: str | pygame.Surface
-  sound: str
-  word: str
-  color: Color
-  type: ItemType
-
-class GameObjectType(Enum):
-  ITEMS = 'Items'
-  SHAPES = 'Shapes'
 
 
 items_config: list[GameItemConfig] = [
@@ -130,3 +100,16 @@ game_items: dict[GameObjectType, GameItemConfig] = {
   GameObjectType.ITEMS: items_config,
   GameObjectType.SHAPES: shapes_config
 }
+
+
+# MOVE TO SOME SETUP FUNCTION
+puzzles: list[Puzzle] = [
+	ColorPuzzle(), 
+	ShapePuzzle(),
+	ColoredShapesPuzzle(),
+	SingleItemTypePuzzle(),
+	ManyItemTypesPuzzle(),
+	GrayscaleItemPuzzle(),
+	SpokenWordPuzzle(),
+]
+
