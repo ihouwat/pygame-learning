@@ -34,3 +34,9 @@ class GameItemConfig(NamedTuple):
 class GameObjectType(Enum):
   ITEMS = 'Items'
   SHAPES = 'Shapes'
+
+class Shape(Enum):
+  CIRCLE = 'Circle'
+  SQUARE = 'Square'
+  TRIANGLE = 'Triangle',
+  RECTANGLE = 'Rectangle'

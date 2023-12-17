@@ -1,10 +1,5 @@
-from enum import Enum
-
+from config.interfaces import Shape, Color, colors, GameItemConfig, GameObjectType, ItemType
 import pygame
-
-from config.interfaces import Color, colors, GameItemConfig, GameObjectType, ItemType
-from game_objects.models.puzzle import Puzzle
-from game_objects.entities.puzzles import ColoredShapesPuzzle, ColorPuzzle, ManyItemTypesPuzzle, ShapePuzzle, SingleItemTypePuzzle, GrayscaleItemPuzzle, SpokenWordPuzzle
 
 # game_items: list[Item] = [Item(**x) for x in [
 # 	{"text_identifier": "banana", "image": "img", "sound": "mp3", "word": "Banana"},
@@ -51,8 +46,6 @@ from game_objects.entities.puzzles import ColoredShapesPuzzle, ColorPuzzle, Many
 # 	{"text_identifier": "frog", "image": "img", "sound": "mp3", "word": "A frog"},
 # ]]
 
-
-
 items_config: list[GameItemConfig] = [
   GameItemConfig(**x)
   for x in [
@@ -64,11 +57,6 @@ items_config: list[GameItemConfig] = [
   ]
 ]
 
-class Shape(Enum):
-  CIRCLE = 'Circle'
-  SQUARE = 'Square'
-  TRIANGLE = 'Triangle',
-  RECTANGLE = 'Rectangle'
 
 def create_shape(shape: Shape, color):
   surface = pygame.Surface((100, 100))
@@ -100,16 +88,3 @@ game_items: dict[GameObjectType, GameItemConfig] = {
   GameObjectType.ITEMS: items_config,
   GameObjectType.SHAPES: shapes_config
 }
-
-
-# MOVE TO SOME SETUP FUNCTION
-puzzles: list[Puzzle] = [
-	ColorPuzzle(), 
-	ShapePuzzle(),
-	ColoredShapesPuzzle(),
-	SingleItemTypePuzzle(),
-	ManyItemTypesPuzzle(),
-	GrayscaleItemPuzzle(),
-	SpokenWordPuzzle(),
-]
-
