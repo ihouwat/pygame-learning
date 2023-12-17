@@ -78,7 +78,7 @@ class SpriteHandler:
         items.append(list_of_items[item_index])
       else:
         continue
-    print(items)
+
     return items
 
   @staticmethod
@@ -187,7 +187,7 @@ class ManyItemTypesPuzzle(Puzzle):
   
   @property
   def puzzle_options(self) -> GameObjectType:
-    return Puzzle.items()[GameObjectType.ITEM]
+    return Puzzle.items()[GameObjectType.ITEMS]
 
 class GrayscaleItemPuzzle(Puzzle):
   """ Puzzle implementation for matching grayscale images."""
@@ -206,7 +206,7 @@ class GrayscaleItemPuzzle(Puzzle):
   
   @property
   def puzzle_options(self) -> GameObjectType:
-    return Puzzle.items()[GameObjectType.ITEM]
+    return Puzzle.items()[GameObjectType.ITEMS]
   
 class SpokenWordPuzzle(Puzzle):
   """ Puzzle implementation for matching spoken words."""
@@ -229,7 +229,7 @@ class ColoredShapesPuzzle(Puzzle):
   
   @property
   def puzzle_options(self) -> GameObjectType:
-    return Puzzle.items()[GameObjectType.SHAPE]
+    return Puzzle.items()[GameObjectType.SHAPES]
 
 class SingleShapeManyColorsPuzzle(Puzzle):
   """ Puzzle implementation for matching shapes.""" 
@@ -249,7 +249,7 @@ class SingleShapeManyColorsPuzzle(Puzzle):
   @property
   def puzzle_options(self) -> GameObjectType:
     random_shape = random.choice(list(Shape))
-    return [x for x in Puzzle.items()[GameObjectType.SHAPE] if x.text_identifier == random_shape.value]
+    return [x for x in Puzzle.items()[GameObjectType.SHAPES] if x.text_identifier == random_shape.value]
 
 class SingleColorManyShapes(Puzzle):
   """ Puzzle implementation for matching shapes."""
@@ -269,7 +269,7 @@ class SingleColorManyShapes(Puzzle):
   @property
   def puzzle_options(self) -> GameObjectType:
     color = random.choice(list(Color))
-    return  [x for x in Puzzle.items()[GameObjectType.SHAPE] if x.color == color.value]
+    return  [x for x in Puzzle.items()[GameObjectType.SHAPES] if x.color == color.value]
 
 class SingleItemTypePuzzle(Puzzle):
   """ Puzzle implementation for matching a single type of item."""
@@ -289,7 +289,7 @@ class SingleItemTypePuzzle(Puzzle):
   @property
   def puzzle_options(self) -> GameObjectType:
     type = random.choice([type for type in list(ItemType) if type != ItemType.SHAPE])
-    return  [x for x in Puzzle.items()[GameObjectType.ITEM] if x.type == type]
+    return  [x for x in Puzzle.items()[GameObjectType.ITEMS] if x.type == type]
 
 @dataclass (kw_only=True)
 class Level:

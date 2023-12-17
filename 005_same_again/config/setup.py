@@ -59,16 +59,16 @@ class Color(Enum):
   WHITE = 'White'
 
 colors = {
-  Color.BLUE: BLUE, 
   Color.RED: RED,
   Color.GREEN: GREEN,
-  Color.WHITE: WHITE,
-  Color.YELLOW: YELLOW
+  Color.BLUE: BLUE, 
+  Color.YELLOW: YELLOW,
+  Color.WHITE: WHITE
 }
 
 class ItemType(Enum):
-  FRUIT = 'fruit'
-  SHAPE = 'shape'
+  FRUIT = 'Fruit'
+  SHAPE = 'Shape'
 
 class GameItemConfig(NamedTuple):
   text_identifier: str
@@ -79,8 +79,8 @@ class GameItemConfig(NamedTuple):
   type: ItemType
 
 class GameObjectType(Enum):
-  ITEM = 'items'
-  SHAPE = 'shapes'
+  ITEMS = 'Items'
+  SHAPES = 'Shapes'
 
 
 items_config: list[GameItemConfig] = [
@@ -127,6 +127,6 @@ shapes_config: list[GameItemConfig] = [
 ]
 
 game_items: dict[GameObjectType, GameItemConfig] = {
-  GameObjectType.ITEM: items_config,
-  GameObjectType.SHAPE: shapes_config
+  GameObjectType.ITEMS: items_config,
+  GameObjectType.SHAPES: shapes_config
 }
