@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Tuple
 
-from config.game_items import game_items
+from game_objects.game_items import game_items
 from config.interfaces import GameItemConfig, GameObjectType, SpriteOption
 from engine.sprite_handler import SpriteHandler
 from pygame.sprite import Group, Sprite

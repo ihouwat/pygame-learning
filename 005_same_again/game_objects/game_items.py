@@ -58,7 +58,6 @@ items_config: list[GameItemConfig] = [
   ]
 ]
 
-
 def create_shape(shape: Shape, color):
   surface = pygame.Surface((100, 100))
   if shape == Shape.CIRCLE:
