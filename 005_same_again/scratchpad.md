@@ -27,14 +27,17 @@ Progress:
 	- DONE many types of colored items (ex: fruits, vehicles, animals, etc.)
 	- DONE grayscale items
 	- DONE one type of colored items (ex: only fruits)
-
-
-	- voice only target item
+	
+- PARTIALLY DONE voice only target item (need to still record sounds)
 
 - refactor by moving classes into separate files
 - download more pngs and add attributions
 - add the menu
 - record and add languages
+- add music
+- add animations
+	- fade sprites in/out
+	- increase sprite size on hover
 
 Game states
 * Menu: the menu screen

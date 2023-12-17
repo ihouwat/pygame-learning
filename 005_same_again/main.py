@@ -19,23 +19,24 @@ FPS = 30
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 
-class Option(Enum):
+class SpriteOption(Enum):
   """ Represents an option to be applied to a sprite."""
-  GRAYSCALE = 'grayscale'
-  SHAPES = 'shapes'
+  GRAYSCALE = 'Grayscale'
+  SHAPES = 'Shapes',
+  SPOKENWORD = 'Spokenword'
 
 class SpriteHandler:
   """ Handles the creation of sprites and sprite groups. """
   
   @staticmethod
-  def create_sprite_group(max_number: int, items: list[GameItemConfig], option: Option = None) -> Group:
+  def create_sprite_group(max_number: int, items: list[GameItemConfig], option: SpriteOption = None) -> Group:
     """ Creates a sprite group given a list of items."""
     narrowed_down_items: list = SpriteHandler.pick_items_from_list(items, max_number)
     sprite_group: Group = SpriteHandler.create_group(narrowed_down_items, option)
     return sprite_group
 
   @staticmethod
-  def create_group(items: list[GameItemConfig], option: Option) -> Group:
+  def create_group(items: list[GameItemConfig], option: SpriteOption) -> Group:
     """ Creates a sprite group out of a list of items.
     
     Args:
@@ -53,15 +54,17 @@ class SpriteHandler:
     return group
 
   @staticmethod
-  def retrieve_image(image: str | pygame.Surface, option: Option) -> pygame.Surface:
+  def retrieve_image(image: str | pygame.Surface, option: SpriteOption) -> pygame.Surface:
     """ Retrieves the image for a sprite based on an option."""
-    if option == Option.SHAPES:
+    if option == SpriteOption.SHAPES:
       src_image = image # shapes images are created as surfaces
+    if option == SpriteOption.SPOKENWORD:
+      # TODO Change to use the 'sound' image
+      src_image = load_pygame_image('assets', 'images', image)
     else:
       src_image = load_pygame_image('assets', 'images', image)
-
-    if option == Option.GRAYSCALE:
-      src_image=pygame.transform.grayscale(src_image)
+      if option == SpriteOption.GRAYSCALE:
+        src_image=pygame.transform.grayscale(src_image)
 
     return src_image
   
@@ -156,7 +159,7 @@ class Puzzle(ABC):
   
   @property
   @abstractmethod
-  def option(self) -> Option:
+  def option(self) -> SpriteOption:
     pass
   
   @property
@@ -183,7 +186,7 @@ class ManyItemTypesPuzzle(Puzzle):
     return'Match a colored image to a list of images'
   
   @property
-  def option(self) -> Option:
+  def option(self) -> SpriteOption:
     return None
   
   @property
@@ -202,8 +205,8 @@ class GrayscaleItemPuzzle(Puzzle):
     return 'Match a grayscale image to a list of grayscale images'
   
   @property
-  def option(self) -> Option:
-    return Option.GRAYSCALE
+  def option(self) -> SpriteOption:
+    return SpriteOption.GRAYSCALE
   
   @property
   def max_number_of_items(self) -> int:
@@ -215,7 +218,22 @@ class GrayscaleItemPuzzle(Puzzle):
   
 class SpokenWordPuzzle(Puzzle):
   """ Puzzle implementation for matching spoken words."""
-  pass
+  
+  @property
+  def description(self) -> str:
+    return 'Match a spoken word to a list of colored shapes'
+  
+  @property
+  def option(self) -> SpriteOption:
+    return SpriteOption.SPOKENWORD
+  
+  @property
+  def max_number_of_items(self) -> int:
+    return 4
+  
+  @property
+  def puzzle_options(self) -> GameObjectType:
+    return Puzzle.items()[GameObjectType.ITEMS]
 
 class ColoredShapesPuzzle(Puzzle):
   """ Puzzle implementation for matching basic shapes with different colors."""
@@ -225,8 +243,8 @@ class ColoredShapesPuzzle(Puzzle):
     return 'Match a colored shape to a list of colored shapes'
   
   @property
-  def option(self) -> Option:
-    return Option.SHAPES
+  def option(self) -> SpriteOption:
+    return SpriteOption.SHAPES
   
   @property
   def max_number_of_items(self) -> int:
@@ -236,7 +254,7 @@ class ColoredShapesPuzzle(Puzzle):
   def puzzle_options(self) -> GameObjectType:
     return Puzzle.items()[GameObjectType.SHAPES]
 
-class SingleShapeManyColorsPuzzle(Puzzle):
+class ColorPuzzle(Puzzle):
   """ Puzzle implementation for matching shapes.""" 
   
   @property
@@ -244,8 +262,8 @@ class SingleShapeManyColorsPuzzle(Puzzle):
     return 'Match a colored shape to a list of shapes of various colors'
   
   @property
-  def option(self) -> Option:
-    return Option.SHAPES
+  def option(self) -> SpriteOption:
+    return SpriteOption.SHAPES
   
   @property
   def max_number_of_items(self) -> int:
@@ -256,7 +274,7 @@ class SingleShapeManyColorsPuzzle(Puzzle):
     random_shape = random.choice(list(Shape))
     return [x for x in Puzzle.items()[GameObjectType.SHAPES] if x.text_identifier == random_shape.value]
 
-class SingleColorManyShapes(Puzzle):
+class ShapePuzzle(Puzzle):
   """ Puzzle implementation for matching shapes."""
   
   @property
@@ -264,8 +282,8 @@ class SingleColorManyShapes(Puzzle):
     return 'Match a colored shape to a list of shapes'
   
   @property
-  def option(self) -> Option:
-    return Option.SHAPES
+  def option(self) -> SpriteOption:
+    return SpriteOption.SHAPES
   
   @property
   def max_number_of_items(self) -> int:
@@ -284,7 +302,7 @@ class SingleItemTypePuzzle(Puzzle):
     return 'Match a colored item to a list of items of the same type'
   
   @property
-  def option(self) -> Option:
+  def option(self) -> SpriteOption:
     return None
   
   @property
@@ -424,12 +442,13 @@ class EventHandler():
 
 # MOVE TO SOME SETUP FUNCTION
 puzzles: list[Puzzle] = [
-  SingleShapeManyColorsPuzzle(), 
-  SingleColorManyShapes(),
+  ColorPuzzle(), 
+  ShapePuzzle(),
   ColoredShapesPuzzle(),
   SingleItemTypePuzzle(),
   ManyItemTypesPuzzle(),
-  GrayscaleItemPuzzle()
+  GrayscaleItemPuzzle(),
+  SpokenWordPuzzle(),
 ]
 
 levels = [ Level(puzzle=puzzle, level_number=i+1, max_score=4) for i, puzzle in enumerate(puzzles) ]
