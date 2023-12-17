@@ -1,5 +1,6 @@
-from config.interfaces import Shape, Color, colors, GameItemConfig, GameObjectType, ItemType
 import pygame
+from config.interfaces import Color, GameItemConfig, GameObjectType, ItemType, Shape
+from config.settings import colors
 
 # game_items: list[Item] = [Item(**x) for x in [
 # 	{"text_identifier": "banana", "image": "img", "sound": "mp3", "word": "Banana"},

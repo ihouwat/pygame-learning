@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from enum import Enum
 
 import pygame
 
@@ -32,10 +31,3 @@ class Item(pygame.sprite.Sprite):
 #   # sound_path: pygame.mixer.Sound
 #   word: str
 #   text_identifier: str
-
-
-class SpriteOption(Enum):
-  """ Represents an option to be applied to a sprite."""
-  GRAYSCALE = 'Grayscale'
-  SHAPES = 'Shapes',
-  SPOKENWORD = 'Spokenword'

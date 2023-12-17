@@ -1,8 +1,9 @@
 
 from enum import Enum
 from typing import NamedTuple
+
 import pygame
-from config.settings import BLUE, GREEN, RED, WHITE, YELLOW
+
 
 class Color(Enum):
   RED = 'Red'
@@ -10,14 +11,6 @@ class Color(Enum):
   BLUE = 'Blue'
   YELLOW = 'Yellow'
   WHITE = 'White'
-
-colors = {
-  Color.RED: RED,
-  Color.GREEN: GREEN,
-  Color.BLUE: BLUE, 
-  Color.YELLOW: YELLOW,
-  Color.WHITE: WHITE
-}
 
 class ItemType(Enum):
   FRUIT = 'Fruit'
@@ -40,3 +33,9 @@ class Shape(Enum):
   SQUARE = 'Square'
   TRIANGLE = 'Triangle',
   RECTANGLE = 'Rectangle'
+
+class SpriteOption(Enum):
+  """ Represents an option to be applied to a sprite."""
+  GRAYSCALE = 'Grayscale'
+  SHAPES = 'Shapes',
+  SPOKENWORD = 'Spokenword'

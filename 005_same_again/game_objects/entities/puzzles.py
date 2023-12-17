@@ -1,7 +1,6 @@
 import random
 
-from config.interfaces import Color, GameObjectType, ItemType, Shape
-from game_objects.models.item import SpriteOption
+from config.interfaces import Color, GameObjectType, ItemType, Shape, SpriteOption
 from game_objects.models.puzzle import Puzzle
 
 
