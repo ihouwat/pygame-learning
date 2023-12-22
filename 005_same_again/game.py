@@ -2,27 +2,33 @@
 import sys
 
 import pygame
-from config.types import GameAction
 from engine.event_handler import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.entities.level import Level
 from game_objects.entities.puzzles import Puzzle
-from game_objects.entities.status_bar import StatusBar
+from models.types import GameAction, Language
 from pygame.sprite import Group, Sprite
+from ui.game_menu import GameMenu
+from ui.status_bar import StatusBar
 
 
 class Game:
   """ Represents a game of Same Again."""
 
-  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, levels: list[Puzzle]):
+  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Puzzle], language: str):
     self.renderer: Renderer = renderer
     self.event_listener: EventListener = event_listener
     self.status_bar: StatusBar = status_bar
+    self.game_menu: GameMenu = game_menu
     self.levels: list[Puzzle] = levels
+    
     self.current_level: Level = self.levels[0]
+    self.selected_language: Language = None
+    self.player_name: str = "Player"
 
-    self.start_new_turn()
+    self.renderer.draw_game_menu(self.game_menu)
+
 
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game."""
@@ -30,11 +36,21 @@ class Game:
     items = self.current_level.puzzle.items
     item_to_match = self.current_level.puzzle.item_to_match
 
+    if action == GameAction.START_GAME:
+      self.set_language_and_name(events)          
+      self.start_new_turn()    
     if action == GameAction.QUIT:
       self.quit()
     if action == GameAction.OBJECT_SELECTED and items and item_to_match:
       if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
         self.process_point_gain()
+
+  def set_language_and_name(self, events: list[pygame.event.Event]) -> None:
+      for lang in Language:
+        if(lang.name == events[0].language):
+          self.selected_language = lang
+      if len(events[0].player) > 0:
+        self.player_name = events[0].player
 
   def match_detected(self, items: Group, item_to_match: Sprite, coordinates) -> bool:
     """ Returns True if a user has match an item correctly against a list of items, False otherwise.
@@ -91,7 +107,7 @@ class Game:
   def render_new_puzzle(self) -> None:
     """ Renders a new puzzle."""
     self.current_level.puzzle.generate()
-    self.renderer.draw(self.current_level, self.status_bar)
+    self.renderer.draw(level=self.current_level, status_bar=self.status_bar, player_name=self.player_name, language=self.selected_language)
 
   def quit(self):
     """ Quits game and exits program. """

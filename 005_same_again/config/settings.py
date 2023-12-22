@@ -1,4 +1,5 @@
-from config.types import Color
+import pygame
+from models.types import Color
 
 # Predefined color values
 BLUE = (0, 0, 255)
@@ -26,4 +27,7 @@ FPS = 30
 # Fonts
 FONT_NAME = "Verdana"
 FONT_REGULAR = 60
-FONT_SMALL = 30
+FONT_SMALL = 20
+
+# Custom events
+START_GAME = pygame.USEREVENT

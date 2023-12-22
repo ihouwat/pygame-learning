@@ -1,6 +1,6 @@
 import pygame
-from config.types import Color, ItemConfig, ItemCategory, RealWorldObjectCategory, Shape
 from config.settings import colors
+from models.types import Color, ItemCategory, ItemConfig, RealWorldObjectCategory, Shape
 
 """ Game items will be used to create sprites for the puzzles that will be used in the game. 
   There are two types of game items:

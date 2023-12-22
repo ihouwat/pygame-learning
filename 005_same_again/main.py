@@ -1,9 +1,13 @@
-
 import pygame
 from config.prepare import frames_per_sec, game
 from config.settings import FPS
 
-while 1:
-  game.run(events=pygame.event.get())
-  pygame.display.update()
-  frames_per_sec.tick(FPS)
+
+def run_loop():
+  while 1:
+    game.run(events=pygame.event.get())
+    pygame.display.update()
+    frames_per_sec.tick(FPS)
+
+if __name__ == "__main__":
+  run_loop()

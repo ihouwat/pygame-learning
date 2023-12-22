@@ -48,5 +48,12 @@ class SpriteOption(Enum):
 
 class GameAction(Enum):
   """ Represents an action to be applied in response to an event."""
-  QUIT = 'Quit',
-  OBJECT_SELECTED = 'Object was selected',
+  START_GAME = 0,
+  QUIT = 1,
+  OBJECT_SELECTED = 2,
+
+class Language(Enum):
+  """ Represents a language to be used in the game."""
+  ENGLISH = "English"
+  ARABIC = "Arabic"
+  PORTUGUESE = "Portuguese"

@@ -1,5 +1,6 @@
 import pygame
-from config.types import GameAction
+from config.settings import START_GAME
+from models.types import GameAction
 
 
 class EventListener():
@@ -23,3 +24,6 @@ class EventListener():
       if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:
           return GameAction.OBJECT_SELECTED
+      
+      if event.type == START_GAME:
+        return GameAction.START_GAME

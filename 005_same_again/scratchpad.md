@@ -37,14 +37,20 @@ Progress:
 	- DONE Need to move setup logic out of main.py into game_setup.py
 	- DONE Need to reexamine config folder
 - DONE add status bar
+- DONE add the menu
+	- DONE Play action
+	- DONE quit action
+	- DONE enter name
+	- DONE choose language
 
-- add the menu
+- add animations
+	- fade sprites in/out???
+	- level number animation
+	- increase sprite size on hover
+
 - download more pngs and add attributions
 - record and add languages
 - add music
-- add animations
-	- fade sprites in/out
-	- increase sprite size on hover
 
 Game states
 * Menu: the menu screen
