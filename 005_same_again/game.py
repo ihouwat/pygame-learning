@@ -8,7 +8,7 @@ from game_objects.entities.puzzles import Puzzle
 from pygame.sprite import Group, Sprite
 
 
-class GameManager:
+class Game:
   """ Represents a game of Same Again."""
 
   def __init__(self, renderer: Renderer, levels: list[Puzzle]):

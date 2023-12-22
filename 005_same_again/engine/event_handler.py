@@ -1,7 +1,7 @@
 import sys
 
 import pygame
-from game_manager import GameManager
+from game import Game
 
 
 class EventHandler():
@@ -11,7 +11,7 @@ class EventHandler():
     game (Game): The game to handle events for.
   """
 
-  def __init__(self, game: GameManager):
+  def __init__(self, game: Game):
     self.game = game
   
   def handle(self, events: list[pygame.event.Event]):

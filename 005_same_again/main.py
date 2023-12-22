@@ -3,7 +3,7 @@ import pygame
 from config.prepare import puzzles
 from engine.event_handler import EventHandler
 from engine.renderer import Renderer
-from game_manager import GameManager
+from game import Game
 from game_objects.entities.level import Level
 from config.settings import FPS
 
@@ -12,7 +12,7 @@ pygame.init()
 # MOVE TO GAME SETUP FUNCTION
 frames_per_sec = pygame.time.Clock()
 levels = [ Level(puzzle=puzzle, level_number=i+1, max_score=4) for i, puzzle in enumerate(puzzles) ]
-game = GameManager(renderer=Renderer(), levels=levels)
+game = Game(renderer=Renderer(), levels=levels)
 event_handler = EventHandler(game=game)
 
 while 1:
