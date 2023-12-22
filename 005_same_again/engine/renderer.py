@@ -40,7 +40,6 @@ class Renderer:
     
   def draw_status_bar(self, status_bar: StatusBar, player_name: str, score: int, level: int, language: Language) -> None:
     """ Renders the status bar."""
-    print(language)
     for surface, position in status_bar.update(player_name, score, level, language):
       self.display_surface.blit(surface, position)
       

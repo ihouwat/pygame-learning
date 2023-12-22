@@ -45,7 +45,6 @@ class SpriteHandler:
 		# 	src_image = load_pygame_image('assets', 'images', image)
 		else:
 			src_image = load_pygame_image('assets', 'images', image)
-			print(src_image)
 			if option == SpriteOption.GRAYSCALE:
 				src_image=pygame.transform.grayscale(src_image)
 

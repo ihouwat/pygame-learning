@@ -41,7 +41,7 @@ class Game:
       self.start_new_turn()    
     if action == GameAction.QUIT:
       self.quit()
-    if action == GameAction.OBJECT_SELECTED and items and item_to_match:
+    if action == GameAction.OBJECT_SELECTED:
       if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
         self.process_point_gain()
 
