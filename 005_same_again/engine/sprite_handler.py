@@ -1,7 +1,7 @@
 import random
 
 import pygame
-from config.types import SpriteOption, ItemConfig
+from config.types import ItemConfig, SpriteOption
 from funcs import load_pygame_image
 from game_objects.entities.item import Item
 from pygame.sprite import Group, Sprite

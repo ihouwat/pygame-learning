@@ -19,11 +19,6 @@ class Level:
   level_number: int
   score: int = 0
   
-  def reset_sprites(self) -> None:
-    """ Generate new sprites based on puzzle."""
-    return self.puzzle.generate()
-    
-  
   def increment_score(self, points: int) -> int:
     """ Increments the score by a given number of points."""
     self.score = self.score + points

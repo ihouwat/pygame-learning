@@ -6,32 +6,34 @@ from config.types import GameAction
 from engine.event_handler import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
-from game_objects.entities.item import Item
 from game_objects.entities.level import Level
 from game_objects.entities.puzzles import Puzzle
+from game_objects.entities.status_bar import StatusBar
 from pygame.sprite import Group, Sprite
 
 
 class Game:
   """ Represents a game of Same Again."""
 
-  def __init__(self, renderer: Renderer, levels: list[Puzzle], event_listener: EventListener):
-    self.levels: list[Puzzle] = levels
-    self.current_level: Level = self.levels[0]
-    self.items: Group = pygame.sprite.Group()
-    self.item_to_match: Item = pygame.sprite.Sprite()
+  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, levels: list[Puzzle]):
     self.renderer: Renderer = renderer
     self.event_listener: EventListener = event_listener
-  
-    self.create_puzzle()
-    
+    self.status_bar: StatusBar = status_bar
+    self.levels: list[Puzzle] = levels
+    self.current_level: Level = self.levels[0]
+
+    self.render_new_puzzle()
+
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game."""
     action = self.event_listener.process_events(events)
+    items = self.current_level.puzzle.items
+    item_to_match = self.current_level.puzzle.item_to_match
+
     if action == GameAction.QUIT:
       self.quit()
     if action == GameAction.OBJECT_SELECTED:
-      if(self.match_detected(self.items, self.item_to_match, pygame.mouse.get_pos())):
+      if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
         self.process_point_gain()
 
   def match_detected(self, items: Group, item_to_match: Sprite, coordinates) -> bool:
@@ -61,7 +63,7 @@ class Game:
       else:
         self.level_up()
     else:
-      self.create_puzzle()
+      self.start_new_turn()
 
   def completed_all_levels(self):
     """ Returns True if all levels have been completed, False otherwise."""
@@ -71,20 +73,24 @@ class Game:
     """ Levels up the game."""
     print('level up')
     # level_number is 1 based, so just pass it in to get the right level from the list
+    self.start_new_turn()
     self.current_level = self.levels[self.current_level.level_number]
-    self.create_puzzle()
-  
-  def create_puzzle(self) -> None:
-    """ Creates a new puzzle and resets screen."""
+
+  def start_new_turn(self) -> None:
+    """ Resets screen and creates a new puzzle."""
     self.reset_sprites()
-    self.item_to_match, self.items = self.current_level.puzzle.generate()
-    self.renderer.update_screen(self.items, self.item_to_match)
-    
+    self.render_new_puzzle()
+
   def reset_sprites(self) -> None:
     """ Remove all sprites."""
-    SpriteHandler.kill_sprite(self.item_to_match)
-    SpriteHandler.kill_sprite_group(self.items)
-    
+    SpriteHandler.kill_sprite(self.current_level.puzzle.item_to_match)
+    SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
+
+  def render_new_puzzle(self) -> None:
+    """ Renders a new puzzle."""
+    self.current_level.puzzle.generate()
+    self.renderer.draw(self.current_level, self.status_bar)
+
   def quit(self):
     """ Quits game and exits program. """
     print('quitting game')

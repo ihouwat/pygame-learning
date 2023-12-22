@@ -30,15 +30,16 @@ Progress:
 	
 - PARTIALLY DONE voice only target item (need to still record sounds)
 
-- refactor by moving classes into separate files
+- DONE refactor by moving classes into separate files
 	- DONE Created config, engine, game_objects files
 	- DONE Need to find a home from game_manager
-	- Need to find a home for the funcs.py
+	- DONE Need to find a home for the funcs.py
 	- DONE Need to move setup logic out of main.py into game_setup.py
 	- DONE Need to reexamine config folder
 
-- download more pngs and add attributions
 - add the menu
+- add the level display
+- download more pngs and add attributions
 - record and add languages
 - add music
 - add animations

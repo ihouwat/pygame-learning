@@ -22,3 +22,8 @@ SCREEN_HEIGHT = 800
 
 # Frames per second
 FPS = 30
+
+# Fonts
+FONT_NAME = "Verdana"
+FONT_REGULAR = 60
+FONT_SMALL = 30
