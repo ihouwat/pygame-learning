@@ -1,10 +1,10 @@
 
 import pygame
-from config.game_setup import puzzles
+from config.prepare import puzzles
 from engine.event_handler import EventHandler
 from engine.renderer import Renderer
 from game_manager import GameManager
-from game_objects.models.level import Level
+from game_objects.entities.level import Level
 from config.settings import FPS
 
 pygame.init()

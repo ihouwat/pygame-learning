@@ -2,9 +2,9 @@
 import pygame
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
-from game_objects.models.item import Item
-from game_objects.models.level import Level
-from game_objects.models.puzzle import Puzzle
+from game_objects.entities.item import Item
+from game_objects.entities.level import Level
+from game_objects.entities.puzzles import Puzzle
 from pygame.sprite import Group, Sprite
 
 

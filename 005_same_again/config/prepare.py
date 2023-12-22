@@ -1,5 +1,6 @@
 
 from game_objects.entities.puzzles import (
+		Puzzle,
     ColoredShapesPuzzle,
     ColorPuzzle,
     GrayscaleItemPuzzle,
@@ -8,7 +9,6 @@ from game_objects.entities.puzzles import (
     SingleItemTypePuzzle,
     SpokenWordPuzzle,
 )
-from game_objects.models.puzzle import Puzzle
 
 # MOVE TO SOME SETUP FUNCTION
 puzzles: list[Puzzle] = [
