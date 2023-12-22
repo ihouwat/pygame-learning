@@ -45,3 +45,8 @@ class SpriteOption(Enum):
   GRAYSCALE = 'Grayscale'
   SHAPES = 'Shapes',
   SPOKENWORD = 'Spokenword'
+
+class GameAction(Enum):
+  """ Represents an action to be applied in response to an event."""
+  QUIT = 'Quit',
+  OBJECT_SELECTED = 'Object was selected',

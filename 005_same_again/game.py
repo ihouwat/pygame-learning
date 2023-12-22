@@ -1,5 +1,9 @@
 
+import sys
+
 import pygame
+from config.types import GameAction
+from engine.event_handler import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.entities.item import Item
@@ -11,14 +15,24 @@ from pygame.sprite import Group, Sprite
 class Game:
   """ Represents a game of Same Again."""
 
-  def __init__(self, renderer: Renderer, levels: list[Puzzle]):
+  def __init__(self, renderer: Renderer, levels: list[Puzzle], event_listener: EventListener):
     self.levels: list[Puzzle] = levels
     self.current_level: Level = self.levels[0]
     self.items: Group = pygame.sprite.Group()
     self.item_to_match: Item = pygame.sprite.Sprite()
     self.renderer: Renderer = renderer
+    self.event_listener: EventListener = event_listener
   
     self.create_puzzle()
+    
+  def run(self, events: list[pygame.event.Event]) -> None:
+    """ Primary method that runs the game."""
+    action = self.event_listener.process_events(events)
+    if action == GameAction.QUIT:
+      self.quit()
+    if action == GameAction.OBJECT_SELECTED:
+      if(self.match_detected(self.items, self.item_to_match, pygame.mouse.get_pos())):
+        self.process_point_gain()
 
   def match_detected(self, items: Group, item_to_match: Sprite, coordinates) -> bool:
     """ Returns True if a user has match an item correctly against a list of items, False otherwise.
@@ -70,3 +84,9 @@ class Game:
     """ Remove all sprites."""
     SpriteHandler.kill_sprite(self.item_to_match)
     SpriteHandler.kill_sprite_group(self.items)
+    
+  def quit(self):
+    """ Quits game and exits program. """
+    print('quitting game')
+    pygame.quit()
+    sys.exit()

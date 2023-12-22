@@ -1,38 +1,25 @@
-import sys
-
 import pygame
-from game import Game
+from config.types import GameAction
 
 
-class EventHandler():
-  """ Handles events in the game.
+class EventListener():
+  """ Handles events in the game. """
   
-  Attributes:
-    game (Game): The game to handle events for.
-  """
-
-  def __init__(self, game: Game):
-    self.game = game
-  
-  def handle(self, events: list[pygame.event.Event]):
-    """ Primary method that handles a list of events."""
+  def process_events(self, events: list[pygame.event.Event]) -> GameAction:
+    """ Primary method that listens to and processes a list of events and returns a game action.
+    
+    Args:
+      events (list[pygame.event.Event]): A list of pygame events.
+    """
     for event in events:
       if event.type == pygame.QUIT:
-        self.quit()
+        return GameAction.QUIT
       
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
-          self.quit()
+          return GameAction.QUIT
 
       # on left click
       if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:
-          if(self.game.match_detected(self.game.items, self.game.item_to_match, event.pos)):
-            self.game.process_point_gain()
-  
-  def quit(self):
-    """ Quits game and exits program. """
-    print('quitting game')
-    pygame.quit()
-    sys.exit()
-
+          return GameAction.OBJECT_SELECTED
