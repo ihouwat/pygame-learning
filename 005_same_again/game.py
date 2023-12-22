@@ -95,7 +95,8 @@ class Game:
   def start_new_turn(self) -> None:
     """ Resets screen and creates a new puzzle."""
     self.reset_sprites()
-    self.render_new_puzzle()
+    self.current_level.puzzle.generate()
+    self.renderer.draw(level=self.current_level, status_bar=self.status_bar, player_name=self.player_name, language=self.selected_language)
 
   def reset_sprites(self) -> None:
     """ Remove all sprites."""
@@ -103,11 +104,6 @@ class Game:
       SpriteHandler.kill_sprite(self.current_level.puzzle.item_to_match)
     if(self.current_level.puzzle.items):
       SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
-
-  def render_new_puzzle(self) -> None:
-    """ Renders a new puzzle."""
-    self.current_level.puzzle.generate()
-    self.renderer.draw(level=self.current_level, status_bar=self.status_bar, player_name=self.player_name, language=self.selected_language)
 
   def quit(self):
     """ Quits game and exits program. """

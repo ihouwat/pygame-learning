@@ -44,12 +44,13 @@ Progress:
 	- DONE choose language
 
 - add animations
-	- fade sprites in/out???
-	- level number animation
+	- new level animation
 	- increase sprite size on hover
+	- fade sprites in/out between puzzles??
 
 - download more pngs and add attributions
-- record and add languages
+- record and add languages to the game
+	- need to add a language toggle
 - add music
 
 Game states
