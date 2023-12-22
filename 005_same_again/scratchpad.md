@@ -34,7 +34,7 @@ Progress:
 	- DONE Created config, engine, game_objects files
 	- DONE Need to find a home from game_manager
 	- Need to find a home for the funcs.py
-	- Need to move setup logic out of main.py into game_setup.py
+	- DONE Need to move setup logic out of main.py into game_setup.py
 	- DONE Need to reexamine config folder
 
 - download more pngs and add attributions
