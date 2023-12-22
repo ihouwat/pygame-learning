@@ -1,6 +1,6 @@
 import random
 
-from config.interfaces import Color, GameObjectType, ItemType, Shape, SpriteOption
+from config.types import Color, ItemCategory, ItemConfig, RealWorldObjectCategory, Shape, SpriteOption
 from game_objects.models.puzzle import Puzzle
 
 
@@ -20,8 +20,8 @@ class ManyItemTypesPuzzle(Puzzle):
 		return 4
 	
 	@property
-	def puzzle_options(self) -> GameObjectType:
-		return Puzzle.items()[GameObjectType.ITEMS]
+	def puzzle_options(self) -> list[ItemConfig]:
+		return Puzzle.items()[ItemCategory.REAL_WORLD_OBJECTS]
 
 class GrayscaleItemPuzzle(Puzzle):
 	""" Puzzle implementation for matching grayscale images."""
@@ -39,8 +39,8 @@ class GrayscaleItemPuzzle(Puzzle):
 		return 4
 	
 	@property
-	def puzzle_options(self) -> GameObjectType:
-		return Puzzle.items()[GameObjectType.ITEMS]
+	def puzzle_options(self) -> list[ItemConfig]:
+		return Puzzle.items()[ItemCategory.REAL_WORLD_OBJECTS]
 	
 class SpokenWordPuzzle(Puzzle):
 	""" Puzzle implementation for matching spoken words."""
@@ -58,8 +58,8 @@ class SpokenWordPuzzle(Puzzle):
 		return 4
 	
 	@property
-	def puzzle_options(self) -> GameObjectType:
-		return Puzzle.items()[GameObjectType.ITEMS]
+	def puzzle_options(self) -> list[ItemConfig]:
+		return Puzzle.items()[ItemCategory.REAL_WORLD_OBJECTS]
 
 class ColoredShapesPuzzle(Puzzle):
 	""" Puzzle implementation for matching basic shapes with different colors."""
@@ -77,8 +77,8 @@ class ColoredShapesPuzzle(Puzzle):
 		return 4
 	
 	@property
-	def puzzle_options(self) -> GameObjectType:
-		return Puzzle.items()[GameObjectType.SHAPES]
+	def puzzle_options(self) -> list[ItemConfig]:
+		return Puzzle.items()[ItemCategory.SHAPES]
 
 class ColorPuzzle(Puzzle):
 	""" Puzzle implementation for matching shapes.""" 
@@ -96,9 +96,9 @@ class ColorPuzzle(Puzzle):
 		return 4
 	
 	@property
-	def puzzle_options(self) -> GameObjectType:
+	def puzzle_options(self) -> list[ItemConfig]:
 		random_shape = random.choice(list(Shape))
-		return [x for x in Puzzle.items()[GameObjectType.SHAPES] if x.text_identifier == random_shape.value]
+		return [x for x in Puzzle.items()[ItemCategory.SHAPES] if x.text_identifier == random_shape.value]
 
 class ShapePuzzle(Puzzle):
 	""" Puzzle implementation for matching shapes."""
@@ -116,9 +116,9 @@ class ShapePuzzle(Puzzle):
 		return 4
 	
 	@property
-	def puzzle_options(self) -> GameObjectType:
+	def puzzle_options(self) -> list[ItemConfig]:
 		color = random.choice(list(Color))
-		return  [x for x in Puzzle.items()[GameObjectType.SHAPES] if x.color == color.value]
+		return  [x for x in Puzzle.items()[ItemCategory.SHAPES] if x.color == color.value]
 
 class SingleItemTypePuzzle(Puzzle):
 	""" Puzzle implementation for matching a single type of item."""
@@ -136,6 +136,6 @@ class SingleItemTypePuzzle(Puzzle):
 		return 4
 	
 	@property
-	def puzzle_options(self) -> GameObjectType:
-		type = random.choice([type for type in list(ItemType) if type != ItemType.SHAPE])
-		return  [x for x in Puzzle.items()[GameObjectType.ITEMS] if x.type == type]
+	def puzzle_options(self) -> list[ItemConfig]:
+		type = random.choice([type for type in list(RealWorldObjectCategory)])
+		return  [x for x in Puzzle.items()[ItemCategory.REAL_WORLD_OBJECTS] if x.type == type]

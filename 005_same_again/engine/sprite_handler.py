@@ -1,7 +1,7 @@
 import random
 
 import pygame
-from config.interfaces import SpriteOption, GameItemConfig
+from config.types import SpriteOption, ItemConfig
 from funcs import load_pygame_image
 from game_objects.models.item import Item
 from pygame.sprite import Group, Sprite
@@ -11,18 +11,18 @@ class SpriteHandler:
 	""" Handles the creation of sprites and sprite groups. """
 	
 	@staticmethod
-	def create_sprite_group(max_number: int, items: list[GameItemConfig], option: SpriteOption = None) -> Group:
+	def create_sprite_group(max_number: int, items: list[ItemConfig], option: SpriteOption = None) -> Group:
 		""" Creates a sprite group given a list of items."""
 		narrowed_down_items: list = SpriteHandler.pick_items_from_list(items, max_number)
 		sprite_group: Group = SpriteHandler.create_group(narrowed_down_items, option)
 		return sprite_group
 
 	@staticmethod
-	def create_group(items: list[GameItemConfig], option: SpriteOption) -> Group:
+	def create_group(items: list[ItemConfig], option: SpriteOption) -> Group:
 		""" Creates a sprite group out of a list of items.
 		
 		Args:
-			items (list[GameItemConfig]): A list of gmae items to be used to create the sprite group.
+			items (list[ItemConfig]): A list of gmae items to be used to create the sprite group.
 			option (Option): An option to be applied to the sprite.
 		"""
 		group = pygame.sprite.Group()

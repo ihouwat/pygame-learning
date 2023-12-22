@@ -1,5 +1,5 @@
 import pygame
-from config.interfaces import Color, GameItemConfig, GameObjectType, ItemType, Shape
+from config.types import Color, ItemConfig, ItemCategory, RealWorldObjectCategory, Shape
 from config.settings import colors
 
 """ Game items will be used to create sprites for the puzzles that will be used in the game. 
@@ -53,14 +53,14 @@ from config.settings import colors
 # 	{"text_identifier": "frog", "image": "img", "sound": "mp3", "word": "A frog"},
 # ]]
 
-items_config: list[GameItemConfig] = [
-  GameItemConfig(**x)
+items_config: list[ItemConfig] = [
+  ItemConfig(**x)
   for x in [
-    {"text_identifier": "banana", "image": "banana.png", "sound": "mp3", "word": "Banana", "color": Color.YELLOW, "type": ItemType.FRUIT},
-    {"text_identifier": "strawberry", "image": "strawberry.png", "sound": "mp3", "word": "Strawberry", "color": Color.RED, "type":ItemType.FRUIT},
-    {"text_identifier": "pear", "image": "pear.png", "sound": "mp3", "word": "Pear", "color": Color.RED, "type": ItemType.FRUIT},
-    {"text_identifier": "apple", "image": "apple.png", "sound": "mp3", "word": "Apple", "color": Color.GREEN, "type": ItemType.FRUIT},
-    {"text_identifier": "pineapple", "image": "pineapple.png", "sound": "mp3", "word": "Pineapple", "color": Color.YELLOW, "type": ItemType.FRUIT},
+    {"text_identifier": "banana", "image": "banana.png", "sound": "mp3", "word": "Banana", "color": Color.YELLOW, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "strawberry", "image": "strawberry.png", "sound": "mp3", "word": "Strawberry", "color": Color.RED, "type":RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "pear", "image": "pear.png", "sound": "mp3", "word": "Pear", "color": Color.RED, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "apple", "image": "apple.png", "sound": "mp3", "word": "Apple", "color": Color.GREEN, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "pineapple", "image": "pineapple.png", "sound": "mp3", "word": "Pineapple", "color": Color.YELLOW, "type": RealWorldObjectCategory.FRUIT},
   ]
 ]
 
@@ -77,20 +77,20 @@ def create_shape(shape: Shape, color):
 
   return surface
 
-shapes_config: list[GameItemConfig] = [
-  GameItemConfig(
+shapes_config: list[ItemConfig] = [
+  ItemConfig(
         text_identifier=shape.value,
         image=create_shape(shape, color_value),
         sound=shape.value,
         word=shape.value,
         color=color_name.value,
-        type=ItemType.SHAPE.value
+        type="Shape"
     )
   for shape in Shape
   for color_name, color_value in colors.items()
 ]
 
-game_items: dict[GameObjectType, GameItemConfig] = {
-  GameObjectType.ITEMS: items_config,
-  GameObjectType.SHAPES: shapes_config
+game_items: dict[ItemCategory, ItemConfig] = {
+  ItemCategory.REAL_WORLD_OBJECTS: items_config,
+  ItemCategory.SHAPES: shapes_config
 }

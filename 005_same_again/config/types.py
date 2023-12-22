@@ -12,27 +12,26 @@ class Color(Enum):
   YELLOW = 'Yellow'
   WHITE = 'White'
 
-class ItemType(Enum):
+class ItemCategory(Enum):
+  """ Represents the category of item to be created.
+    Real-world objects: images that represent real-world objects, such as fruits, vegetables, vehicles, household items, etc.
+    Shapes: a shape drawn with the Pygame API.
+  """
+  REAL_WORLD_OBJECTS = 'Real-world objects'
+  SHAPES = 'Shapes'
+
+class RealWorldObjectCategory(Enum):
   """ Represents the type of item to be created."""
   FRUIT = 'Fruit'
-  SHAPE = 'Shape'
 
-class GameItemConfig(NamedTuple):
+class ItemConfig(NamedTuple):
   """ Represents metadata for items that are the basis to create sprites."""
   text_identifier: str
   image: str | pygame.Surface
   sound: str
   word: str
   color: Color
-  type: ItemType
-
-class GameObjectType(Enum):
-  """ Represents the type of sprite to be created.
-    Items: A sprite that represents an object from an image.
-    Shapes: A sprite that represents a shape drawn with the Pygame API.
-  """
-  ITEMS = 'Items'
-  SHAPES = 'Shapes'
+  type: RealWorldObjectCategory
 
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""

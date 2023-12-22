@@ -1,4 +1,4 @@
-from config.interfaces import Color
+from config.types import Color
 
 # Predefined color values
 BLUE = (0, 0, 255)
