@@ -22,7 +22,7 @@ class Game:
     self.levels: list[Puzzle] = levels
     self.current_level: Level = self.levels[0]
 
-    self.render_new_puzzle()
+    self.start_new_turn()
 
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game."""
@@ -32,7 +32,7 @@ class Game:
 
     if action == GameAction.QUIT:
       self.quit()
-    if action == GameAction.OBJECT_SELECTED:
+    if action == GameAction.OBJECT_SELECTED and items and item_to_match:
       if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
         self.process_point_gain()
 
@@ -73,8 +73,8 @@ class Game:
     """ Levels up the game."""
     print('level up')
     # level_number is 1 based, so just pass it in to get the right level from the list
-    self.start_new_turn()
     self.current_level = self.levels[self.current_level.level_number]
+    self.start_new_turn()
 
   def start_new_turn(self) -> None:
     """ Resets screen and creates a new puzzle."""
@@ -83,8 +83,10 @@ class Game:
 
   def reset_sprites(self) -> None:
     """ Remove all sprites."""
-    SpriteHandler.kill_sprite(self.current_level.puzzle.item_to_match)
-    SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
+    if(self.current_level.puzzle.item_to_match):
+      SpriteHandler.kill_sprite(self.current_level.puzzle.item_to_match)
+    if(self.current_level.puzzle.items):
+      SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
 
   def render_new_puzzle(self) -> None:
     """ Renders a new puzzle."""

@@ -36,9 +36,9 @@ Progress:
 	- DONE Need to find a home for the funcs.py
 	- DONE Need to move setup logic out of main.py into game_setup.py
 	- DONE Need to reexamine config folder
+- DONE add status bar
 
 - add the menu
-- add the level display
 - download more pngs and add attributions
 - record and add languages
 - add music
