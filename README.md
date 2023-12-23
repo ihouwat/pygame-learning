@@ -1,8 +1,8 @@
 # Pygame
 
-Folder structure:
+## Folder structure:
 * `same_again_game`: a matching and language skills game for my kiddo, my own code
-* `tutorials folder`:
+* `tutorials`:
 	* `000_game-loop`: the Game Loop and how to initialize and end a pygame program
 	* `001_drawing`: surfaces, displaying images
 	* `002_events`: simple event handling

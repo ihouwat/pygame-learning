@@ -52,6 +52,7 @@ Progress:
 - record and add languages to the game
 	- need to add a language toggle
 - add music
+- update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
 
 Game states
 * Menu: the menu screen
