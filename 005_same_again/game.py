@@ -6,7 +6,7 @@ from engine.event_handler import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.entities.level import Level
-from models.types import GameAction, Language
+from models.game_types import GameAction, Language
 from pygame.sprite import Group, Sprite
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
@@ -16,7 +16,7 @@ from ui.ui_display import UIDisplay
 class Game:
   """ Represents a game of Same Again."""
 
-  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: str):
+  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language):
     self.renderer: Renderer = renderer
     self.event_listener: EventListener = event_listener
     self.status_bar: StatusBar = status_bar
@@ -25,11 +25,11 @@ class Game:
     
     # game state (candidates for extraction)
     self.current_level: Level = self.levels[0]
-    self.selected_language: Language = None
+    self.selected_language: Language = language
     self.player_name: str = "Player"
 
     # ui display state
-    self.ui_display = UIDisplay(language=Language, player_name=self.player_name, score=self.current_level.score, level=self.current_level.level_number)
+    self.ui_display = UIDisplay(language=language, player_name=self.player_name, score=self.current_level.score, level=self.current_level.level_number)
 
     self.renderer.draw_game_menu(self.game_menu)
 

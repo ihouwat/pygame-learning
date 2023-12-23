@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.types import Language
+from models.game_types import Language
 
 
 @dataclass(kw_only=True)

@@ -1,7 +1,6 @@
 import random
 
-from models.puzzle import Puzzle
-from models.types import (
+from models.game_types import (
 	Color,
 	ItemCategory,
 	ItemConfig,
@@ -9,6 +8,7 @@ from models.types import (
 	Shape,
 	SpriteOption,
 )
+from models.puzzle import Puzzle
 
 
 class ManyItemTypesPuzzle(Puzzle):
@@ -20,7 +20,7 @@ class ManyItemTypesPuzzle(Puzzle):
 	
 	@property
 	def option(self) -> SpriteOption:
-		return None
+		return SpriteOption.NONE
 	
 	@property
 	def max_number_of_items(self) -> int:
@@ -125,7 +125,7 @@ class ShapePuzzle(Puzzle):
 	@property
 	def puzzle_options(self) -> list[ItemConfig]:
 		color = random.choice(list(Color))
-		return  [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.color == color.value]
+		return  [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.color == color]
 
 class SingleItemTypePuzzle(Puzzle):
 	""" Puzzle implementation for matching a single type of item."""
@@ -136,7 +136,7 @@ class SingleItemTypePuzzle(Puzzle):
 	
 	@property
 	def option(self) -> SpriteOption:
-		return None
+		return SpriteOption.NONE
 	
 	@property
 	def max_number_of_items(self) -> int:

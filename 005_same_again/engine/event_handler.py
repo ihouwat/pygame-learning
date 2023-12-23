@@ -1,12 +1,12 @@
 import pygame
 from config.settings import START_GAME
-from models.types import GameAction
+from models.game_types import GameAction
 
 
 class EventListener():
   """ Handles events in the game. """
   
-  def process_events(self, events: list[pygame.event.Event]) -> GameAction:
+  def process_events(self, events: list[pygame.event.Event]) -> GameAction | None:
     """ Primary method that listens to and processes a list of events and returns a game action.
     
     Args:

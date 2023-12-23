@@ -1,5 +1,5 @@
 import pygame
-from models.types import Color
+from models.game_types import Color
 
 # Predefined color values
 BLUE = (0, 0, 255)

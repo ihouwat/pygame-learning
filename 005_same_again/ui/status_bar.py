@@ -3,7 +3,7 @@ from typing import Tuple
 
 import pygame
 from config.settings import FONT_NAME, FONT_SMALL
-from models.types import Color
+from models.game_types import Color
 from ui.ui_display import UIDisplay
 
 

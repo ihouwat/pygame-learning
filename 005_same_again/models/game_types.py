@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import NamedTuple
 
-import pygame
+from models.image_content import ImageSource
 
 
 class Color(Enum):
@@ -27,11 +27,11 @@ class RealWorldObjectCategory(Enum):
 class ItemConfig(NamedTuple):
   """ Represents metadata for items that are the basis to create sprites."""
   text_identifier: str
-  image: str | pygame.Surface
+  image: ImageSource
   sound: str
   word: str
   color: Color
-  type: RealWorldObjectCategory
+  type: RealWorldObjectCategory | str
 
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""
@@ -42,6 +42,7 @@ class Shape(Enum):
 
 class SpriteOption(Enum):
   """ Represents an option to be applied to a sprite."""
+  NONE = 'None'
   GRAYSCALE = 'Grayscale'
   SHAPES = 'Shapes',
   SPOKENWORD = 'Spokenword'

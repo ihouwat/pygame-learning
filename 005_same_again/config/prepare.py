@@ -13,7 +13,7 @@ from game_objects.entities.puzzles import (
     SingleItemTypePuzzle,
     SpokenWordPuzzle,
 )
-from models.types import Language
+from models.game_types import Language
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 
@@ -33,7 +33,7 @@ puzzles: list[Puzzle] = [
 
 # initialize levels, game, and, clock
 frames_per_sec = pygame.time.Clock()
-levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=4) for i, puzzle in enumerate(puzzles) ]
+levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=1) for i, puzzle in enumerate(puzzles) ]
 game = Game(
     renderer=Renderer(),
     event_listener=EventListener(),

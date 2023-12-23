@@ -1,9 +1,9 @@
 import random
 
 import pygame
-from funcs import load_pygame_image
 from game_objects.entities.item import Item
-from models.types import ItemConfig, SpriteOption
+from models.game_types import ItemConfig, SpriteOption
+from models.image_content import ImageSource
 from pygame.sprite import Group, Sprite
 
 
@@ -11,7 +11,7 @@ class SpriteHandler:
 	""" Handles the creation of sprites and sprite groups. """
 	
 	@staticmethod
-	def create_sprite_group(max_number: int, items: list[ItemConfig], option: SpriteOption = None) -> Group:
+	def create_sprite_group(max_number: int, items: list[ItemConfig], option: SpriteOption) -> Group:
 		""" Creates a sprite group given a list of items."""
 		narrowed_down_items: list = SpriteHandler.pick_items_from_list(items, max_number)
 		sprite_group: Group = SpriteHandler.create_group(narrowed_down_items, option)
@@ -36,17 +36,14 @@ class SpriteHandler:
 		return group
 
 	@staticmethod
-	def retrieve_image(image: str | pygame.Surface, option: SpriteOption) -> pygame.Surface:
+	def retrieve_image(image: ImageSource, option: SpriteOption) -> pygame.Surface:
 		""" Retrieves the image for a sprite based on an option."""
-		if option == SpriteOption.SHAPES:
-			src_image = image # shapes images are created as surfaces
 		# if option == SpriteOption.SPOKENWORD:
 		# 	# TODO Change to use the 'sound' image
 		# 	src_image = load_pygame_image('assets', 'images', image)
-		else:
-			src_image = load_pygame_image('assets', 'images', image)
-			if option == SpriteOption.GRAYSCALE:
-				src_image=pygame.transform.grayscale(src_image)
+		src_image = image.get_image()
+		if option == SpriteOption.GRAYSCALE:
+			src_image=pygame.transform.grayscale(src_image)
 
 		return src_image
 	
@@ -72,7 +69,7 @@ class SpriteHandler:
 		return items
 
 	@staticmethod
-	def pick_item_to_match(items: Group) -> Sprite:
+	def pick_item_to_match(items: Group) -> Item:
 		""" Picks a random item from a sprite group."""
 		return random.choice(items.sprites())
 	

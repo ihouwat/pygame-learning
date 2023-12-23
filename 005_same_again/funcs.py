@@ -17,9 +17,12 @@ def get_file(*path_args) -> str:
     str: The absolute file path.
   """
   # sys.modules['__main__'].__file__ is how we get the path to the main module
-  package_root = pathlib.Path(sys.modules['__main__'].__file__).resolve().parent
-  file_path = os.path.join(package_root, *path_args)
-  return file_path
+  if sys.modules['__main__'].__file__ is not None:
+    package_root = pathlib.Path(sys.modules['__main__'].__file__).resolve().parent
+    file_path = os.path.join(package_root, *path_args)
+    return file_path
+  else:
+    raise RuntimeError("Unable to find the main module. The main module is required for the application to run correctly.")
 
 def load_pygame_image(*path_args) -> pygame.Surface:
   """
