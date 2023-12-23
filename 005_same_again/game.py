@@ -63,6 +63,7 @@ class Game:
         self.process_point_gain()
 
   def set_language_and_name(self, events: list[pygame.event.Event]) -> None:
+      """ Sets the language and player name from the game menu."""
       for lang in Language:
         if(lang.name == events[0].language):
           self.selected_language = lang
