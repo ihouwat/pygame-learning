@@ -1,10 +1,9 @@
 import pygame
 from config.settings import SCREEN_HEIGHT, SCREEN_WIDTH
-from game_objects.entities.level import Level
-from models.types import Language
 from pygame.sprite import Group, Sprite
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
+from ui.ui_display import UIDisplay
 
 
 class Renderer:
@@ -13,11 +12,11 @@ class Renderer:
     self.display_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Same Again")
 
-  def draw(self, level: Level, status_bar: StatusBar, player_name: str, language: Language) -> None:
-    """ Updates the screen with a new set of items and a target item."""
-    self.arrange_items(level.puzzle.items)
-    self.draw_items(level.puzzle.items, level.puzzle.item_to_match)
-    self.draw_status_bar(status_bar, player_name, level.score, level.level_number, language)
+  def draw(self, item_to_match: Sprite, items: Group, status_bar: StatusBar, ui_display: UIDisplay) -> None:
+    """ Updates the screen with a new set of items, a target item, and updates status bar."""
+    self.arrange_items(items)
+    self.draw_items(items, item_to_match)
+    self.draw_status_bar(status_bar, ui_display)
 
   def arrange_items(self, items: Group) -> None:
     """ Arranges a group of items on the screen. """
@@ -38,9 +37,9 @@ class Renderer:
     for sprite in items:
       self.display_surface.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
     
-  def draw_status_bar(self, status_bar: StatusBar, player_name: str, score: int, level: int, language: Language) -> None:
+  def draw_status_bar(self, status_bar: StatusBar, ui_display: UIDisplay) -> None:
     """ Renders the status bar."""
-    for surface, position in status_bar.update(player_name, score, level, language):
+    for surface, position in status_bar.update(ui_display=ui_display):
       self.display_surface.blit(surface, position)
       
   def draw_game_menu(self, game_menu: GameMenu) -> None:

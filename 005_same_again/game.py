@@ -6,26 +6,30 @@ from engine.event_handler import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.entities.level import Level
-from game_objects.entities.puzzles import Puzzle
 from models.types import GameAction, Language
 from pygame.sprite import Group, Sprite
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
+from ui.ui_display import UIDisplay
 
 
 class Game:
   """ Represents a game of Same Again."""
 
-  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Puzzle], language: str):
+  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: str):
     self.renderer: Renderer = renderer
     self.event_listener: EventListener = event_listener
     self.status_bar: StatusBar = status_bar
     self.game_menu: GameMenu = game_menu
-    self.levels: list[Puzzle] = levels
+    self.levels: list[Level] = levels
     
+    # game state (candidates for extraction)
     self.current_level: Level = self.levels[0]
     self.selected_language: Language = None
     self.player_name: str = "Player"
+
+    # ui display state
+    self.ui_display = UIDisplay(language=Language, player_name=self.player_name, score=self.current_level.score, level=self.current_level.level_number)
 
     self.renderer.draw_game_menu(self.game_menu)
 
@@ -93,10 +97,11 @@ class Game:
     self.start_new_turn()
 
   def start_new_turn(self) -> None:
-    """ Resets screen and creates a new puzzle."""
+    """ Resets sprites, creates a new puzzle, and updates UI."""
     self.reset_sprites()
-    self.current_level.puzzle.generate()
-    self.renderer.draw(level=self.current_level, status_bar=self.status_bar, player_name=self.player_name, language=self.selected_language)
+    item, items = self.current_level.puzzle.generate()
+    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+    self.renderer.draw(item_to_match=item, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
 
   def reset_sprites(self) -> None:
     """ Remove all sprites."""
