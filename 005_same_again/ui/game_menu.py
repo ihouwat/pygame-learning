@@ -10,7 +10,7 @@ from pygame_menu import events, themes
 class GameMenu:
 	def __init__(self):
 		""" Creates a game menu."""
-		self.languages: List[str] = [str(lang.name) for lang in Language]
+		self.languages: list[Tuple[str, int]] = list(tuple([(language.name, index) for index, language in enumerate(Language)]))
 		self.selected_language = self.languages[0]
 		self.player_name: str = ""
 		self.menu: pygame_menu.Menu = pygame_menu.Menu('Same Again!', width=SCREEN_WIDTH, height=SCREEN_HEIGHT, theme=themes.THEME_BLUE)
@@ -24,10 +24,10 @@ class GameMenu:
 		self.menu.disable()
 		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.selected_language[0], 'player': self.player_name}))
 	
-	def set_language(self, value: Tuple[list[str], int]) -> None:
+	def set_language(self, value: list[Tuple[str, int]], index: int) -> None:
 		""" Sets the language for the game."""
 		print('Language set to {}'.format(value))
-		self.selected_language = self.languages[value[1]]
+		self.selected_language = self.languages[index]
 	
 	def set_name(self, value: str) -> None:
 		""" Sets the player's name."""
