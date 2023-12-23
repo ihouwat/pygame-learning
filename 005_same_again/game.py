@@ -48,13 +48,17 @@ class Game:
 
 
   def run(self, events: list[pygame.event.Event]) -> None:
-    """ Primary method that runs the game."""
+    """ Primary method that runs the game.
+    
+    Args:
+      events (list[pygame.event.Event]): The list of pygame events.
+    """
     action = self.event_listener.process_events(events)
     items: Group = self.current_level.puzzle.items
     item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
 
     if action == GameAction.START_GAME:
-      self.set_language_and_name(events)          
+      self.set_language_and_name(events[0])          
       self.start_new_turn()    
     if action == GameAction.QUIT:
       self.quit()
@@ -62,13 +66,17 @@ class Game:
       if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
         self.process_point_gain()
 
-  def set_language_and_name(self, events: list[pygame.event.Event]) -> None:
-      """ Sets the language and player name from the game menu."""
+  def set_language_and_name(self, event: pygame.event.Event) -> None:
+      """ Sets the language and player name from the game menu.
+      
+      Args:
+        event (pygame.event.Event): The pygame event we extract the data from.
+      """
       for lang in Language:
-        if(lang.name == events[0].language):
+        if(lang.name == event.language):
           self.selected_language = lang
-      if len(events[0].player) > 0:
-        self.player_name = events[0].player
+      if len(event.player) > 0:
+        self.player_name = event.player
 
   def match_detected(self, items: Group, item_to_match: ItemSprite, coordinates) -> bool:
     """ Returns True if a user has match an item correctly against a list of items, False otherwise.
