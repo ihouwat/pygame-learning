@@ -1,10 +1,10 @@
-from typing import List, Tuple
+from typing import Tuple
 
 import pygame
 import pygame_menu
 from config.settings import SCREEN_HEIGHT, SCREEN_WIDTH, START_GAME
 from models.game_types import Language
-from pygame_menu import events, themes
+from pygame_menu import themes
 
 
 class GameMenu:
