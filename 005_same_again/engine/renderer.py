@@ -1,6 +1,6 @@
 import pygame
 from config.settings import SCREEN_HEIGHT, SCREEN_WIDTH
-from game_objects.entities.item_sprite import ItemSprite
+from game_objects.item_sprite import ItemSprite
 from pygame.sprite import Group
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar

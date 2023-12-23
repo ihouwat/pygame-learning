@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from game_objects.entities.puzzles import Puzzle
+from models.puzzle import Puzzle
 
 
 @dataclass (kw_only=True)

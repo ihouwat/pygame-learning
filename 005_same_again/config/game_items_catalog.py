@@ -7,7 +7,7 @@ from models.game_types import (
   RealWorldObjectCategory,
   Shape,
 )
-from models.image_content import PathSource, SurfaceSource
+from models.image_source import PathSource, SurfaceSource
 
 """ Game items will be used to create sprites for the puzzles that will be used in the game. 
   There are two types of game items:
@@ -96,7 +96,7 @@ shapes_config: list[ItemConfig] = [
   for shape in Shape
   for color_name, color_value in colors.items()
 ]
-game_items: dict[ItemCategory, list[ItemConfig]] = {
+game_items_catalog: dict[ItemCategory, list[ItemConfig]] = {
   ItemCategory.REAL_WORLD_OBJECTS: items_config,
   ItemCategory.SHAPES: shapes_config
 }

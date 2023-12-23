@@ -5,8 +5,8 @@ import pygame
 from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
-from game_objects.entities.item_sprite import ItemSprite
-from game_objects.entities.level import Level
+from game_objects.item_sprite import ItemSprite
+from game_objects.level import Level
 from models.game_types import GameAction, Language
 from pygame.sprite import Group, Sprite
 from ui.game_menu import GameMenu

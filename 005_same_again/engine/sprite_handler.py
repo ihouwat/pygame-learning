@@ -1,9 +1,9 @@
 import random
 
 import pygame
-from game_objects.entities.item_sprite import ItemSprite
+from game_objects.item_sprite import ItemSprite
 from models.game_types import ItemConfig, SpriteOption
-from models.image_content import ImageSource
+from models.image_source import ImageSource
 from pygame.sprite import Group, Sprite
 
 

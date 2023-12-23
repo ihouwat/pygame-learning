@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Tuple
 
+from config.game_items_catalog import game_items_catalog
 from engine.sprite_handler import SpriteHandler
-from game_objects.entities.item_sprite import ItemSprite
-from game_objects.game_items import game_items
+from game_objects.item_sprite import ItemSprite
 from models.game_types import (
 	ItemCategory,
 	ItemConfig,
@@ -34,7 +34,7 @@ class Puzzle(ABC):
 	
 	@classmethod
 	def item_catalog(cls) -> dict[ItemCategory, list[ItemConfig]]:
-		return game_items
+		return game_items_catalog
 
 	@property
 	@abstractmethod

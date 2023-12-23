@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import NamedTuple
 
-from models.image_content import ImageSource
+from models.image_source import ImageSource
 
 
 class Color(Enum):

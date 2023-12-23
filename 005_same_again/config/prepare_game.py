@@ -2,8 +2,8 @@ import pygame
 from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from game import Game
-from game_objects.entities.level import Level
-from game_objects.entities.puzzles import (
+from game_objects.level import Level
+from game_objects.puzzles import (
     ColoredShapesPuzzle,
     ColorPuzzle,
     GrayscaleItemPuzzle,
