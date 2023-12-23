@@ -5,9 +5,10 @@ import pygame
 from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
+from game_objects.entities.item_sprite import ItemSprite
 from game_objects.entities.level import Level
 from models.game_types import GameAction, Language
-from pygame.sprite import Group, Sprite
+from pygame.sprite import Group
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -37,8 +38,8 @@ class Game:
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game."""
     action = self.event_listener.process_events(events)
-    items = self.current_level.puzzle.items
-    item_to_match = self.current_level.puzzle.item_to_match
+    items: Group = self.current_level.puzzle.items
+    item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
 
     if action == GameAction.START_GAME:
       self.set_language_and_name(events)          
@@ -56,14 +57,14 @@ class Game:
       if len(events[0].player) > 0:
         self.player_name = events[0].player
 
-  def match_detected(self, items: Group, item_to_match: Sprite, coordinates) -> bool:
+  def match_detected(self, items: Group, item_to_match: ItemSprite, coordinates) -> bool:
     """ Returns True if a user has match an item correctly against a list of items, False otherwise.
     Args:
       items (Group): A group of items to match against.
       item_to_match (Sprite): The item to match.
       coordinates (tuple): The coordinates of the mouse click event.
     """
-    selected_item = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
+    selected_item: list[ItemSprite] = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
     print('selected item: ', selected_item )
     if(selected_item):
       if(selected_item[0] == item_to_match):
@@ -110,7 +111,7 @@ class Game:
     if(self.current_level.puzzle.items):
       SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
 
-  def quit(self):
+  def quit(self) -> None:
     """ Quits game and exits program. """
     print('quitting game')
     pygame.quit()
