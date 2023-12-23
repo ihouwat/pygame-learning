@@ -15,7 +15,19 @@ from ui.ui_display import UIDisplay
 
 
 class Game:
-  """ Represents a game of Same Again."""
+  """ Represents a game of Same Again.
+  
+  Attributes:
+    renderer(Renderer): The game renderer.
+    event_listener(EventListener): The event listener.
+    status_bar(StatusBar): The status bar.
+    game_menu(GameMenu): The game menu.
+    levels(list[Level]): The levels of the game.
+    current_level(Level): The current level of the game.
+    selected_language(Language): The selected language of the game.
+    player_name(str): The name of the player.
+    ui_display(UIDisplay): The UI display.
+  """
 
   def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language):
     self.renderer: Renderer = renderer
