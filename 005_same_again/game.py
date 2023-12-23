@@ -2,7 +2,7 @@
 import sys
 
 import pygame
-from engine.event_handler import EventListener
+from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.entities.level import Level

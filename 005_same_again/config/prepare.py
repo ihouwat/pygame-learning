@@ -1,5 +1,5 @@
 import pygame
-from engine.event_handler import EventListener
+from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from game import Game
 from game_objects.entities.level import Level

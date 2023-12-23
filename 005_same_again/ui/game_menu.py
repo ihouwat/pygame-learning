@@ -17,12 +17,17 @@ class GameMenu:
 		self.menu.add.text_input('Name: ', default='', onchange=self.set_name)
 		self.menu.add.selector(title='Language :', items=self.languages, onchange=self.set_language)
 		self.menu.add.button('Play', self.start_the_game)
-		self.menu.add.button('Quit', events.EXIT)
+		self.menu.add.button('Quit', self.quit_the_game)
 
 	def start_the_game(self) -> None:
 		""" Starts the game."""
 		self.menu.disable()
 		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.selected_language[0], 'player': self.player_name}))
+	
+	def quit_the_game(self) -> None:
+		""" Quits the game."""
+		self.menu.disable()
+		pygame.event.post(pygame.event.Event(pygame.QUIT))
 	
 	def set_language(self, value: list[Tuple[str, int]], index: int) -> None:
 		""" Sets the language for the game."""
