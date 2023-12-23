@@ -8,7 +8,7 @@ from engine.sprite_handler import SpriteHandler
 from game_objects.entities.item_sprite import ItemSprite
 from game_objects.entities.level import Level
 from models.game_types import GameAction, Language
-from pygame.sprite import Group
+from pygame.sprite import Group, Sprite
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -64,7 +64,7 @@ class Game:
       item_to_match (Sprite): The item to match.
       coordinates (tuple): The coordinates of the mouse click event.
     """
-    selected_item: list[ItemSprite] = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
+    selected_item: list[Sprite] = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
     print('selected item: ', selected_item )
     if(selected_item):
       if(selected_item[0] == item_to_match):
