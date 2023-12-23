@@ -58,6 +58,6 @@ class Puzzle(ABC):
 
 	def generate(self) -> Tuple[Item, Group]:
 		""" Generates a new puzzle."""
-		self.items = SpriteHandler.create_sprite_group(max_number=self.max_number_of_items, items=self.puzzle_options, option=self.option)
+		self.items = SpriteHandler.create_sprite_group(max_number=self.max_number_of_items, item_configs=self.puzzle_options, option=self.option)
 		self.item_to_match = SpriteHandler.pick_item_to_match(self.items)
 		return self.item_to_match, self.items

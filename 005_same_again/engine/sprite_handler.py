@@ -11,14 +11,14 @@ class SpriteHandler:
 	""" Handles the creation of sprites and sprite groups. """
 	
 	@staticmethod
-	def create_sprite_group(max_number: int, items: list[ItemConfig], option: SpriteOption) -> Group:
+	def create_sprite_group(max_number: int, item_configs: list[ItemConfig], option: SpriteOption) -> Group:
 		""" Creates a sprite group given a list of items."""
-		narrowed_down_items: list = SpriteHandler.pick_items_from_list(items, max_number)
+		narrowed_down_items: list[ItemConfig] = SpriteHandler.pick_items_from_list(item_configs, max_number)
 		sprite_group: Group = SpriteHandler.create_group(narrowed_down_items, option)
 		return sprite_group
 
 	@staticmethod
-	def create_group(items: list[ItemConfig], option: SpriteOption) -> Group:
+	def create_group(item_configs: list[ItemConfig], option: SpriteOption) -> Group:
 		""" Creates a sprite group out of a list of items.
 		
 		Args:
@@ -26,7 +26,7 @@ class SpriteHandler:
 			option (Option): An option to be applied to the sprite.
 		"""
 		group = pygame.sprite.Group()
-		for item in items:
+		for item in item_configs:
 			group.add(Item(
 			image=SpriteHandler.retrieve_image(item.image, option),
 			text_identifier=item.text_identifier,
