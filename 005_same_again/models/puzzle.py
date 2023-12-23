@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Tuple
 
 from engine.sprite_handler import SpriteHandler
-from game_objects.entities.item import Item
+from game_objects.entities.item_sprite import ItemSprite
 from game_objects.game_items import game_items
 from models.game_types import (
 	ItemCategory,
@@ -30,7 +30,7 @@ class Puzzle(ABC):
 		"""
 	
 	items: Group = Group()
-	item_to_match: Item = Item(image=Surface((0, 0)), word="", text_identifier="")
+	item_to_match: ItemSprite = ItemSprite(image=Surface((0, 0)), word="", text_identifier="")
 	
 	@classmethod
 	def item_catalog(cls) -> dict[ItemCategory, list[ItemConfig]]:
@@ -56,7 +56,7 @@ class Puzzle(ABC):
 	def puzzle_options(self) -> list[ItemConfig]:
 		pass
 
-	def generate(self) -> Tuple[Item, Group]:
+	def generate(self) -> Tuple[ItemSprite, Group]:
 		""" Generates a new puzzle."""
 		self.items = SpriteHandler.create_sprite_group(max_number=self.max_number_of_items, item_configs=self.puzzle_options, option=self.option)
 		self.item_to_match = SpriteHandler.pick_item_to_match(self.items)

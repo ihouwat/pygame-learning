@@ -1,7 +1,7 @@
 import random
 
 import pygame
-from game_objects.entities.item import Item
+from game_objects.entities.item_sprite import ItemSprite
 from models.game_types import ItemConfig, SpriteOption
 from models.image_content import ImageSource
 from pygame.sprite import Group, Sprite
@@ -27,7 +27,7 @@ class SpriteHandler:
 		"""
 		group = pygame.sprite.Group()
 		for item in item_configs:
-			group.add(Item(
+			group.add(ItemSprite(
 			image=SpriteHandler.retrieve_image(item.image, option),
 			text_identifier=item.text_identifier,
 			word=item.word
@@ -69,7 +69,7 @@ class SpriteHandler:
 		return items
 
 	@staticmethod
-	def pick_item_to_match(items: Group) -> Item:
+	def pick_item_to_match(items: Group) -> ItemSprite:
 		""" Picks a random item from a sprite group."""
 		return random.choice(items.sprites())
 	

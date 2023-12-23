@@ -4,7 +4,7 @@ import pygame
 
 
 @dataclass(kw_only=True, eq=True)
-class Item(pygame.sprite.Sprite):
+class ItemSprite(pygame.sprite.Sprite):
   image: pygame.Surface
   # sound: pygame.mixer.Sound
   word: str
