@@ -37,7 +37,7 @@ levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=4) for 
 game = Game(
     renderer=Renderer(),
     event_listener=EventListener(),
-    status_bar=StatusBar(rect=pygame.Rect(0, 0, 800, 50)),
+    status_bar=StatusBar(x_coordinate=10, y_coordinate=10),
     game_menu=GameMenu(),
     levels=levels,
     language=Language.ENGLISH,

@@ -9,10 +9,10 @@ from ui.ui_display import UIDisplay
 
 class StatusBar:
 	""" A status bar that displays the score and level."""
-	def __init__(self, rect: pygame.Rect):
-		self.rect: pygame.Rect = rect
-		font = pygame.font.match_font(FONT_NAME)
-		self.font = pygame.font.Font(font, FONT_SMALL)
+	def __init__(self, x_coordinate: int = 0, y_coordinate: int = 0):
+		self.x_coordinate = x_coordinate
+		self.y_coordinate = y_coordinate	
+		self.font = pygame.font.Font(pygame.font.match_font(FONT_NAME), FONT_SMALL)
 		self.text_color = pygame.Color(Color.WHITE.value)
 		self.background_color = pygame.Color('black')
 	
@@ -24,4 +24,4 @@ class StatusBar:
 		score_surface = self.font.render(f'Score: {ui_display.score}', True, self.text_color, self.background_color)
 		
 		line_height = self.font.get_linesize()
-		return [(surface, (0, line_height * i+1)) for i, surface in enumerate([player_name_surface, language_surface, level_surface, score_surface]) ]
+		return [(surface, (self.x_coordinate, self.y_coordinate + (line_height * i+1))) for i, surface in enumerate([player_name_surface, language_surface, level_surface, score_surface]) ]
