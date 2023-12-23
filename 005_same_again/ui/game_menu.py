@@ -9,7 +9,14 @@ from pygame_menu import themes
 
 class GameMenu:
 	def __init__(self):
-		""" Creates a game menu."""
+		""" Creates a game menu.
+
+		Attributes:
+			languages(list[Tuple[str, int]]): The languages available in the game.
+			selected_language(Tuple[str, int]): The selected language.
+			player_name(str): The name of the player.
+			menu(pygame_menu.Menu): The menu.
+		"""
 		self.languages: list[Tuple[str, int]] = list(tuple([(language.name, index) for index, language in enumerate(Language)]))
 		self.selected_language = self.languages[0]
 		self.player_name: str = ""

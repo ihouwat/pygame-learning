@@ -8,7 +8,11 @@ from ui.ui_display import UIDisplay
 
 
 class Renderer:
-  """ Handles the rendering of the game."""
+  """ Handles the rendering of the game.
+  
+  Attributes:
+    display_surface(pygame.Surface): The surface to be rendered.
+  """
   def __init__(self):
     self.display_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Same Again")

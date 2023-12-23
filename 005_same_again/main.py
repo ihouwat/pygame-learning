@@ -1,5 +1,5 @@
 import pygame
-from config.prepare import frames_per_sec, game
+from config.prepare_game import frames_per_sec, game
 from config.settings import FPS
 
 

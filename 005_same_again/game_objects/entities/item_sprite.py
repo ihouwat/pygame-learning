@@ -5,6 +5,14 @@ import pygame
 
 @dataclass(kw_only=True, eq=True)
 class ItemSprite(pygame.sprite.Sprite):
+  """ Represents an item sprite.
+  
+  Attributes:
+    image(pygame.Surface): The image of the item.
+    word(str): The word that the item represents.
+    text_identifier(str): The text identifier of the item.
+    sound(pygame.mixer.Sound): The sound of the word representing the item.
+  """
   image: pygame.Surface
   # sound: pygame.mixer.Sound
   word: str

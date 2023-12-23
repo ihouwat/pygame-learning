@@ -8,7 +8,15 @@ from ui.ui_display import UIDisplay
 
 
 class StatusBar:
-	""" A status bar that displays the score and level."""
+	""" A status bar that displays the score and level.
+	
+	Attributes:
+		x_coordinate(int): The x coordinate of the status bar.
+		y_coordinate(int): The y coordinate of the status bar.
+		font(pygame.font.Font): The font to be used for the status bar.
+		text_color(pygame.Color): The color of the text.
+		background_color(pygame.Color): The background color of the status bar.
+	"""
 	def __init__(self, x_coordinate: int = 0, y_coordinate: int = 0):
 		self.x_coordinate = x_coordinate
 		self.y_coordinate = y_coordinate	
