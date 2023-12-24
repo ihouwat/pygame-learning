@@ -42,7 +42,7 @@ class Renderer:
 
   def layout_item_to_match(self, item_to_match: ItemSprite) -> None:
     """ Arranges the target item on the screen. """
-    item_to_match.update(int(SCREEN_WIDTH / 2) - int(item_to_match.rect.width / 2), 100)
+    item_to_match.update((SCREEN_WIDTH // 2) - (item_to_match.rect.width // 2), 100)
 
   def draw_items(self, items: Group, item_to_match: ItemSprite) -> None:
     """ Renders the screen with a new set of items and a target item."""
