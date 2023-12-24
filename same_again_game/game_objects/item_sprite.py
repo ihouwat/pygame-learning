@@ -21,18 +21,18 @@ class ItemSprite(pygame.sprite.Sprite):
   def __post_init__(self):
     super().__init__()
     self.rect = self.image.get_rect()
-  
+
+  # By default, dataclass() will not implicitly add a __hash__() method unless it is safe to do so.
+  # we add this method in order to use instances of the class in pygame sprite groups
+  def __hash__(self) -> int:
+    return hash((self.text_identifier, self.word, self.image))
+
   @classmethod
   # 'ItemSprite' is a forward reference, a string that contains the class name of a class that hasn't been fully defined at the point we're adding the type hint
   def create_from(cls, sprite: 'ItemSprite') -> 'ItemSprite':
     """ Creates a copy of an item sprite."""
     return cls(image=sprite.image, text_identifier=sprite.text_identifier, word=sprite.word)
-  
-  # By default, dataclass() will not implicitly add a __hash__() method unless it is safe to do so.
-  # we add this method in order to use instances of the class in pygame sprite groups
-  def __hash__(self) -> int:
-    return hash((self.text_identifier, self.word, self.image))
-  
+
   def update(self, x: int, y: int):
     self.rect.x = x
     self.rect.y = y
