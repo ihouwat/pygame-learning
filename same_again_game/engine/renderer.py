@@ -9,6 +9,8 @@ from ui.ui_display import UIDisplay
 
 class Renderer:
   """ Handles the rendering of the game.
+  This class is reponsible for both laying out the game objects on the screen and rendering them.
+  That's ok considering the simplicity of the game.
   
   Attributes:
     display_surface(pygame.Surface): The surface to be rendered.
@@ -18,12 +20,15 @@ class Renderer:
     pygame.display.set_caption("Same Again")
 
   def draw(self, item_to_match: ItemSprite, items: Group, status_bar: StatusBar, ui_display: UIDisplay) -> None:
-    """ Updates the screen with a new set of items, a target item, and updates status bar."""
-    self.arrange_items(items)
+    """ Layouts and updates the screen with a new set of items, a target item, and updates status bar."""
+    # Layout
+    self.layout_items(items)
+    self.layout_item_to_match(item_to_match)
+    # Render
     self.draw_items(items, item_to_match)
     self.draw_status_bar(status_bar, ui_display)
 
-  def arrange_items(self, items: Group) -> None:
+  def layout_items(self, items: Group) -> None:
     """ Arranges a group of items on the screen. """
     total_items_width = sum(item.rect.width for item in items)
     # subtract total items width from screen width and divide by number of items + 1 to distribute spacing evenly between items
@@ -35,10 +40,14 @@ class Renderer:
       item.update(x, y)
       x += item.rect.width + spacing
 
+  def layout_item_to_match(self, item_to_match: ItemSprite) -> None:
+    """ Arranges the target item on the screen. """
+    item_to_match.update(int(SCREEN_WIDTH / 2) - int(item_to_match.rect.width / 2), 100)
+
   def draw_items(self, items: Group, item_to_match: ItemSprite) -> None:
-    """ Renders the screen with a new set of items, a target item."""
+    """ Renders the screen with a new set of items and a target item."""
     self.display_surface.fill((0, 0, 0))
-    self.display_surface.blit(item_to_match.image, ((SCREEN_WIDTH / 2) - (item_to_match.rect.width / 2), 100))
+    self.display_surface.blit(item_to_match.image, (item_to_match.rect.x, item_to_match.rect.y))
     for sprite in items:
       self.display_surface.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
     
