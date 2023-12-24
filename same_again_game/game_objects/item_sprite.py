@@ -27,6 +27,6 @@ class ItemSprite(pygame.sprite.Sprite):
   def __hash__(self) -> int:
     return hash((self.text_identifier, self.word, self.image))
   
-  def update_rect(self, x: int, y: int):
+  def update(self, x: int, y: int):
     self.rect.x = x
     self.rect.y = y

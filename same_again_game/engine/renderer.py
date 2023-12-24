@@ -32,7 +32,7 @@ class Renderer:
     y = SCREEN_HEIGHT - 300
 
     for item in items:
-      item.update_rect(x, y)
+      item.update(x, y)
       x += item.rect.width + spacing
 
   def draw_items(self, items: Group, item_to_match: ItemSprite) -> None:
