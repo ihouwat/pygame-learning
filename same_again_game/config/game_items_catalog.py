@@ -72,15 +72,17 @@ items_config: list[ItemConfig] = [
 ]
 
 def create_shape(shape: Shape, color) -> SurfaceSource:
-  surface = pygame.Surface((100, 100))
+  width = 140
+  height = 140
+  surface = pygame.Surface((width, height))
   if shape == Shape.CIRCLE:
-    pygame.draw.circle(surface, color, (100 // 2,100 // 2), 50)
+    pygame.draw.circle(surface=surface, color=color, center=(width // 2, height // 2), radius=width/2)
   elif shape == Shape.SQUARE:
-    pygame.draw.rect(surface, color, (0, 0, 100, 100))
+    pygame.draw.rect(surface=surface, color=color, rect=(0, 0, width, width))
   elif shape == Shape.TRIANGLE:
-    pygame.draw.polygon(surface, color, [(0, 100), (50, 0), (100, 100)])
+    pygame.draw.polygon(surface=surface, color=color, points=[(width // 2, 0), (0, height), (width, height)])
   elif shape == Shape.RECTANGLE:
-    pygame.draw.rect(surface, color, (0, 25, 100, 50))
+    pygame.draw.rect(surface=surface, color=color, rect=(0, height // 4, width, height // 2))
 
   return SurfaceSource(surface)
 
