@@ -71,10 +71,12 @@ items_config: list[ItemConfig] = [
   ]
 ]
 
-def create_shape(shape: Shape, color) -> SurfaceSource:
+def create_shape(shape: Shape, color: tuple[int, int, int]) -> pygame.Surface:
+  """ Creates a surface with a shape drawn on it."""
   width = 140
   height = 140
   surface = pygame.Surface((width, height))
+
   if shape == Shape.CIRCLE:
     pygame.draw.circle(surface=surface, color=color, center=(width // 2, height // 2), radius=width/2)
   elif shape == Shape.SQUARE:
@@ -84,12 +86,12 @@ def create_shape(shape: Shape, color) -> SurfaceSource:
   elif shape == Shape.RECTANGLE:
     pygame.draw.rect(surface=surface, color=color, rect=(0, height // 4, width, height // 2))
 
-  return SurfaceSource(surface)
+  return surface
 
 shapes_config: list[ItemConfig] = [
   ItemConfig(
         text_identifier=str(shape.value),
-        image=create_shape(shape, color_value),
+        image=SurfaceSource(create_shape(shape, color_value)),
         sound=str(shape.value),
         word=str(shape.value),
         color=color_name,

@@ -9,7 +9,7 @@ BLACK = (0,0,0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
-colors = {
+colors: dict[Color, tuple[int, int, int]] = {
   Color.RED: RED,
   Color.GREEN: GREEN,
   Color.BLUE: BLUE, 
