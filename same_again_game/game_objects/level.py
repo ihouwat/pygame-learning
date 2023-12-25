@@ -20,11 +20,15 @@ class Level:
   score: int = 0
   
   def increment_score(self, points: int) -> int:
-    """ Increments the score by a given number of points."""
+    """ Increments the score by a given number of points.
+    
+    Args:
+      points (int): The number of points to increment the score by.
+    """
     self.score = self.score + points
     print(f'new score for level {self.level_number}: {self.score}')
     return self.score
 
   def is_completed(self) -> bool:
-    """ Returns True if the level is completed, False otherwise."""
+    """ Checks if the level has been completed."""
     return self.score == self.max_score

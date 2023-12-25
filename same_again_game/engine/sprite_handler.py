@@ -70,7 +70,7 @@ class SpriteHandler:
 
 	@staticmethod
 	def pick_item_to_match(items: Group) -> ItemSprite:
-		""" Picks a random item from a sprite group and return a copy."""
+		""" Picks a random item from a sprite group and returns a copy."""
 		return ItemSprite.create_from(sprite=random.choice(items.sprites()))
 	
 	@staticmethod
