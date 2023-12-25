@@ -54,7 +54,13 @@ class SpriteHandler:
 		Args:
 			list_of_items (list): A list of items to pick from.
 			max_number (int): The maximum number of items to pick.
+
+		Raises:
+			ValueError: If the list of items is empty.
 		"""
+		if not list_of_items:
+			raise ValueError('list_of_items is empty')
+
 		used_indexes = set()
 		items = []
 
