@@ -32,3 +32,7 @@ class Level:
   def is_completed(self) -> bool:
     """ Checks if the level has been completed."""
     return self.score == self.max_score
+  
+  def reset(self) -> None:
+    """ Resets the level."""
+    self.score = 0

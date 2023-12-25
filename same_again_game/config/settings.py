@@ -31,3 +31,4 @@ FONT_SMALL = 20
 
 # Custom events
 START_GAME = pygame.USEREVENT
+RESUME_GAME = pygame.USEREVENT + 1

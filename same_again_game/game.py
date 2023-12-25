@@ -1,5 +1,6 @@
 
 import sys
+from typing import Optional
 
 import pygame
 from engine.event_listener import EventListener
@@ -53,18 +54,27 @@ class Game:
     Args:
       events (list[pygame.event.Event]): The list of pygame events.
     """
-    action = self.event_listener.process_events(events)
+    action: Optional[GameAction] = self.event_listener.process_events(events)
     items: Group = self.current_level.puzzle.items
     item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
 
-    if action == GameAction.START_GAME:
+    if action == GameAction.START_NEW_GAME:
+      for level in self.levels:
+        level.reset()
+      self.current_level = self.levels[0]
       self.set_language_and_name(events[0])          
-      self.start_new_turn()    
+      self.start_new_turn()
+    if action == GameAction.RESUME_GAME:
+      self.set_language_and_name(events[0])          
+      self.start_new_turn()
     if action == GameAction.QUIT:
       self.quit()
-    if action == GameAction.OBJECT_SELECTED:
+    if action == GameAction.SELECT:
       if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
         self.process_point_gain()
+    if action == GameAction.OPEN_MENU:
+      self.game_menu.open_menu()
+      self.renderer.draw_game_menu(self.game_menu)
 
   def set_language_and_name(self, event: pygame.event.Event) -> None:
       """ Sets the language and player name from the game menu.

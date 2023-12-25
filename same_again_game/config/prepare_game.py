@@ -33,7 +33,7 @@ puzzles: list[Puzzle] = [
 
 # initialize levels, game, and, clock
 frames_per_sec = pygame.time.Clock()
-levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=1) for i, puzzle in enumerate(puzzles) ]
+levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=2) for i, puzzle in enumerate(puzzles) ]
 game = Game(
     renderer=Renderer(),
     event_listener=EventListener(),

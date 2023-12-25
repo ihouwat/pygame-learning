@@ -100,6 +100,7 @@ shapes_config: list[ItemConfig] = [
   for shape in Shape
   for color_name, color_value in colors.items()
 ]
+
 game_items_catalog: dict[ItemCategory, list[ItemConfig]] = {
   ItemCategory.REAL_WORLD_OBJECTS: items_config,
   ItemCategory.SHAPES: shapes_config

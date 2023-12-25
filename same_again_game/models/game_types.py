@@ -37,7 +37,7 @@ class Shape(Enum):
   """ Represents a shape to construct a sprite with."""
   CIRCLE = 'Circle'
   SQUARE = 'Square'
-  TRIANGLE = 'Triangle',
+  TRIANGLE = 'Triangle'
   RECTANGLE = 'Rectangle'
 
 class SpriteOption(Enum):
@@ -49,9 +49,11 @@ class SpriteOption(Enum):
 
 class GameAction(Enum):
   """ Represents an action to be applied in response to an event."""
-  START_GAME = 0,
+  START_NEW_GAME = 0,
   QUIT = 1,
-  OBJECT_SELECTED = 2,
+  SELECT = 2,
+  OPEN_MENU = 3,
+  RESUME_GAME = 4
 
 class Language(Enum):
   """ Represents a language to be used in the game."""
