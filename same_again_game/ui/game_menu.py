@@ -48,10 +48,10 @@ class GameMenu:
 			self.menu.add.button('Quit', self.quit_the_game)
 
 	def start_the_game(self) -> None:
-		""" Starts the game."""
+		""" Starts the game and emits an event containing the player configured settings."""
 		self.menu.disable()
 		self.is_game_in_progress = True
-		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.selected_language[0], 'player': self.player_name}))
+		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.languages[self.selected_language_index][0], 'player': self.player_name}))
 	
 	def resume_the_game(self) -> None:
 		""" Starts the game."""
