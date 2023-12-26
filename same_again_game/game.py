@@ -8,10 +8,8 @@ from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
-from models.game_types import GameAction, Language, Shape
+from models.game_types import GameAction, Language
 from pygame.sprite import Group
-from config.game_items_catalog import create_shape
-from config.settings import colors
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -87,8 +85,7 @@ class Game:
           print('match detected')
           self.process_point_gain()
 
-
-      # scale on hover
+      # scale sprites on hover
       if self.mouse_in_focus:
         for sprite in items:
           if sprite.rect.collidepoint(pygame.mouse.get_pos()):
@@ -98,8 +95,7 @@ class Game:
             if sprite.scale_factor > 100:
               sprite.scale(scaling_factor=-3)
 
-
-        self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
+      self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
 
   def save_user_settings(self, event: pygame.event.Event) -> None:
       """ Sets the language and player name from the game menu.

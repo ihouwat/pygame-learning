@@ -44,13 +44,14 @@ Progress:
 	- DONE choose language
 
 - add animations
+	- DONE increase sprite size on hover, decrease on mouse out
 	- new level animation
-	- increase sprite size on hover
 	- fade sprites in/out between puzzles??
 
 - download more pngs and add attributions
 - record and add languages to the game
 	- need to add a language toggle
+	- on success, play the sound in the target language and a sound effect (ex: applause)
 - add music
 - update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
 
