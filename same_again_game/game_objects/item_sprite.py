@@ -31,11 +31,11 @@ class ItemSprite(pygame.sprite.Sprite):
   
   def __post_init__(self):
     super().__init__()
-    self.rect = self.image.get_rect()
-    self.initial_size = self.rect
-    self.current_size = self.image.get_rect().size
-    self.original_image = self.image
-    self.scale_factor = 100
+    self.rect: pygame.Rect = self.image.get_rect()
+    self.initial_size: tuple[int, int] = self.image.get_rect().size
+    self.current_size: tuple[int, int] = self.image.get_rect().size
+    self.original_image: pygame.Surface = self.image
+    self.scale_factor: int = 100
 
   # By default, dataclass() will not implicitly add a __hash__() method unless it is safe to do so.
   # we add this method in order to use instances of the class in pygame sprite groups
@@ -54,7 +54,10 @@ class ItemSprite(pygame.sprite.Sprite):
 
   def scale(self, scaling_factor: int) -> None:
     """ Scales the item sprite.
-      Will vary by type of item sprite.
+      Algorithm vary by type of item sprite.
+      
+      Args:
+        scaling_factor(int): The amount to scale the item sprite.
     """
     self.scale_factor += scaling_factor
     old_center = self.rect.center
@@ -82,6 +85,9 @@ class ItemSprite(pygame.sprite.Sprite):
   def scale_shape(self, scaling_factor) -> tuple[int, int]:
     """ Scales the shape of the item. Calculates size difference based on original size and current size.
       Then adds a scaling factor to the size difference and returns the new width and height.
+    
+    Args:
+      scaling_factor(int): The amount to scale the item sprite.
     """
     size_difference = (self.current_size[0] - self.initial_size[0], self.current_size[1] - self.initial_size[1])
     new_width = self.initial_size[0] + size_difference[0] + scaling_factor
