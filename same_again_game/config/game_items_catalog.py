@@ -71,11 +71,9 @@ items_config: list[ItemConfig] = [
   ]
 ]
 
-def create_shape(shape: Shape, color: tuple[int, int, int]) -> pygame.Surface:
+def create_shape(shape: Shape, color: tuple[int, int, int], width: int = SHAPE_WIDTH, height: int = SHAPE_HEIGHT) -> pygame.Surface:
   """ Creates a surface with a shape drawn on it."""
-  width = 140
-  height = 140
-  surface = pygame.Surface((width, height))
+  surface = pygame.Surface((width, height), pygame.SRCALPHA)  # Create a surface with alpha channel
 
   if shape == Shape.CIRCLE:
     pygame.draw.circle(surface=surface, color=color, center=(width // 2, height // 2), radius=width/2)

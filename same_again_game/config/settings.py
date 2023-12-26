@@ -21,6 +21,9 @@ colors: dict[Color, tuple[int, int, int]] = {
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 
+SHAPE_WIDTH = 140
+SHAPE_HEIGHT = 140
+
 # Frames per second
 FPS = 30
 
