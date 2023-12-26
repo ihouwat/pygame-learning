@@ -15,6 +15,13 @@ class EventListener():
       events (list[pygame.event.Event]): A list of pygame events.
     """
     for event in events:
+      
+      if (event.type == pygame.ACTIVEEVENT):
+        if (event.gain == 1):
+          return GameAction.MOUSE_ENTERED_WINDOW
+        else:
+          return GameAction.MOUSE_EXITED_WINDOW
+
       if event.type == pygame.QUIT:
         return GameAction.QUIT
       
