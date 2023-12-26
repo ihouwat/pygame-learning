@@ -53,17 +53,16 @@ class GameMenu:
 		self.is_game_in_progress = True
 		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.languages[self.selected_language_index][0], 'player': self.player_name}))
 	
-	def resume_the_game(self) -> None:
-		""" Starts the game."""
+	def save_settings(self) -> None:
+		""" Saves a user's settings while a game is in progress."""
 		self.menu.disable()
-		self.is_game_in_progress = True
-		pygame.event.post(pygame.event.Event(RESUME_GAME, {'language': self.selected_language[0], 'player': self.player_name}))
-	
+		pygame.event.post(pygame.event.Event(RESUME_GAME, {'language': self.languages[self.selected_language_index][0], 'player': self.player_name}))
+
 	def quit_the_game(self) -> None:
 		""" Quits the game."""
 		self.menu.disable()
 		pygame.event.post(pygame.event.Event(pygame.QUIT))
-	
+
 	def set_language(self, value: list[Tuple[str, int]], index: int) -> None:
 		""" Sets the language for the game."""
 		print('Language set to {}'.format(value))
