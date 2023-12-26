@@ -66,8 +66,8 @@ class GameMenu:
 	def set_language(self, value: list[Tuple[str, int]], index: int) -> None:
 		""" Sets the language for the game."""
 		print('Language set to {}'.format(value))
-		self.selected_language = self.languages[index]
-	
+		self.selected_language_index = index
+
 	def set_name(self, value: str) -> None:
 		""" Sets the player's name."""
 		print('Name set to {}'.format(value))
