@@ -19,20 +19,15 @@ class GameMenu:
 			menu(pygame_menu.Menu): The menu.
 		"""
 		self.languages: list[Tuple[str, int]] = list(tuple([(language.name, index) for index, language in enumerate(Language)]))
-		self.selected_language = self.languages[0]
+		self.selected_language_index: int = 0
 		self.player_name: str = ""
 		self.is_game_in_progress: bool = False
 		self.menu: pygame_menu.Menu = pygame_menu.Menu('Same Again!', width=SCREEN_WIDTH, height=SCREEN_HEIGHT, theme=themes.THEME_BLUE)
 		
 		self.configure_menu()
 
-	def run(self, surface) -> None:
-		""" Runs the menu."""
-		self.open_menu()
-		self.menu.draw(surface)
-		
 	def open_menu(self) -> None:
-		""" Opens the menu."""
+		""" Configures and enables the menu."""
 		self.configure_menu()
 		self.menu.enable()
 
@@ -41,9 +36,8 @@ class GameMenu:
 		self.menu.clear()
 
 		self.menu.add.text_input('Enter Your Name: ', default=self.player_name, onchange=self.set_name)
-		self.menu.add.selector(title='Select Language :', items=self.languages, onchange=self.set_language)
+		self.menu.add.selector(title='Select Language :', default=self.selected_language_index, items=self.languages, onchange=self.set_language)
 		
-		print('is_game_in_progress: {}'.format(self.is_game_in_progress))
 		if self.is_game_in_progress:
 			self.menu.add.button('Start New Game', self.start_the_game)
 			self.menu.add.button('Save Settings', self.resume_the_game)
