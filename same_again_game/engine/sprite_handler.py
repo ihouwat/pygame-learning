@@ -2,8 +2,9 @@ import random
 
 import pygame
 from game_objects.item_sprite import ItemSprite
-from models.game_types import ItemConfig, SpriteOption
+from models.game_types import SpriteOption
 from models.image_source import ImageSource
+from models.item_config import ItemConfig
 from pygame.sprite import Group, Sprite
 
 
@@ -30,7 +31,8 @@ class SpriteHandler:
 			group.add(ItemSprite(
 			image=SpriteHandler.retrieve_image(item.image, option),
 			text_identifier=item.text_identifier,
-			word=item.word
+			word=item.word,
+			metadata=item
 		))
 
 		return group

@@ -1,8 +1,6 @@
 
 from enum import Enum
-from typing import NamedTuple
 
-from models.image_source import ImageSource
 
 
 class Color(Enum):
@@ -24,14 +22,6 @@ class RealWorldObjectCategory(Enum):
   """ Represents the type of item to be created."""
   FRUIT = 'Fruit'
 
-class ItemConfig(NamedTuple):
-  """ Represents metadata for items that are the basis to create sprites."""
-  text_identifier: str
-  image: ImageSource
-  sound: str
-  word: str
-  color: Color
-  type: RealWorldObjectCategory | str
 
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""
@@ -49,11 +39,13 @@ class SpriteOption(Enum):
 
 class GameAction(Enum):
   """ Represents an action to be applied in response to an event."""
-  START_NEW_GAME = 0,
-  QUIT = 1,
-  SELECT = 2,
-  OPEN_MENU = 3,
+  START_NEW_GAME = 0
+  QUIT = 1
+  SELECT = 2
+  OPEN_MENU = 3
   RESUME_GAME = 4
+  MOUSE_ENTERED_WINDOW = 5
+  MOUSE_EXITED_WINDOW = 6
 
 class Language(Enum):
   """ Represents a language to be used in the game."""

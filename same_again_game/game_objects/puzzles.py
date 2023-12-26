@@ -3,11 +3,11 @@ import random
 from models.game_types import (
 	Color,
 	ItemCategory,
-	ItemConfig,
 	RealWorldObjectCategory,
 	Shape,
 	SpriteOption,
 )
+from models.item_config import ItemConfig
 from models.puzzle import Puzzle
 
 

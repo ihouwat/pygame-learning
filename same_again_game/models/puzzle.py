@@ -7,9 +7,9 @@ from engine.sprite_handler import SpriteHandler
 from game_objects.item_sprite import ItemSprite
 from models.game_types import (
 	ItemCategory,
-	ItemConfig,
 	SpriteOption,
 )
+from models.item_config import ItemConfig
 from pygame import Surface
 from pygame.sprite import Group
 
@@ -30,7 +30,7 @@ class Puzzle(ABC):
 		"""
 	
 	items: Group = Group()
-	item_to_match: ItemSprite = ItemSprite(image=Surface((0, 0)), word="", text_identifier="")
+	item_to_match: ItemSprite = ItemSprite(image=Surface((0, 0)), word="", text_identifier="", metadata=None)
 	
 	@classmethod
 	def item_catalog(cls) -> dict[ItemCategory, list[ItemConfig]]:
