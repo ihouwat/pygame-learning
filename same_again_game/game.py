@@ -55,31 +55,29 @@ class Game:
     items: Group = self.current_level.puzzle.items
     item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
 
+    if action == GameAction.QUIT:
+      self.quit()
     if action == GameAction.OPEN_MENU:
       self.game_menu.open_menu()
       self.renderer.draw_game_menu(self.game_menu)
-    elif action == GameAction.QUIT:
-      self.quit()
-
+    if action == GameAction.START_NEW_GAME:
+      for level in self.levels:
+        level.reset()
+      self.current_level = self.levels[0]
+      self.save_user_settings(events[0])          
+      self.start_new_turn()
+    if action == GameAction.RESUME_GAME:
+      self.save_user_settings(events[0])          
+      self.start_new_turn()
+    if action == GameAction.SELECT:
+      if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
+        self.process_point_gain()
+    
     if self.game_menu.menu.is_enabled():
       self.renderer.draw_game_menu(self.game_menu)
       self.game_menu.menu.update(events)
     
-    else:
-      if action == GameAction.START_NEW_GAME:
-        for level in self.levels:
-          level.reset()
-        self.current_level = self.levels[0]
-        self.set_language_and_name(events[0])          
-        self.start_new_turn()
-      if action == GameAction.RESUME_GAME:
-        self.set_language_and_name(events[0])          
-        self.start_new_turn()
-      if action == GameAction.SELECT:
-        if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
-          self.process_point_gain()
-
-  def set_language_and_name(self, event: pygame.event.Event) -> None:
+  def save_user_settings(self, event: pygame.event.Event) -> None:
       """ Sets the language and player name from the game menu.
       
       Args:
