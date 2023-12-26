@@ -39,11 +39,11 @@ class GameMenu:
 		self.menu.add.selector(title='Select Language :', default=self.selected_language_index, items=self.languages, onchange=self.set_language)
 		
 		if self.is_game_in_progress:
+			self.menu.add.button('Save Settings', self.save_settings)
 			self.menu.add.button('Start New Game', self.start_the_game)
-			self.menu.add.button('Save Settings', self.resume_the_game)
 			self.menu.add.button('Quit', self.quit_the_game)
 		else:
-			# player is starting a new game
+			# player is about to start a new game
 			self.menu.add.button('Start Game', self.start_the_game)
 			self.menu.add.button('Quit', self.quit_the_game)
 
