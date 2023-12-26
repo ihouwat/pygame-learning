@@ -58,4 +58,4 @@ class Renderer:
       
   def draw_game_menu(self, game_menu: GameMenu) -> None:
     """ Renders the game menu."""
-    game_menu.run(self.display_surface)
+    game_menu.menu.draw(self.display_surface)

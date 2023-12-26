@@ -15,51 +15,54 @@ class GameMenu:
 			languages(list[Tuple[str, int]]): The languages available in the game.
 			selected_language(Tuple[str, int]): The selected language.
 			player_name(str): The name of the player.
-			game_in_progress(bool): Indicates if a game is in progress.
+			is_game_in_progress(bool): Indicates if a game is running.
 			menu(pygame_menu.Menu): The menu.
 		"""
 		self.languages: list[Tuple[str, int]] = list(tuple([(language.name, index) for index, language in enumerate(Language)]))
 		self.selected_language = self.languages[0]
 		self.player_name: str = ""
-		self.game_in_progress: bool = False
+		self.is_game_in_progress: bool = False
 		self.menu: pygame_menu.Menu = pygame_menu.Menu('Same Again!', width=SCREEN_WIDTH, height=SCREEN_HEIGHT, theme=themes.THEME_BLUE)
+		
 		self.configure_menu()
-	
+
 	def run(self, surface) -> None:
 		""" Runs the menu."""
-		# Use the surface created in __init__
-		self.menu.mainloop(surface)
-	
-	def configure_menu(self) -> None:
-		""" Configures the menu depending on game state."""
-		self.menu.clear()
-
-		self.menu.add.text_input('Enter Your Name: ', default='', onchange=self.set_name)
-		self.menu.add.selector(title='Select Language :', items=self.languages, onchange=self.set_language)
+		self.open_menu()
+		self.menu.draw(surface)
 		
-		if self.game_in_progress:
-			self.menu.add.button('Start New Game', self.start_the_game)
-			self.menu.add.button('Resume', self.resume_the_game)
-			self.menu.add.button('Quit', self.quit_the_game)
-		else:
-			self.menu.add.button('Start Game', self.start_the_game)
-			self.menu.add.button('Quit', self.quit_the_game)
-  
 	def open_menu(self) -> None:
 		""" Opens the menu."""
 		self.configure_menu()
 		self.menu.enable()
 
+	def configure_menu(self) -> None:
+		""" Configures the menu depending on game state."""
+		self.menu.clear()
+
+		self.menu.add.text_input('Enter Your Name: ', default=self.player_name, onchange=self.set_name)
+		self.menu.add.selector(title='Select Language :', items=self.languages, onchange=self.set_language)
+		
+		print('is_game_in_progress: {}'.format(self.is_game_in_progress))
+		if self.is_game_in_progress:
+			self.menu.add.button('Start New Game', self.start_the_game)
+			self.menu.add.button('Save Settings', self.resume_the_game)
+			self.menu.add.button('Quit', self.quit_the_game)
+		else:
+			# player is starting a new game
+			self.menu.add.button('Start Game', self.start_the_game)
+			self.menu.add.button('Quit', self.quit_the_game)
+
 	def start_the_game(self) -> None:
 		""" Starts the game."""
 		self.menu.disable()
-		self.game_in_progress = True
+		self.is_game_in_progress = True
 		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.selected_language[0], 'player': self.player_name}))
 	
 	def resume_the_game(self) -> None:
 		""" Starts the game."""
 		self.menu.disable()
-		self.game_in_progress = True
+		self.is_game_in_progress = True
 		pygame.event.post(pygame.event.Event(RESUME_GAME, {'language': self.selected_language[0], 'player': self.player_name}))
 	
 	def quit_the_game(self) -> None:
