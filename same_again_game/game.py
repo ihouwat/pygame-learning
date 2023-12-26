@@ -92,30 +92,14 @@ class Game:
       if self.mouse_in_focus:
         for sprite in items:
           if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-            if sprite.image.get_rect().size[0] <= 155:
-              self.scale_sprite(sprite=sprite, scaling_factor=(2, 2))
+            if sprite.scale_factor < 130:
+              sprite.scale(scaling_factor=2)
           else:
-            if sprite.image.get_rect().size[0] > 140:
-              self.scale_sprite(sprite=sprite, scaling_factor=(-3, -3))
+            if sprite.scale_factor > 100:
+              sprite.scale(scaling_factor=-3)
 
 
-      self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
-
-  def scale_sprite(self, sprite: ItemSprite, scaling_factor: tuple[int, int]) -> ItemSprite:
-    x, y = scaling_factor
-    new_width = sprite.image.get_rect().size[0] + x
-    new_height = sprite.image.get_rect().size[1] + y
-    old_center = sprite.rect.centerx
-    for shape in Shape:
-      if sprite.word == shape.value and sprite.metadata:
-        sprite.image = create_shape(shape, colors[sprite.metadata.color], new_width, new_height)
-    
-    sprite.image = pygame.transform.scale(sprite.image, (new_width, new_height))
-    sprite.rect = sprite.image.get_rect()
-    sprite.rect.centerx = old_center
-    return sprite
-
-
+        self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
 
   def save_user_settings(self, event: pygame.event.Event) -> None:
       """ Sets the language and player name from the game menu.
@@ -171,9 +155,8 @@ class Game:
   def start_new_turn(self) -> None:
     """ Resets sprites, creates a new puzzle, and updates UI."""
     self.reset_sprites()
-    item, items = self.current_level.puzzle.generate()
+    self.current_level.puzzle.generate()
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    # self.renderer.draw(item_to_match=item, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
 
   def reset_sprites(self) -> None:
     """ Remove all sprites."""
