@@ -8,7 +8,7 @@ from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
-from models.game_types import GameAction, GameState, Language
+from models.game_types import GameAction, GameState, Language, ProcessPointResult
 from pygame.sprite import Group
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
@@ -83,6 +83,14 @@ class Game:
       if action == GameAction.MOUSE_ENTERED_WINDOW:
         self.game_state = GameState.PLAYING
     
+    elif self.game_state == GameState.LEVEL_COMPLETED:
+      self.level_up()
+      self.game_state = GameState.PLAYING
+    
+    elif self.game_state == GameState.GAME_COMPLETED:
+      print('You have completed all levels!')
+      self.quit()
+    
     elif self.game_state == GameState.PLAYING:
       if action == GameAction.MOUSE_EXITED_WINDOW:
         self.game_state = GameState.PAUSED
@@ -92,7 +100,14 @@ class Game:
       if action == GameAction.SELECT:
         if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
           print('match detected')
-          self.process_point_gain()
+          result: ProcessPointResult = self.process_point_gain()
+          if result == ProcessPointResult.LEVEL_COMPLETED:
+            if(self.completed_all_levels()):
+              self.game_state = GameState.GAME_COMPLETED
+            else:
+              self.game_state = GameState.LEVEL_COMPLETED
+          else:
+            self.start_new_turn()
 
       # scale sprites on hover
       for sprite in items:
@@ -131,19 +146,16 @@ class Game:
         return True
     return False
 
-  def process_point_gain(self) -> None:
+  def process_point_gain(self) -> ProcessPointResult:
     """ Increments points and controls leveling up. """
 
     self.current_level.increment_score(points=1)
 
     if self.current_level.is_completed():
-      if(self.completed_all_levels()):
-        print('You have completed all levels!')
-        self.quit()
-      else:
-        self.level_up()
+      return ProcessPointResult.LEVEL_COMPLETED
+
     else:
-      self.start_new_turn()
+      return ProcessPointResult.START_NEW_TURN
 
   def completed_all_levels(self):
     """ Returns True if all levels have been completed, False otherwise."""

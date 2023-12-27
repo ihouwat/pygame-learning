@@ -46,11 +46,17 @@ class GameAction(Enum):
   MOUSE_EXITED_WINDOW = 6
 
 class GameState(Enum):
+  """ State machine for the game."""
   PLAYING = 1
   MENU_OPEN = 2
   LEVEL_COMPLETED = 3
   GAME_COMPLETED = 4
   PAUSED = 5
+
+class ProcessPointResult(Enum):
+  """ Represents the result of processing a point gain."""
+  LEVEL_COMPLETED = 1
+  START_NEW_TURN = 2
 
 class Language(Enum):
   """ Represents a language to be used in the game."""
