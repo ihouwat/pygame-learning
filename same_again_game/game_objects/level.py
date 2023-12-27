@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from config.logger import logger
 from models.puzzle import Puzzle
 
 
@@ -26,7 +27,7 @@ class Level:
       points (int): The number of points to increment the score by.
     """
     self.score = self.score + points
-    print(f'new score for level {self.level_number}: {self.score}')
+    logger.info(f'new score for level {self.level_number}: {self.score}')
     return self.score
 
   def is_completed(self) -> bool:

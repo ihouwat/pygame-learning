@@ -31,7 +31,7 @@ puzzles: list[Puzzle] = [
 	SpokenWordPuzzle(),
 ]
 
-# initialize levels, game, and, clock
+# initialize levels, game, clock
 frames_per_sec = pygame.time.Clock()
 levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=2) for i, puzzle in enumerate(puzzles) ]
 game = Game(

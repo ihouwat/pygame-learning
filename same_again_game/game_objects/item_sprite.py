@@ -2,8 +2,9 @@ from dataclasses import dataclass
 from typing import Optional
 
 import pygame
-from funcs import create_shape
+from config.logger import logger
 from config.settings import colors
+from funcs import create_shape
 from models.game_types import Shape
 from models.item_config import ItemConfig
 
@@ -58,9 +59,11 @@ class ItemSprite(pygame.sprite.Sprite):
       
       Args:
         scaling_factor(int): The amount to scale the item sprite.
+      
+      Returns:
+        bool: True if the item sprite was successfully scaled, False otherwise.
     """
     old_center = self.rect.center
-    print('scale factor before', self.scale)
 
     try:
       if self.metadata and self.metadata.type == 'Shape':
@@ -68,7 +71,7 @@ class ItemSprite(pygame.sprite.Sprite):
       else:
         new_width, new_height = self.scale_image(scaling_factor)
     except ValueError:
-      print('Cannot scale item')
+      logger.warning('Cannot scale item sprite any further.')
       return False
 
     self.rect = self.image.get_rect()
@@ -85,11 +88,15 @@ class ItemSprite(pygame.sprite.Sprite):
       Maintains aspect ratio.
       
     Args:
-      scaling_factor(int): The amount to scale the item sprite.  
+      scaling_factor(int): The amount to scale the item sprite.
+    
+    Returns:
+      tuple[float, float]: The new width and height of the item sprite.
     """
     old_width, old_height = self.original_image.get_size()  # use original image size
     aspect_ratio = old_width / old_height
 
+    new_scale_factor: float
     if scaling_factor < 0:
       # If scaling factor is negative, subtract it from the current scale factor
       new_scale_factor = self.scale - abs(scaling_factor)
@@ -111,6 +118,9 @@ class ItemSprite(pygame.sprite.Sprite):
     
     Args:
       scaling_factor(int): The amount to scale the item sprite.
+    
+    Returns:
+      tuple[int, int]: The new width and height of the item sprite.
     """
     size_difference = (self.current_size[0] - self.initial_size[0], self.current_size[1] - self.initial_size[1])
     new_width = self.initial_size[0] + size_difference[0] + scaling_factor

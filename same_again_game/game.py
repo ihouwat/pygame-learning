@@ -3,6 +3,7 @@ import sys
 from typing import Optional
 
 import pygame
+from config.logger import logger
 from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
@@ -99,7 +100,7 @@ class Game:
       self.game_state = GameState.PLAYING
     
     elif self.game_state == GameState.GAME_COMPLETED:
-      print('You have completed all levels!')
+      logger.info('You have completed all levels!')
       self.quit()
     
     elif self.game_state == GameState.PLAYING:
@@ -110,7 +111,7 @@ class Game:
         self.game_state = GameState.MENU_OPEN
       if action == GameAction.SELECT:
         if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
-          print('match detected')
+          logger.info('match detected')
           result: ProcessPointResult = self.process_point_gain()
           if result == ProcessPointResult.LEVEL_COMPLETED:
             if(self.completed_all_levels()):
@@ -125,7 +126,7 @@ class Game:
       for sprite in item_sprites:
         if sprite.rect.collidepoint(pygame.mouse.get_pos()):
           if sprite.scale < 125:
-            sprite.scale_by(scaling_factor=4)
+            sprite.scale_by(scaling_factor=6)
         else:
           if sprite.scale > 100:
             sprite.scale_by(scaling_factor=-7)
@@ -143,6 +144,8 @@ class Game:
           self.selected_language = lang
       if len(event.player) > 0:
         self.player_name = event.player
+      
+      self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
   def match_detected(self, items: Group, item_to_match: ItemSprite, coordinates) -> bool:
     """ Returns True if a user has match an item correctly against a list of items, False otherwise.
@@ -154,7 +157,7 @@ class Game:
     selected_item: list[ItemSprite] = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
     if(selected_item):
       if(selected_item[0].metadata == item_to_match.metadata):
-        print('this is the right answer!')
+        logger.info('this is the right answer!')
         return True
     return False
 
@@ -175,13 +178,12 @@ class Game:
   
   def level_up(self) -> None:
     """ Levels up the game."""
-    print('level up')
+    logger.info('level up')
     # level_number is 1 based, so just pass it in to get the right level from the list
     self.current_level = self.levels[self.current_level.level_number]
 
   def start_new_turn(self) -> None:
     """ Resets sprites, creates a new puzzle"""
-    pygame.time.wait(100)
     item, items = self.regenerate_sprites()
     
     items_list: list[ItemSprite] = items.sprites()
@@ -231,11 +233,9 @@ class Game:
         self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
         pygame.display.update() # have to update display to see the changes
       pygame.time.wait(10)
-    
-    pygame.time.wait(150)
 
   def quit(self) -> None:
     """ Quits game and exits program. """
-    print('quitting game')
+    logger.info('quitting game')
     pygame.quit()
     sys.exit()

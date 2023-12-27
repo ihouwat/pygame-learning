@@ -2,6 +2,7 @@ from typing import Tuple
 
 import pygame
 import pygame_menu
+from config.logger import logger
 from config.settings import RESUME_GAME, SCREEN_HEIGHT, SCREEN_WIDTH, START_GAME
 from models.game_types import Language
 from pygame_menu import themes
@@ -65,10 +66,10 @@ class GameMenu:
 
 	def set_language(self, value: list[Tuple[str, int]], index: int) -> None:
 		""" Sets the language for the game."""
-		print('Language set to {}'.format(value))
+		logger.info('Language set to {}'.format(value))
 		self.selected_language_index = index
 
 	def set_name(self, value: str) -> None:
 		""" Sets the player's name."""
-		print('Name set to {}'.format(value))
+		logger.info('Name set to {}'.format(value))
 		self.player_name = value
