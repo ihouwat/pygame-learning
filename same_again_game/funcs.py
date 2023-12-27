@@ -5,6 +5,9 @@ import sys
 
 import pygame
 
+from config.settings import SHAPE_HEIGHT, SHAPE_WIDTH
+from models.game_types import Shape
+
 
 def get_file(*path_args) -> str:
   """
@@ -35,3 +38,35 @@ def load_pygame_image(*path_args) -> pygame.Surface:
   """
   file_path = get_file(*path_args)
   return pygame.image.load(file_path).convert_alpha()
+
+
+def create_shape(shape: Shape, color: tuple[int, int, int], width: float = SHAPE_WIDTH, height: float = SHAPE_HEIGHT) -> pygame.Surface:
+  """ Creates a surface with a shape drawn on it.
+  
+  Args:
+    shape (Shape): The shape to draw.
+    color (tuple[int, int, int]): The color of the shape.
+    width (float): The width of the surface.
+    height (float): The height of the surface.
+    
+  Returns:
+    pygame.Surface: The surface with the shape drawn on it.
+    
+  Raises:
+    ValueError: If either width or height are negative.
+  """
+  if width < 0 or height < 0:
+        raise ValueError("Width and height must be non-negative")
+
+  surface = pygame.Surface((width, height), pygame.SRCALPHA)  # Create a surface with alpha channel
+
+  if shape == Shape.CIRCLE:
+    pygame.draw.circle(surface=surface, color=color, center=(width // 2, height // 2), radius=min(width, height) // 2)
+  elif shape == Shape.SQUARE:
+    pygame.draw.rect(surface=surface, color=color, rect=(0, 0, width, height))
+  elif shape == Shape.TRIANGLE:
+    pygame.draw.polygon(surface=surface, color=color, points=[(width // 2, 0), (0, height), (width, height)])
+  elif shape == Shape.RECTANGLE:
+    pygame.draw.rect(surface=surface, color=color, rect=(0, height // 4, width, height // 2))
+
+  return surface
