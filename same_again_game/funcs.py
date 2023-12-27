@@ -4,7 +4,6 @@ import pathlib
 import sys
 
 import pygame
-
 from config.settings import SHAPE_HEIGHT, SHAPE_WIDTH
 from models.game_types import Shape
 

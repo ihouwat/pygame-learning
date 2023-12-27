@@ -28,7 +28,7 @@ class Game:
     current_level(Level): The current level of the game.
     selected_language(Language): The selected language of the game.
     player_name(str): The name of the player.
-    mouse_in_focus(bool): True if the mouse is in the game window, False otherwise.
+    game_state(GameState): The state of the game.
     ui_display(UIDisplay): The UI display.
   """
 
@@ -184,11 +184,10 @@ class Game:
 
   def start_new_turn(self) -> None:
     """ Resets sprites, creates a new puzzle"""
-    item, items = self.regenerate_sprites()
+    item_to_match, items = self.regenerate_sprites()
     
-    items_list: list[ItemSprite] = items.sprites()
     # scale sprites down to prepare for spawn in
-    for sprite in items_list:
+    for sprite in self.create_item_sprite_list(item_to_match, items):
       while sprite.scale > 0:
         successful_scale = sprite.scale_by(scaling_factor=-10)
         if not successful_scale:
@@ -198,12 +197,12 @@ class Game:
     pygame.time.wait(10)
 
     # spawn in sprites
-    for sprite in items_list:
+    for sprite in self.create_item_sprite_list(item_to_match, items):
       while sprite.scale < 100:
         successful_scale = sprite.scale_by(scaling_factor=5)
         if not successful_scale:
           break
-        self.renderer.draw(item_to_match=item, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
+        self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
         pygame.display.update() # have to update display to see the changes
       pygame.time.wait(10)
 
@@ -219,20 +218,32 @@ class Game:
     if(self.current_level.puzzle.items):
       SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
   
-  def end_turn(self, items, item_to_match):
+  def end_turn(self, items: Group, item_to_match: ItemSprite):
     """ Scales sprites down and updates UI."""
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
     pygame.time.wait(150)
-    item_sprites: list[ItemSprite] = items.sprites()
-    for sprite in item_sprites:
+    for sprite in self.create_item_sprite_list(item_to_match, items):
       while sprite.scale > 0:
         successful_scale = sprite.scale_by(scaling_factor=-5)
         if not successful_scale:
-          break
+          break 
         self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
         pygame.display.update() # have to update display to see the changes
       pygame.time.wait(10)
+
+  def create_item_sprite_list(self, item_to_match: ItemSprite, items: pygame.sprite.Group) -> list[ItemSprite]:
+    """ Helper function to combine sprites.
+
+    Args:
+      item_to_match (ItemSprite): The item to match.
+      items (pygame.sprite.Group): The items to match against.
+      
+    Returns:
+      list[ItemSprite]: A list of sprites.
+    """
+    item_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
+    return item_sprites
 
   def quit(self) -> None:
     """ Quits game and exits program. """

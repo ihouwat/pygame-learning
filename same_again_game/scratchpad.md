@@ -42,6 +42,7 @@ Progress:
 	- DONE quit action
 	- DONE enter name
 	- DONE choose language
+- DONE configure logging
 
 - add animations
 	- DONE increase sprite size on hover, decrease on mouse out
