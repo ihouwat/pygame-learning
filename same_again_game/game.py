@@ -61,10 +61,6 @@ class Game:
       self.quit()
     
     if self.game_state == GameState.MENU_OPEN:
-      if not self.game_menu.menu.is_enabled():
-        self.game_menu.open_menu()
-      self.renderer.draw_game_menu(self.game_menu)
-      self.game_menu.menu.update(events)
 
       if action == GameAction.START_NEW_GAME:
         for level in self.levels:
@@ -75,9 +71,14 @@ class Game:
         self.game_state = GameState.PLAYING
 
       if action == GameAction.RESUME_GAME:
-        self.save_user_settings(events[0])          
-        self.start_new_turn()
+        self.save_user_settings(events[0])
         self.game_state = GameState.PLAYING
+      
+      else:
+        if not self.game_menu.menu.is_enabled():
+          self.game_menu.open_menu()
+        self.renderer.draw_game_menu(self.game_menu)
+        self.game_menu.menu.update(events)
 
     elif self.game_state == GameState.PAUSED:
       if action == GameAction.MOUSE_ENTERED_WINDOW:
