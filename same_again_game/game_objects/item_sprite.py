@@ -35,7 +35,7 @@ class ItemSprite(pygame.sprite.Sprite):
     self.initial_size: tuple[int, int] = self.image.get_rect().size
     self.current_size: tuple[int, int] = self.image.get_rect().size
     self.original_image: pygame.Surface = self.image
-    self.scale_factor: float = 100
+    self.scale: float = 100
 
   # By default, dataclass() will not implicitly add a __hash__() method unless it is safe to do so.
   # we add this method in order to use instances of the class in pygame sprite groups
@@ -60,7 +60,7 @@ class ItemSprite(pygame.sprite.Sprite):
         scaling_factor(int): The amount to scale the item sprite.
     """
     old_center = self.rect.center
-    print('scale factor before', self.scale_factor)
+    print('scale factor before', self.scale)
 
     try:
       if self.metadata and self.metadata.type == 'Shape':
@@ -76,22 +76,26 @@ class ItemSprite(pygame.sprite.Sprite):
     self.current_size = (int(new_width), int(new_height))
 
     # update scale factor
-    self.scale_factor = self.current_size[0] / self.initial_size[0] * 100
+    self.scale = self.current_size[0] / self.initial_size[0] * 100
     return True
 
   def scale_image(self, scaling_factor) -> tuple[float, float]:
     """ Scales the image of the item. Calculates size difference based on original image size.
       Then adds the scale factor to the old width to return updated width and height.
-      Maintains aspect ratio."""
+      Maintains aspect ratio.
+      
+    Args:
+      scaling_factor(int): The amount to scale the item sprite.  
+    """
     old_width, old_height = self.original_image.get_size()  # use original image size
     aspect_ratio = old_width / old_height
 
     if scaling_factor < 0:
       # If scaling factor is negative, subtract it from the current scale factor
-      new_scale_factor = self.scale_factor - abs(scaling_factor)
+      new_scale_factor = self.scale - abs(scaling_factor)
     else:
       # If scaling factor is positive, add it to the current scale factor
-      new_scale_factor = self.scale_factor + scaling_factor
+      new_scale_factor = self.scale + scaling_factor
 
     # Ensure the new scale factor is not less than 0
     new_scale_factor = max(new_scale_factor, 0)

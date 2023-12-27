@@ -120,12 +120,13 @@ class Game:
             self.game_state = GameState.END_TURN
 
       # scale sprites on hover
-      for sprite in items:
+      item_sprites: list[ItemSprite] = items.sprites()
+      for sprite in item_sprites:
         if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-          if sprite.scale_factor < 125:
+          if sprite.scale < 125:
             sprite.scale_by(scaling_factor=4)
         else:
-          if sprite.scale_factor > 100:
+          if sprite.scale > 100:
             sprite.scale_by(scaling_factor=-7)
 
       self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
@@ -185,7 +186,7 @@ class Game:
     items_list: list[ItemSprite] = items.sprites()
     # scale sprites down to prepare for spawn in
     for sprite in items_list:
-      while sprite.scale_factor > 0:
+      while sprite.scale > 0:
         successful_scale = sprite.scale_by(scaling_factor=-10)
         if not successful_scale:
           break
@@ -195,7 +196,7 @@ class Game:
 
     # spawn in sprites
     for sprite in items_list:
-      while sprite.scale_factor < 100:
+      while sprite.scale < 100:
         successful_scale = sprite.scale_by(scaling_factor=5)
         if not successful_scale:
           break
@@ -222,7 +223,7 @@ class Game:
     pygame.time.wait(150)
     item_sprites: list[ItemSprite] = items.sprites()
     for sprite in item_sprites:
-      while sprite.scale_factor > 0:
+      while sprite.scale > 0:
         successful_scale = sprite.scale_by(scaling_factor=-5)
         if not successful_scale:
           break
