@@ -8,7 +8,7 @@ from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
-from models.game_types import GameAction, Language
+from models.game_types import GameAction, GameState, Language
 from pygame.sprite import Group
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
@@ -42,7 +42,7 @@ class Game:
     self.current_level: Level = self.levels[0]
     self.selected_language: Language = language
     self.player_name: str = "Player"
-    self.mouse_in_focus: bool = True
+    self.game_state: GameState = GameState.MENU_OPEN
 
     # ui display state
     self.ui_display = UIDisplay(language=language, player_name=self.player_name, score=self.current_level.score, level=self.current_level.level_number)
@@ -57,43 +57,51 @@ class Game:
     items: Group = self.current_level.puzzle.items
     item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
     
-    if self.game_menu.menu.is_enabled():
+    if action == GameAction.QUIT:
+      self.quit()
+    
+    if self.game_state == GameState.MENU_OPEN:
+      if not self.game_menu.menu.is_enabled():
+        self.game_menu.open_menu()
       self.renderer.draw_game_menu(self.game_menu)
       self.game_menu.menu.update(events)
-    
-    else:
-      if action == GameAction.MOUSE_ENTERED_WINDOW:
-        self.mouse_in_focus = True
-      if action == GameAction.MOUSE_EXITED_WINDOW:
-        self.mouse_in_focus = False
-      if action == GameAction.QUIT:
-        self.quit()
-      if action == GameAction.OPEN_MENU:
-        self.game_menu.open_menu()
-        self.renderer.draw_game_menu(self.game_menu)
+
       if action == GameAction.START_NEW_GAME:
         for level in self.levels:
           level.reset()
         self.current_level = self.levels[0]
         self.save_user_settings(events[0])          
         self.start_new_turn()
+        self.game_state = GameState.PLAYING
+
       if action == GameAction.RESUME_GAME:
         self.save_user_settings(events[0])          
         self.start_new_turn()
+        self.game_state = GameState.PLAYING
+
+    elif self.game_state == GameState.PAUSED:
+      if action == GameAction.MOUSE_ENTERED_WINDOW:
+        self.game_state = GameState.PLAYING
+    
+    elif self.game_state == GameState.PLAYING:
+      if action == GameAction.MOUSE_EXITED_WINDOW:
+        self.game_state = GameState.PAUSED
+      if action == GameAction.OPEN_MENU:
+        self.game_menu.open_menu()
+        self.game_state = GameState.MENU_OPEN
       if action == GameAction.SELECT:
         if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
           print('match detected')
           self.process_point_gain()
 
       # scale sprites on hover
-      if self.mouse_in_focus:
-        for sprite in items:
-          if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-            if sprite.scale_factor < 130:
-              sprite.scale(scaling_factor=2)
-          else:
-            if sprite.scale_factor > 100:
-              sprite.scale(scaling_factor=-3)
+      for sprite in items:
+        if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+          if sprite.scale_factor < 130:
+            sprite.scale(scaling_factor=2)
+        else:
+          if sprite.scale_factor > 100:
+            sprite.scale(scaling_factor=-3)
 
       self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
 

@@ -61,3 +61,11 @@ Game states
 * Pause: the game is paused (no need, we will not be using a timer)
 * Game Over: the game is over (nah we don't want that with a kiddo :) )
 
+## Learnings
+### State machine pattern
+A state machine, also known as a finite state machine (FSM), is a model of computation or behavior composed of a finite number of states, transitions between those states, and actions. It's a mathematical model of computation, an abstract concept where the machine can have different states but at a given time fulfills only one of them.
+
+In the context of programming and software development, state machines are used to model the behavior of an object, which can be in a finite number of states and can transition from one state to another based on certain conditions.
+- The state machine pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. This pattern is used when a system has a finite number of states and can transition from one state to another based on certain conditions.
+
+In the context of a game, the state machine pattern can be used to manage game states, such as `PLAYING`, `PAUSED`, `MENU_OPEN`, etc. The game can only be in one state at a time, and transitions between states are triggered by certain events or conditions, such as user input or game logic.

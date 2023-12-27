@@ -2,7 +2,6 @@
 from enum import Enum
 
 
-
 class Color(Enum):
   RED = 'Red'
   GREEN = 'Green'
@@ -22,7 +21,6 @@ class RealWorldObjectCategory(Enum):
   """ Represents the type of item to be created."""
   FRUIT = 'Fruit'
 
-
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""
   CIRCLE = 'Circle'
@@ -35,7 +33,7 @@ class SpriteOption(Enum):
   NONE = 'None'
   GRAYSCALE = 'Grayscale'
   SHAPES = 'Shapes',
-  SPOKENWORD = 'Spokenword'
+  SPOKENWORD = 'Spoken word'
 
 class GameAction(Enum):
   """ Represents an action to be applied in response to an event."""
@@ -46,6 +44,13 @@ class GameAction(Enum):
   RESUME_GAME = 4
   MOUSE_ENTERED_WINDOW = 5
   MOUSE_EXITED_WINDOW = 6
+
+class GameState(Enum):
+  PLAYING = 1
+  MENU_OPEN = 2
+  LEVEL_COMPLETED = 3
+  GAME_COMPLETED = 4
+  PAUSED = 5
 
 class Language(Enum):
   """ Represents a language to be used in the game."""
