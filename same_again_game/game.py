@@ -83,6 +83,25 @@ class Game:
       if action == GameAction.MOUSE_ENTERED_WINDOW:
         self.game_state = GameState.PLAYING
     
+    elif self.game_state == GameState.END_TURN:
+      pygame.time.wait(150)
+      item_sprites: list[ItemSprite] = items.sprites()
+      for sprite in item_sprites:
+        while sprite.current_size > (0, 0):
+          successful_scale = sprite.scale_by(scaling_factor=-5)
+          if not successful_scale:
+            break
+          self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
+          pygame.display.update() # have to update display to see the changes
+        pygame.time.wait(10)
+      
+      pygame.time.wait(150)
+      self.game_state = GameState.START_NEW_TURN
+    
+    elif self.game_state == GameState.START_NEW_TURN:
+      self.start_new_turn()
+      self.game_state = GameState.PLAYING
+    
     elif self.game_state == GameState.LEVEL_COMPLETED:
       self.level_up()
       self.game_state = GameState.PLAYING
@@ -107,16 +126,16 @@ class Game:
             else:
               self.game_state = GameState.LEVEL_COMPLETED
           else:
-            self.start_new_turn()
+            self.game_state = GameState.END_TURN
 
       # scale sprites on hover
       for sprite in items:
         if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-          if sprite.scale_factor < 130:
-            sprite.scale(scaling_factor=2)
+          if sprite.scale_factor < 125:
+            sprite.scale_by(scaling_factor=4)
         else:
           if sprite.scale_factor > 100:
-            sprite.scale(scaling_factor=-3)
+            sprite.scale_by(scaling_factor=-7)
 
       self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
 
