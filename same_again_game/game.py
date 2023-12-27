@@ -92,7 +92,9 @@ class Game:
       self.game_state = GameState.PLAYING
     
     elif self.game_state == GameState.LEVEL_COMPLETED:
+      self.end_turn(items, item_to_match)
       self.level_up()
+      self.start_new_turn()
       self.game_state = GameState.PLAYING
     
     elif self.game_state == GameState.GAME_COMPLETED:
@@ -174,7 +176,6 @@ class Game:
     print('level up')
     # level_number is 1 based, so just pass it in to get the right level from the list
     self.current_level = self.levels[self.current_level.level_number]
-    self.start_new_turn()
 
   def start_new_turn(self) -> None:
     """ Resets sprites, creates a new puzzle"""
@@ -184,20 +185,23 @@ class Game:
     items_list: list[ItemSprite] = items.sprites()
     # scale sprites down to prepare for spawn in
     for sprite in items_list:
-      while sprite.current_size > (0, 0):
+      while sprite.scale_factor > 0:
         successful_scale = sprite.scale_by(scaling_factor=-10)
         if not successful_scale:
           break
-      pygame.display.update()
-    
+        pygame.display.update()
+      # reset scale factor to account for the original size of the sprite
+    pygame.time.wait(10)
+
     # spawn in sprites
     for sprite in items_list:
-      while sprite.current_size < sprite.initial_size:
+      while sprite.scale_factor < 100:
         successful_scale = sprite.scale_by(scaling_factor=5)
         if not successful_scale:
           break
         self.renderer.draw(item_to_match=item, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
         pygame.display.update() # have to update display to see the changes
+      pygame.time.wait(10)
 
   def regenerate_sprites(self) -> tuple[ItemSprite, Group]:
       self.kill_sprites()
@@ -218,7 +222,7 @@ class Game:
     pygame.time.wait(150)
     item_sprites: list[ItemSprite] = items.sprites()
     for sprite in item_sprites:
-      while sprite.current_size > (0, 0):
+      while sprite.scale_factor > 0:
         successful_scale = sprite.scale_by(scaling_factor=-5)
         if not successful_scale:
           break

@@ -35,7 +35,7 @@ class ItemSprite(pygame.sprite.Sprite):
     self.initial_size: tuple[int, int] = self.image.get_rect().size
     self.current_size: tuple[int, int] = self.image.get_rect().size
     self.original_image: pygame.Surface = self.image
-    self.scale_factor: int = 100
+    self.scale_factor: float = 100
 
   # By default, dataclass() will not implicitly add a __hash__() method unless it is safe to do so.
   # we add this method in order to use instances of the class in pygame sprite groups
@@ -59,14 +59,14 @@ class ItemSprite(pygame.sprite.Sprite):
       Args:
         scaling_factor(int): The amount to scale the item sprite.
     """
-    self.scale_factor += scaling_factor
     old_center = self.rect.center
+    print('scale factor before', self.scale_factor)
 
     try:
       if self.metadata and self.metadata.type == 'Shape':
         new_width, new_height = self.scale_shape(scaling_factor)
       else:
-        new_width, new_height = self.scale_image()
+        new_width, new_height = self.scale_image(scaling_factor)
     except ValueError:
       print('Cannot scale item')
       return False
@@ -74,15 +74,29 @@ class ItemSprite(pygame.sprite.Sprite):
     self.rect = self.image.get_rect()
     self.rect.center = old_center
     self.current_size = (int(new_width), int(new_height))
+
+    # update scale factor
+    self.scale_factor = self.current_size[0] / self.initial_size[0] * 100
     return True
 
-  def scale_image(self) -> tuple[int, float]:
+  def scale_image(self, scaling_factor) -> tuple[float, float]:
     """ Scales the image of the item. Calculates size difference based on original image size.
       Then adds the scale factor to the old width to return updated width and height.
       Maintains aspect ratio."""
     old_width, old_height = self.original_image.get_size()  # use original image size
     aspect_ratio = old_width / old_height
-    new_width = old_width + self.scale_factor - 100 # use total scale
+
+    if scaling_factor < 0:
+      # If scaling factor is negative, subtract it from the current scale factor
+      new_scale_factor = self.scale_factor - abs(scaling_factor)
+    else:
+      # If scaling factor is positive, add it to the current scale factor
+      new_scale_factor = self.scale_factor + scaling_factor
+
+    # Ensure the new scale factor is not less than 0
+    new_scale_factor = max(new_scale_factor, 0)
+
+    new_width = old_width * (new_scale_factor / 100)  # calculate new width
     new_height = new_width / aspect_ratio  # maintain aspect ratio
     self.image = pygame.transform.smoothscale(self.original_image, (int(new_width), int(new_height)))
     return new_width, new_height

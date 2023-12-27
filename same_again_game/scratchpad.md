@@ -45,8 +45,8 @@ Progress:
 
 - add animations
 	- DONE increase sprite size on hover, decrease on mouse out
+	- DONE fade sprites in/out between puzzles
 	- new level animation
-	- fade sprites in/out between puzzles??
 
 - download more pngs and add attributions
 - record and add languages to the game
