@@ -84,18 +84,7 @@ class Game:
         self.game_state = GameState.PLAYING
     
     elif self.game_state == GameState.END_TURN:
-      pygame.time.wait(150)
-      item_sprites: list[ItemSprite] = items.sprites()
-      for sprite in item_sprites:
-        while sprite.current_size > (0, 0):
-          successful_scale = sprite.scale_by(scaling_factor=-5)
-          if not successful_scale:
-            break
-          self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
-          pygame.display.update() # have to update display to see the changes
-        pygame.time.wait(10)
-      
-      pygame.time.wait(150)
+      self.end_turn(items, item_to_match)
       self.game_state = GameState.START_NEW_TURN
     
     elif self.game_state == GameState.START_NEW_TURN:
@@ -188,17 +177,56 @@ class Game:
     self.start_new_turn()
 
   def start_new_turn(self) -> None:
-    """ Resets sprites, creates a new puzzle, and updates UI."""
-    self.reset_sprites()
-    self.current_level.puzzle.generate()
-    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+    """ Resets sprites, creates a new puzzle"""
+    pygame.time.wait(100)
+    item, items = self.regenerate_sprites()
+    
+    items_list: list[ItemSprite] = items.sprites()
+    # scale sprites down to prepare for spawn in
+    for sprite in items_list:
+      while sprite.current_size > (0, 0):
+        successful_scale = sprite.scale_by(scaling_factor=-10)
+        if not successful_scale:
+          break
+      pygame.display.update()
+    
+    # spawn in sprites
+    for sprite in items_list:
+      while sprite.current_size < sprite.initial_size:
+        successful_scale = sprite.scale_by(scaling_factor=5)
+        if not successful_scale:
+          break
+        self.renderer.draw(item_to_match=item, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
+        pygame.display.update() # have to update display to see the changes
 
-  def reset_sprites(self) -> None:
+  def regenerate_sprites(self) -> tuple[ItemSprite, Group]:
+      self.kill_sprites()
+      item, items = self.current_level.puzzle.generate()
+      return item, items
+
+  def kill_sprites(self) -> None:
     """ Remove all sprites."""
     if(self.current_level.puzzle.item_to_match):
       SpriteHandler.kill_sprite(self.current_level.puzzle.item_to_match)
     if(self.current_level.puzzle.items):
       SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
+  
+  def end_turn(self, items, item_to_match):
+    """ Scales sprites down and updates UI."""
+    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+
+    pygame.time.wait(150)
+    item_sprites: list[ItemSprite] = items.sprites()
+    for sprite in item_sprites:
+      while sprite.current_size > (0, 0):
+        successful_scale = sprite.scale_by(scaling_factor=-5)
+        if not successful_scale:
+          break
+        self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
+        pygame.display.update() # have to update display to see the changes
+      pygame.time.wait(10)
+    
+    pygame.time.wait(150)
 
   def quit(self) -> None:
     """ Quits game and exits program. """
