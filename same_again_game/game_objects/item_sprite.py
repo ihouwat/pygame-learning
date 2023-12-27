@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 import pygame
-from config.game_items_catalog import create_shape
+from funcs import create_shape
 from config.settings import colors
 from models.game_types import Shape
 from models.item_config import ItemConfig
@@ -52,7 +52,7 @@ class ItemSprite(pygame.sprite.Sprite):
     self.rect.x = x
     self.rect.y = y
 
-  def scale(self, scaling_factor: int) -> None:
+  def scale_by(self, scaling_factor: int) -> bool:
     """ Scales the item sprite.
       Algorithm vary by type of item sprite.
       
@@ -62,14 +62,19 @@ class ItemSprite(pygame.sprite.Sprite):
     self.scale_factor += scaling_factor
     old_center = self.rect.center
 
-    if self.metadata and self.metadata.type == 'Shape':
-      new_width, new_height = self.scale_shape(scaling_factor)
-    else:
-      new_width, new_height = self.scale_image()
-    
+    try:
+      if self.metadata and self.metadata.type == 'Shape':
+        new_width, new_height = self.scale_shape(scaling_factor)
+      else:
+        new_width, new_height = self.scale_image()
+    except ValueError:
+      print('Cannot scale item')
+      return False
+
     self.rect = self.image.get_rect()
     self.rect.center = old_center
     self.current_size = (int(new_width), int(new_height))
+    return True
 
   def scale_image(self) -> tuple[int, float]:
     """ Scales the image of the item. Calculates size difference based on original image size.
