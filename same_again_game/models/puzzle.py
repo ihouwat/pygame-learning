@@ -30,7 +30,7 @@ class Puzzle(ABC):
 		"""
 	
 	items: Group = Group()
-	item_to_match: ItemSprite = ItemSprite(image=Surface((0, 0)), word="", text_identifier="", metadata=None)
+	item_to_match: ItemSprite = ItemSprite(image=Surface((0, 0)), text_identifier="", metadata=None)
 	
 	@classmethod
 	def item_catalog(cls) -> dict[ItemCategory, list[ItemConfig]]:

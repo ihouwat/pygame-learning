@@ -31,7 +31,6 @@ class SpriteHandler:
 			group.add(ItemSprite(
 			image=SpriteHandler.retrieve_image(item.image, option),
 			text_identifier=item.text_identifier,
-			word=item.word,
 			metadata=item
 		))
 

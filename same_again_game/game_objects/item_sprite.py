@@ -25,7 +25,6 @@ class ItemSprite(pygame.sprite.Sprite):
   """
   image: pygame.Surface
   # sound: pygame.mixer.Sound
-  word: str
   text_identifier: str
   metadata: Optional[ItemConfig] = None
 
@@ -47,7 +46,7 @@ class ItemSprite(pygame.sprite.Sprite):
   # 'ItemSprite' is a forward reference, a string that contains the class name of a class that hasn't been fully defined at the point we're adding the type hint
   def create_from(cls, sprite: 'ItemSprite') -> 'ItemSprite':
     """ Creates a copy of an item sprite."""
-    return cls(image=sprite.image, text_identifier=sprite.text_identifier, word=sprite.word, metadata=sprite.metadata)
+    return cls(image=sprite.image, text_identifier=sprite.text_identifier, metadata=sprite.metadata)
 
   def update(self, x: int, y: int):
     self.rect.x = x
@@ -125,7 +124,8 @@ class ItemSprite(pygame.sprite.Sprite):
     size_difference = (self.current_size[0] - self.initial_size[0], self.current_size[1] - self.initial_size[1])
     new_width = self.initial_size[0] + size_difference[0] + scaling_factor
     new_height = self.initial_size[1] + size_difference[1] + scaling_factor
+    print(size_difference, new_width, new_height)
     for shape in Shape:
-      if self.word == shape.value and self.metadata:
+      if self.text_identifier == shape.value and self.metadata:
         self.image = create_shape(shape, colors[self.metadata.color], new_width, new_height)
     return new_width, new_height
