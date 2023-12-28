@@ -3,7 +3,9 @@ import sys
 from typing import Optional
 
 import pygame
+from audio.audio_player import AudioPlayer
 from config.logger import logger
+from config.settings import FONT_NAME, FONT_REGULAR, SCREEN_HEIGHT, SCREEN_WIDTH
 from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
@@ -11,7 +13,6 @@ from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
 from models.game_types import Color, GameAction, GameState, Language, ProcessPointResult
 from pygame.sprite import Group
-from config.settings import FONT_NAME, FONT_REGULAR, SCREEN_HEIGHT, SCREEN_WIDTH
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -22,6 +23,7 @@ class Game:
   
   Attributes:
     renderer(Renderer): The game renderer.
+    audio_player(AudioPlayer): The audio player.
     event_listener(EventListener): The event listener.
     status_bar(StatusBar): The status bar.
     game_menu(GameMenu): The game menu.
@@ -33,8 +35,9 @@ class Game:
     ui_display(UIDisplay): The UI display.
   """
 
-  def __init__(self, renderer: Renderer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language):
+  def __init__(self, renderer: Renderer, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language):
     self.renderer: Renderer = renderer
+    self.audio_player = audio_player
     self.event_listener: EventListener = event_listener
     self.status_bar: StatusBar = status_bar
     self.game_menu: GameMenu = game_menu
@@ -70,6 +73,10 @@ class Game:
         self.current_level = self.levels[0]
         self.save_user_settings(events[0])
         self.animate_level_transition() 
+        
+        #play soundtrack
+        # self.audio_player.playsoundtrack(music='audio/soundtrack.mp3', num=-1, vol=0.5)
+        
         self.start_new_turn()
         self.game_state = GameState.PLAYING
 
@@ -87,8 +94,8 @@ class Game:
       if action == GameAction.MOUSE_ENTERED_WINDOW:
         self.game_state = GameState.PLAYING
     
-    elif self.game_state == GameState.END_TURN:
-      self.end_turn(items, item_to_match)
+    elif self.game_state == GameState.TRANSITION_TO_NEXT_TURN:
+      self.transition_to_next_turn(items, item_to_match)
       self.game_state = GameState.START_NEW_TURN
     
     elif self.game_state == GameState.START_NEW_TURN:
@@ -96,7 +103,7 @@ class Game:
       self.game_state = GameState.PLAYING
     
     elif self.game_state == GameState.LEVEL_COMPLETED:
-      self.end_turn(items, item_to_match)
+      self.transition_to_next_turn(items, item_to_match)
       self.level_up()
       
       self.start_new_turn()
@@ -104,6 +111,8 @@ class Game:
     
     elif self.game_state == GameState.GAME_COMPLETED:
       logger.info('You have completed all levels!')
+      # play a big cheer sound effect
+      # self.audio_player.playsound(sound='audio/game_completed.wav', vol=0.5)
       self.quit()
     
     elif self.game_state == GameState.PLAYING:
@@ -122,7 +131,7 @@ class Game:
             else:
               self.game_state = GameState.LEVEL_COMPLETED
           else:
-            self.game_state = GameState.END_TURN
+            self.game_state = GameState.TRANSITION_TO_NEXT_TURN
 
       # scale sprites on hover
       item_sprites: list[ItemSprite] = items.sprites()
@@ -184,6 +193,8 @@ class Game:
     logger.info('level up')
     # level_number is 1 based, so just pass it in to get the right level from the list
     self.current_level = self.levels[self.current_level.level_number]
+    # play hand clap sound effect
+    # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
     self.animate_level_transition()
 
   def animate_level_transition(self):
@@ -218,13 +229,18 @@ class Game:
     # spawn in sprites
     self.scale_sprites(scaling_factor=5, items=items, item_to_match=item_to_match, draw_transitions=True)
 
-  def end_turn(self, items: Group, item_to_match: ItemSprite):
+  def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite):
     """ Scales sprites down, kills sprites, and updates UI.
     
     Args:
       items (Group): The group of sprites.
       item_to_match (ItemSprite): The item to match.
     """
+    # play some sound effect to indicate success
+    # self.audio_player.playsound(sound='audio/incorrect.wav', vol=0.5)
+    # play the word for the item that was matched
+    # self.audio_player.playsound(sound='audio/correct.wav', vol=0.5)
+
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
     pygame.time.wait(150)
     self.scale_sprites(scaling_factor=-5, items=items, item_to_match=item_to_match, draw_transitions=True)

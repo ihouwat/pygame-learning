@@ -52,7 +52,7 @@ class GameState(Enum):
   LEVEL_COMPLETED = 3
   GAME_COMPLETED = 4
   PAUSED = 5
-  END_TURN = 6
+  TRANSITION_TO_NEXT_TURN = 6
   START_NEW_TURN = 7
 
 class ProcessPointResult(Enum):
