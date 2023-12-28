@@ -52,7 +52,7 @@ class ItemSprite(pygame.sprite.Sprite):
     self.rect.x = x
     self.rect.y = y
 
-  def scale_by(self, scaling_factor: int) -> bool:
+  def scale_by(self, scaling_factor: float) -> bool:
     """ Scales the item sprite.
       Algorithm vary by type of item sprite.
       

@@ -56,7 +56,7 @@
 
 	- Transitions in `Game` class:
 		- DONE destroy sprites when you end the turn, that allows you to split the sprite destruction from creation 
-		- ??? Instead of animating the sprites in both the start and end states, create a transition state to manage animations? But that is exactly what the start state does...
+		- DONE ??? Instead of animating the sprites in both the start and end states, create a transition state to manage animations? But that is exactly what the start state does...
 		- what to move to renderer??
 	- Refactor the for loops that scale multiple sprites in the `Game` class. Where to put those? `SpriteHandler` or somewhere else?
 	- add `AudioPlayer` class with dummy implementations to test the code structure

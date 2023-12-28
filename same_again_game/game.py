@@ -201,32 +201,34 @@ class Game:
         pygame.display.flip()
 
   def start_new_turn(self) -> None:
-    """ Resets sprites, creates a new puzzle"""
-    item_to_match, items = self.generate_sprites()
+    """ Generates sprites t0 create a new puzzle"""
+    item_to_match, items = self.current_level.puzzle.generate()
+    self.spawn_sprites(items, item_to_match)
+  
+  def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> None:
+    """ Scales sprites out and in to create a spawn effect.
     
+    Args:
+      items (Group): The group of sprites.
+      item_to_match (ItemSprite): The item to match.
+    """
+    pygame.time.wait(350)
     # scale sprites down to prepare for spawn in
-    for sprite in self.create_item_sprite_list(item_to_match, items):
-      while sprite.scale > 0:
-        successful_scale = sprite.scale_by(scaling_factor=-10)
-        if not successful_scale:
-          break
-        pygame.display.update()
-      # reset scale factor to account for the original size of the sprite
-    pygame.time.wait(10)
-
+    self.scale_sprites(scaling_factor=-100, items=items, item_to_match=item_to_match)
     # spawn in sprites
-    for sprite in self.create_item_sprite_list(item_to_match, items):
-      while sprite.scale < 100:
-        successful_scale = sprite.scale_by(scaling_factor=5)
-        if not successful_scale:
-          break
-        self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
-        pygame.display.update() # have to update display to see the changes
-      pygame.time.wait(10)
+    self.scale_sprites(scaling_factor=5, items=items, item_to_match=item_to_match, draw_transitions=True)
 
-  def generate_sprites(self) -> tuple[ItemSprite, Group]:
-      item, items = self.current_level.puzzle.generate()
-      return item, items
+  def end_turn(self, items: Group, item_to_match: ItemSprite):
+    """ Scales sprites down, kills sprites, and updates UI.
+    
+    Args:
+      items (Group): The group of sprites.
+      item_to_match (ItemSprite): The item to match.
+    """
+    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+    pygame.time.wait(150)
+    self.scale_sprites(scaling_factor=-5, items=items, item_to_match=item_to_match, draw_transitions=True)
+    self.kill_sprites()
 
   def kill_sprites(self) -> None:
     """ Remove all sprites."""
@@ -234,35 +236,36 @@ class Game:
       SpriteHandler.kill_sprite(self.current_level.puzzle.item_to_match)
     if(self.current_level.puzzle.items):
       SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
-  
-  def end_turn(self, items: Group, item_to_match: ItemSprite):
-    """ Scales sprites down and updates UI."""
-    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
-    pygame.time.wait(150)
-    for sprite in self.create_item_sprite_list(item_to_match, items):
-      while sprite.scale > 0:
-        successful_scale = sprite.scale_by(scaling_factor=-5)
-        if not successful_scale:
-          break 
-        self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
-        pygame.display.update() # have to update display to see the changes
-      pygame.time.wait(10)
-    
-    self.kill_sprites()
-
-  def create_item_sprite_list(self, item_to_match: ItemSprite, items: pygame.sprite.Group) -> list[ItemSprite]:
-    """ Helper function to combine sprites.
+  def scale_sprites(self, scaling_factor: float, items: Group, item_to_match: ItemSprite, draw_transitions: bool = False) -> None:
+    """ Scales sprites up or down.
 
     Args:
+      scaling_factor (float): The amount to scale the sprite by.
+      items (Group): The group of sprites to scale.
       item_to_match (ItemSprite): The item to match.
-      items (pygame.sprite.Group): The items to match against.
-      
-    Returns:
-      list[ItemSprite]: A list of sprites.
+      draw_transitions (bool): Whether or not to draw the transitions. Defaults to False.
     """
-    item_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    return item_sprites
+    sprites: list[ItemSprite] = [item_to_match] + items.sprites()
+
+    def execute_animation():
+      self.animate_sprite_scale(scaling_factor=scaling_factor, sprite=sprite, item_to_match=item_to_match, items=items, draw_transitions=draw_transitions)
+
+    for sprite in sprites:
+      if scaling_factor < 0:
+        while sprite.scale > 0:
+          execute_animation()
+        pygame.time.wait(10)
+      else:
+        while sprite.scale < 100:
+          execute_animation()
+        pygame.time.wait(10)
+  
+  def animate_sprite_scale(self, scaling_factor: float, sprite: ItemSprite, items: Group, item_to_match: ItemSprite, draw_transitions: bool = False) -> None:
+    sprite.scale_by(scaling_factor=scaling_factor)
+    if draw_transitions:
+      self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
+    pygame.display.update()
 
   def quit(self) -> None:
     """ Quits game and exits program. """
