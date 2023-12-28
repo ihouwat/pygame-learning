@@ -202,7 +202,7 @@ class Game:
 
   def start_new_turn(self) -> None:
     """ Resets sprites, creates a new puzzle"""
-    item_to_match, items = self.regenerate_sprites()
+    item_to_match, items = self.generate_sprites()
     
     # scale sprites down to prepare for spawn in
     for sprite in self.create_item_sprite_list(item_to_match, items):
@@ -224,8 +224,7 @@ class Game:
         pygame.display.update() # have to update display to see the changes
       pygame.time.wait(10)
 
-  def regenerate_sprites(self) -> tuple[ItemSprite, Group]:
-      self.kill_sprites()
+  def generate_sprites(self) -> tuple[ItemSprite, Group]:
       item, items = self.current_level.puzzle.generate()
       return item, items
 
@@ -249,6 +248,8 @@ class Game:
         self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
         pygame.display.update() # have to update display to see the changes
       pygame.time.wait(10)
+    
+    self.kill_sprites()
 
   def create_item_sprite_list(self, item_to_match: ItemSprite, items: pygame.sprite.Group) -> list[ItemSprite]:
     """ Helper function to combine sprites.

@@ -53,8 +53,9 @@
 	- DONE `ItemSprite` class:
 		- DONE the scaling function for shapes is buggy. i *think* it's because at some point the scaling factor is larger than the image size
 		- DONE clean up some of the properties now we have the metadata. perhaps combine word and text_identifier properties?
+
 	- Transitions in `Game` class:
-		- destroy sprites when you end the turn, that allows you to split the sprite destruction from creation 
+		- DONE destroy sprites when you end the turn, that allows you to split the sprite destruction from creation 
 		- ??? Instead of animating the sprites in both the start and end states, create a transition state to manage animations? But that is exactly what the start state does...
 		- what to move to renderer??
 	- Refactor the for loops that scale multiple sprites in the `Game` class. Where to put those? `SpriteHandler` or somewhere else?
