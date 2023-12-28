@@ -9,8 +9,9 @@ from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
-from models.game_types import GameAction, GameState, Language, ProcessPointResult
+from models.game_types import Color, GameAction, GameState, Language, ProcessPointResult
 from pygame.sprite import Group
+from config.settings import FONT_NAME, FONT_REGULAR, FONT_SMALL, SCREEN_HEIGHT, SCREEN_WIDTH
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -96,6 +97,18 @@ class Game:
     elif self.game_state == GameState.LEVEL_COMPLETED:
       self.end_turn(items, item_to_match)
       self.level_up()
+      pygame.time.wait(250)
+      pos = 0 - FONT_REGULAR
+      while pos < SCREEN_WIDTH + 100:
+        font = pygame.font.Font(pygame.font.match_font(FONT_NAME), FONT_REGULAR)
+        text_color = pygame.Color(Color.WHITE.value)
+        text = font.render(f'Level {self.current_level.level_number}', True, text_color)
+        self.renderer.display_surface.fill((0, 0, 0))
+        self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+        self.renderer.draw_status_bar(self.status_bar, self.ui_display)
+        self.renderer.display_surface.blit(text, (pos, (SCREEN_HEIGHT // 2) - FONT_REGULAR))
+        pos += 1
+        pygame.display.update()
       self.start_new_turn()
       self.game_state = GameState.PLAYING
     
