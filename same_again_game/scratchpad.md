@@ -47,7 +47,7 @@
 - add animations
 	- DONE increase sprite size on hover, decrease on mouse out
 	- DONE fade sprites in/out between puzzles
-	- new level animation
+	- DONE new level animation
 
 - tidying up stage:
 	- `ItemSprite` class:
@@ -56,6 +56,7 @@
 	- Transitions in `Game` class:
 		- destroy sprites when you end the turn, that allows you to split the sprite destruction from creation 
 		- ??? Instead of animating the sprites in both the start and end states, create a transition state to manage animations? But that is exactly what the start state does...
+		- what to move to renderer??
 	- Refactor the for loops that scale multiple sprites in the `Game` class. Where to put those? `SpriteHandler` or somewhere else?
 	- add `AudioPlayer` class with dummy implementations to test the code structure
 	- Consider splitting game states using state machine pattern (wait a bit before doing this one)

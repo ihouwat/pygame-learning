@@ -25,6 +25,7 @@ class Renderer:
     self.layout_items(items)
     self.layout_item_to_match(item_to_match)
     # Render
+    self.draw_background()
     self.draw_items(items, item_to_match)
     self.draw_status_bar(status_bar, ui_display)
 
@@ -46,10 +47,13 @@ class Renderer:
 
   def draw_items(self, items: Group, item_to_match: ItemSprite) -> None:
     """ Renders the screen with a new set of items and a target item."""
-    self.display_surface.fill((0, 0, 0))
     self.display_surface.blit(item_to_match.image, (item_to_match.rect.x, item_to_match.rect.y))
     for sprite in items:
       self.display_surface.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
+      
+  def draw_background(self) -> None:
+    """ Renders the background."""
+    self.display_surface.fill((0, 0, 0))
     
   def draw_status_bar(self, status_bar: StatusBar, ui_display: UIDisplay) -> None:
     """ Renders the status bar."""
@@ -59,3 +63,8 @@ class Renderer:
   def draw_game_menu(self, game_menu: GameMenu) -> None:
     """ Renders the game menu."""
     game_menu.menu.draw(self.display_surface)
+  
+  def render_level_transition_animation(self, text: pygame.Surface, position: tuple[int, int],  status_bar: StatusBar, ui_display: UIDisplay) -> None:
+    self.draw_background()
+    self.draw_status_bar(status_bar, ui_display)
+    self.display_surface.blit(text, position)
