@@ -1,18 +1,18 @@
 
-Ideas:
+# Starting ideas
 - SCRATCH THAT IDEA -do we need the timer/rotate options level?? seems to much for a toddler
 - DONE need an Item class with these properties: image, sound, word, text_identifier
 - DONE need dictionary to load images and sounds during the game (don't load images in classes!) - toggle language thru some enum
 - with the item dataclass, do we pass the image and sound as a path or as a resource???
 
-Progress:
+# Todo
 - DONE create a dictionary of items and a dataclass for the items
 	- why a dataclass --> it is just for data and makes comparing items easier
 - DONE add one item to the game to test dataclass approach
 - DONE try one round of the game with only 4 items
 - DONE try one round of the game with 4 randomly picked items
 - DONE add one more level to the game to see what we need to manage multiple levels
-- DONE refactor the classes and cleanup code
+- DONE tidying up stage
 	- maybe have a dataclass for the pure data that you can inject into another class for the sprite representation?
 	- DONE need class for rendering
 	- DONE need class for puzzles, etc.
@@ -30,7 +30,7 @@ Progress:
 	
 - PARTIALLY DONE voice only target item (need to still record sounds)
 
-- DONE refactor by moving classes into separate files
+- DONE tidying up stage: move classes into separate files
 	- DONE Created config, engine, game_objects files
 	- DONE Need to find a home from game_manager
 	- DONE Need to find a home for the funcs.py
@@ -48,6 +48,17 @@ Progress:
 	- DONE increase sprite size on hover, decrease on mouse out
 	- DONE fade sprites in/out between puzzles
 	- new level animation
+
+- tidying up stage:
+	- `ItemSprite` class:
+		- the scaling function for shapes is buggy. i *think* it's because at some point the scaling factor is larger than the image size
+		- clean up some of the properties now we have the metadata. perhaps combine word and text_identifier properties?
+	- Transitions in `Game` class:
+		- destroy sprites when you end the turn, that allows you to split the sprite destruction from creation 
+		- ??? Instead of animating the sprites in both the start and end states, create a transition state to manage animations? But that is exactly what the start state does...
+	- Refactor the for loops that scale multiple sprites in the `Game` class. Where to put those? `SpriteHandler` or somewhere else?
+	- add `AudioPlayer` class with dummy implementations to test the code structure
+	- Consider splitting game states using state machine pattern (wait a bit before doing this one)
 
 - download more pngs and add attributions
 - record and add languages to the game
