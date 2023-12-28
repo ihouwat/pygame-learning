@@ -81,7 +81,7 @@ class ItemSprite(pygame.sprite.Sprite):
     self.scale = self.current_size[0] / self.initial_size[0] * 100
     return True
 
-  def scale_image(self, scaling_factor) -> tuple[float, float]:
+  def scale_image(self, scaling_factor: float) -> tuple[float, float]:
     """ Scales the image of the item. Calculates size difference based on original image size.
       Then adds the scale factor to the old width to return updated width and height.
       Maintains aspect ratio.
@@ -111,7 +111,7 @@ class ItemSprite(pygame.sprite.Sprite):
     self.image = pygame.transform.smoothscale(self.original_image, (int(new_width), int(new_height)))
     return new_width, new_height
 
-  def scale_shape(self, scaling_factor) -> tuple[int, int]:
+  def scale_shape(self, scaling_factor: float) -> tuple[float, float]:
     """ Scales the shape of the item. Calculates size difference based on original size and current size.
       Then adds a scaling factor to the size difference and returns the new width and height.
     
@@ -121,10 +121,16 @@ class ItemSprite(pygame.sprite.Sprite):
     Returns:
       tuple[int, int]: The new width and height of the item sprite.
     """
+    
+    new_scale_factor: float
+    if scaling_factor < 0 and abs(scaling_factor) > self.current_size[0]:
+      new_scale_factor = -self.current_size[0]
+    else:
+      new_scale_factor = scaling_factor
+
     size_difference = (self.current_size[0] - self.initial_size[0], self.current_size[1] - self.initial_size[1])
-    new_width = self.initial_size[0] + size_difference[0] + scaling_factor
-    new_height = self.initial_size[1] + size_difference[1] + scaling_factor
-    print(size_difference, new_width, new_height)
+    new_width = self.initial_size[0] + size_difference[0] + new_scale_factor
+    new_height = self.initial_size[1] + size_difference[1] + new_scale_factor
     for shape in Shape:
       if self.text_identifier == shape.value and self.metadata:
         self.image = create_shape(shape, colors[self.metadata.color], new_width, new_height)

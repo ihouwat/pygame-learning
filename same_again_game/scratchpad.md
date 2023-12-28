@@ -50,8 +50,8 @@
 	- DONE new level animation
 
 - tidying up stage:
-	- `ItemSprite` class:
-		- the scaling function for shapes is buggy. i *think* it's because at some point the scaling factor is larger than the image size
+	- DONE `ItemSprite` class:
+		- DONE the scaling function for shapes is buggy. i *think* it's because at some point the scaling factor is larger than the image size
 		- DONE clean up some of the properties now we have the metadata. perhaps combine word and text_identifier properties?
 	- Transitions in `Game` class:
 		- destroy sprites when you end the turn, that allows you to split the sprite destruction from creation 
