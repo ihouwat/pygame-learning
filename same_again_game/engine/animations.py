@@ -11,16 +11,18 @@ from ui.ui_display import UIDisplay
 
 
 class Animation(Protocol):
-	
+	""" Animation is the base class for all animations. """
 	def update(self) -> None:
+		""" Where the animation logic is executed. """
 		...
 	
 	@property
 	def is_finished(self) -> bool:
+		""" Whether or not the animation is finished. """
 		...
 
 class ScaleSprites(Animation):
-	
+	""" ScaleSprites is responsible for scaling sprites up or down."""
 	def __init__(self, scaling_factor: float, renderer: Renderer, items: Group, item_to_match: ItemSprite, status_bar: StatusBar, ui_display: UIDisplay, draw_transitions: bool = False):
 		self.scaling_factor = scaling_factor
 		self.renderer = renderer
@@ -74,6 +76,7 @@ class ScaleSprites(Animation):
 		pygame.display.update()
 
 class LevelTransition(Animation):
+	""" LevelTransition is responsible for animating the transition between levels."""
 	
 	def __init__(self, renderer: Renderer, status_bar: StatusBar, ui_display: UIDisplay, level_number: int):
 		self.renderer = renderer
@@ -108,7 +111,7 @@ class LevelTransition(Animation):
 			pygame.display.flip()
 
 class SpriteHoverEffect(Animation):
-	
+	""" SpriteHoverEffect is responsible for animating the hover effect on sprites."""
 	def __init__(self, renderer: Renderer, status_bar: StatusBar, ui_display: UIDisplay, items: Group, min_scale: float, max_scale: float):
 		self.renderer = renderer
 		self.ui_display = ui_display
