@@ -59,9 +59,8 @@
 		- DONE ??? Instead of animating the sprites in both the start and end states, create a transition state to manage animations? But that is exactly what the start state does...
 	- DONE Refactor the for loops that scale multiple sprites in the `Game` class. 
 	- DONE add `AudioPlayer` class with dummy implementations to test the code structure
+	- DONE Where to put those scaling animations? `SpriteHandler` or somewhere else? Answer is `AnimationEngine` that consumes`Animation` objects and executes them.
 
-
-	- Where to put those scaling animations? `SpriteHandler` or somewhere else?
 	- Consider splitting game states using state machine pattern (wait a bit before doing this one)
 
 - download more pngs and add attributions

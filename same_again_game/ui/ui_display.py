@@ -13,10 +13,10 @@ class UIDisplay:
 		score(int): The score of the player.
 		level(int): The level of the player.
 	"""
-	language: Language
-	player_name: str
-	score: int
-	level: int
+	language: Language = Language.ENGLISH
+	player_name: str = ""
+	score: int = 0
+	level: int = 1
 	
 	def update(self, player: str, score: int, level: int, language: Language) -> None:
 		"""Updates the UI display."""
