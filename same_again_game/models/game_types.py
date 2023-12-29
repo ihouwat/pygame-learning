@@ -59,7 +59,7 @@ class GameState(Enum):
 class ProcessPointResult(Enum):
   """ Represents the result of processing a point gain."""
   LEVEL_COMPLETED = 1
-  START_NEW_TURN = 2
+  TURN_COMPLETED = 2
   
 class TextElementTypes(Enum):
   LEVEL_UP = 1

@@ -162,7 +162,7 @@ class Game:
     if self.current_level.is_completed():
       return ProcessPointResult.LEVEL_COMPLETED
     else:
-      return ProcessPointResult.START_NEW_TURN
+      return ProcessPointResult.TURN_COMPLETED
 
   def completed_all_levels(self):
     """ Returns True if all levels have been completed, False otherwise."""
