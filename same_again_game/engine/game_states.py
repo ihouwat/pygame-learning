@@ -4,22 +4,10 @@ from engine.animations import SpriteHoverEffect
 from models.game_state_machine import GameContext, GameStateMachine
 from models.game_types import GameAction, GameState, ProcessPointResult
 
-
-class OpenMenuState(GameStateMachine):
-	""" OpenMenuState is responsible for handling the game logic when the menu is opened. """
-	def __init__(self, game_context: GameContext):
-		super().__init__(game_context)
-		self.execute()
-	
-	def execute(self) -> GameState:
-		self.game_instance.game_menu.open_menu()
-		return GameState.MENU_IS_OPEN
-
 class MenuOpenState(GameStateMachine):
 	""" MenuOpenState is responsible for handling the game logic when the menu is open. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
 		if self.action == GameAction.START_NEW_GAME:
@@ -42,7 +30,6 @@ class PausedState(GameStateMachine):
 	""" PausedState is responsible for handling the game logic when the game is paused. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
 		if self.action == GameAction.MOUSE_ENTERED_WINDOW:
@@ -53,7 +40,6 @@ class TransitionTurnsState(GameStateMachine):
 	""" TransitionTurnsState is responsible for handling the game logic when transitioning between turns. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
 		self.game_instance.transition_to_next_turn(self.items, self.item_to_match)
@@ -73,7 +59,6 @@ class LevelCompletedState(GameStateMachine):
 	""" LevelCompletedState is responsible for handling the game logic when a level is completed. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
 		self.game_instance.transition_to_next_turn(self.items, self.item_to_match)
@@ -84,7 +69,6 @@ class TransitionLevelState(GameStateMachine):
 	""" TransitionLevelState is responsible for handling the game logic when transitioning between levels. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
 		return GameState.START_NEW_TURN
@@ -93,13 +77,12 @@ class PlayingState(GameStateMachine):
 	""" PlayingState is responsible for handling the game logic when the game is playing. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
 		if self.action == GameAction.MOUSE_EXITED_WINDOW:
 			return GameState.PAUSED
 		if self.action == GameAction.OPEN_MENU:
-			return GameState.OPEN_MENU
+			return GameState.MENU_IS_OPEN
 		if self.action == GameAction.SELECT:
 			if(self.game_instance.match_detected(self.items, self.item_to_match, pygame.mouse.get_pos())):
 				logger.info('match detected!')
@@ -121,7 +104,6 @@ class GameCompletedState(GameStateMachine):
 	""" GameCompletedState is responsible for handling the game logic when the game is completed. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
 		logger.info('You have completed all levels!')
