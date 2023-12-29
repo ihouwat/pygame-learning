@@ -31,7 +31,7 @@ from models.game_types import (
   GameState,
   Language,
   ProcessPointResult,
-  TextElementTypes,
+  TextElementType,
 )
 from pygame.sprite import Group
 from ui.game_menu import GameMenu
@@ -87,8 +87,8 @@ class Game:
     self.player_name: str = "Player"
     self.item_to_match: ItemSprite = ItemSprite()
     self.items: Group = Group()
-    self.text_elements: dict[TextElementTypes, TextElement] = {
-      TextElementTypes.LEVEL_UP: TextElement(
+    self.text_elements: dict[TextElementType, TextElement] = {
+      TextElementType.LEVEL_UP: TextElement(
                     text=f'Level {self.current_level.level_number}',
                     font=pygame.font.Font(pygame.font.match_font(FONT_NAME), FONT_REGULAR),
                     color=pygame.Color(Color.WHITE.value),
@@ -183,8 +183,8 @@ class Game:
     Returns:
       bool: True if the transition is complete, False otherwise.
     """
-    if self.text_elements[TextElementTypes.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementTypes.LEVEL_UP], x_increment=10, y_increment=0)).execute()
+    if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=10, y_increment=0)).execute()
       return False
     else:
       return True

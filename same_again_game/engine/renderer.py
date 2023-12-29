@@ -2,7 +2,7 @@ import pygame
 from config.settings import FONT_REGULAR, SCREEN_HEIGHT, SCREEN_WIDTH
 from game_objects.item_sprite import ItemSprite
 from game_objects.text_element import TextElement
-from models.game_types import GameState, TextElementTypes
+from models.game_types import GameState, TextElementType
 from pygame.sprite import Group
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
@@ -23,13 +23,13 @@ class Renderer:
 		self.level_text_position = (0 - FONT_REGULAR, (SCREEN_HEIGHT // 2) - FONT_REGULAR)
 		pygame.display.set_caption("Same Again")
 
-	def draw(self, item_to_match: ItemSprite, items: Group, status_bar: StatusBar, ui_display: UIDisplay, game_menu: GameMenu, game_state: GameState, text_elements: dict[TextElementTypes, TextElement]) -> None:
+	def draw(self, item_to_match: ItemSprite, items: Group, status_bar: StatusBar, ui_display: UIDisplay, game_menu: GameMenu, game_state: GameState, text_elements: dict[TextElementType, TextElement]) -> None:
 		""" Layouts and updates the screen with a new set of items, a target item, and updates status bar."""
 		if game_menu.menu.is_enabled() and game_state == GameState.MENU_IS_OPEN:
 			self.draw_game_menu(game_menu)
 			return
 		if game_state == GameState.TRANSITION_TO_NEXT_LEVEL:
-			self.render_level_transition_animation(text_element=text_elements[TextElementTypes.LEVEL_UP], status_bar=status_bar, ui_display=ui_display)
+			self.render_level_transition_animation(text_element=text_elements[TextElementType.LEVEL_UP], status_bar=status_bar, ui_display=ui_display)
 			return
 		elif not game_state == GameState.PAUSED:
 			# Layout

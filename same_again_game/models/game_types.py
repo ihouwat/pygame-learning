@@ -61,7 +61,7 @@ class ProcessPointResult(Enum):
   LEVEL_COMPLETED = 1
   TURN_COMPLETED = 2
   
-class TextElementTypes(Enum):
+class TextElementType(Enum):
   LEVEL_UP = 1
 
 class Language(Enum):
