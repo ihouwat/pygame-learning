@@ -24,17 +24,13 @@ class Renderer:
 
 	def draw(self, item_to_match: ItemSprite, items: Group, status_bar: StatusBar, ui_display: UIDisplay, game_menu: GameMenu, game_state: GameState, level_number: int) -> None:
 		""" Layouts and updates the screen with a new set of items, a target item, and updates status bar."""
-		if game_menu.menu.is_enabled() and (game_state == GameState.OPEN_MENU or game_state == GameState.MENU_IS_OPEN):
+		if game_menu.menu.is_enabled() and game_state == GameState.MENU_IS_OPEN:
 			self.draw_game_menu(game_menu)
 			return
 		if game_state == GameState.TRANSITION_TO_NEXT_TURN:
-			self.render_level_transition_animation(
-				level_number=level_number,
-				status_bar=status_bar,
-				ui_display=ui_display,
-			)
+			self.render_level_transition_animation(level_number=level_number, status_bar=status_bar, ui_display=ui_display)
 			return
-		else:
+		elif not game_state == GameState.PAUSED:
 			# Layout
 			self.layout_items(items)
 			self.layout_item_to_match(item_to_match)
