@@ -61,9 +61,10 @@ class LevelCompletedState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		self.game_instance.transition_to_next_turn(self.items, self.item_to_match)
 		self.game_instance.level_up()
-		return GameState.START_NEW_TURN
+		if not self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
+			return GameState.LEVEL_COMPLETED
+		return GameState.TRANSITION_TO_NEXT_LEVEL
 
 class TransitionLevelState(GameStateMachine):
 	""" TransitionLevelState is responsible for handling the game logic when transitioning between levels. """
@@ -71,6 +72,8 @@ class TransitionLevelState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
+		if not self.game_instance.transition_to_next_level():
+			return GameState.TRANSITION_TO_NEXT_LEVEL
 		return GameState.START_NEW_TURN
 
 class PlayingState(GameStateMachine):

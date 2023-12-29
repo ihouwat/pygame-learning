@@ -5,8 +5,9 @@ from typing import Optional, Type
 import pygame
 from audio.audio_player import AudioPlayer
 from config.logger import logger
+from config.settings import FONT_NAME, FONT_REGULAR, SCREEN_HEIGHT, SCREEN_WIDTH
 from engine.animation_engine import AnimationEngine
-from engine.animations import ScaleSprite
+from engine.animations import ScaleSprite, TextTransition
 from engine.event_listener import EventListener
 from engine.game_states import (
   GameCompletedState,
@@ -22,8 +23,16 @@ from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
+from game_objects.text_element import TextElement
 from models.game_state_machine import GameContext, GameStateMachine
-from models.game_types import GameAction, GameState, Language, ProcessPointResult
+from models.game_types import (
+  Color,
+  GameAction,
+  GameState,
+  Language,
+  ProcessPointResult,
+  TextElementTypes,
+)
 from pygame.sprite import Group
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
@@ -49,6 +58,7 @@ class Game:
     player_name (str): The player name.
     item_to_match (ItemSprite): The item to match.
     items (Group): The group of items.
+    text_elements (list[TextElement]): The list of text elements.
   """
   def __init__(self, renderer: Renderer, ui_display: UIDisplay, animation_engine: AnimationEngine, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language):
     self.renderer: Renderer = renderer
@@ -77,6 +87,15 @@ class Game:
     self.player_name: str = "Player"
     self.item_to_match: ItemSprite = ItemSprite()
     self.items: Group = Group()
+    self.text_elements: dict[TextElementTypes, TextElement] = {
+      TextElementTypes.LEVEL_UP: TextElement(
+                    text=f'Level {self.current_level.level_number}',
+                    font=pygame.font.Font(pygame.font.match_font(FONT_NAME), FONT_REGULAR),
+                    color=pygame.Color(Color.WHITE.value),
+                    x=0 - FONT_REGULAR,
+                    y=(SCREEN_HEIGHT // 2) - FONT_REGULAR,
+                    ),
+    }
 
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game.
@@ -85,8 +104,6 @@ class Game:
       events (list[pygame.event.Event]): The list of pygame events.
     """
     action: Optional[GameAction] = self.event_listener.process_events(events)
-    self.items: Group = self.current_level.puzzle.items
-    self.item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
     
     if action == GameAction.QUIT:
       self.quit()
@@ -100,7 +117,7 @@ class Game:
       self.ui_display,
       self.game_menu,
       self.current_state,
-      self.current_level.level_number
+      self.text_elements
       )
     self.current_state = next_state
 
@@ -140,12 +157,10 @@ class Game:
 
   def process_point_gain(self) -> ProcessPointResult:
     """ Increments points and controls leveling up. """
-
     self.current_level.increment_score(points=1)
 
     if self.current_level.is_completed():
       return ProcessPointResult.LEVEL_COMPLETED
-
     else:
       return ProcessPointResult.START_NEW_TURN
 
@@ -162,6 +177,18 @@ class Game:
     # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
+  def transition_to_next_level(self) -> bool:
+    """ Transitions to the next level.
+    
+    Returns:
+      bool: True if the transition is complete, False otherwise.
+    """
+    if self.text_elements[TextElementTypes.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementTypes.LEVEL_UP], x_increment=10, y_increment=0)).execute()
+      return False
+    else:
+      return True
+    
   def prepare_sprites_for_new_turn(self) -> None:
     """ Generates sprites for a new puzzle and scales them down."""
     self.item_to_match, self.items = self.current_level.puzzle.generate()
@@ -173,7 +200,6 @@ class Game:
     """ Generates sprites t0 create a new puzzle"""
     if len(self.items) == 0:
       self.prepare_sprites_for_new_turn()
-
     return self.spawn_sprites(self.items, self.item_to_match)
   
   def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:
@@ -187,14 +213,14 @@ class Game:
       bool: True if the sprites were successfully scaled in, False otherwise.
     """
     if item_to_match.scale < 100:
-      for sprite in [self.item_to_match] + self.items.sprites():
+      for sprite in [item_to_match] + items.sprites():
         self.animation_engine.add_animation(ScaleSprite(scaling_factor=10, sprite=sprite))
       self.animation_engine.execute()
       return False
     else:
       return True
 
-  def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite):
+  def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite) -> bool:
     """ Scales sprites down, kills sprites, and updates UI.
     
     Args:
@@ -207,11 +233,14 @@ class Game:
     # self.audio_player.playsound(sound='audio/correct.wav', vol=0.5)
 
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    pygame.time.wait(150)
-    for sprite in [self.item_to_match] + self.items.sprites():
-      self.animation_engine.add_animation(ScaleSprite(scaling_factor=-10, sprite=sprite))
-    self.animation_engine.execute()
-    self.kill_sprites()
+    if item_to_match.scale > 0:
+      for sprite in [item_to_match] + items.sprites():
+        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-10, sprite=sprite))
+      self.animation_engine.execute()
+      return False
+    else: 
+      self.kill_sprites()
+      return True
 
   def kill_sprites(self) -> None:
     """ Remove all sprites."""

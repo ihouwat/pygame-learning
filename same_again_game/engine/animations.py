@@ -3,6 +3,7 @@ from typing import Protocol
 import pygame
 from engine.renderer import Renderer
 from game_objects.item_sprite import ItemSprite
+from game_objects.text_element import TextElement
 from pygame.sprite import Group
 from ui.ui_display import UIDisplay
 
@@ -60,38 +61,26 @@ class ScaleSprite(Animation):
 	def animate_sprite_scale(self, scaling_factor: float, sprite: ItemSprite) -> None:
 		sprite.scale_by(scaling_factor=scaling_factor)
 
+class TextTransition(Animation):
+	""" TextTransition is responsible for animating the text transition between levels."""
+	
+	def __init__(self, text_element: TextElement, x_increment: int = 1, y_increment: int = 0):
+		self.text_element = text_element
+		self.x_increment = x_increment
+		self.y_increment = y_increment
+		self._is_finished = False
+	
+	def update(self) -> None:
+		self.text_element.set_position(self.text_element.current_position[0] + self.x_increment, self.text_element.current_position[1] + self.y_increment)
+		self.is_finished = True
+	
+	@property
+	def is_finished(self) -> bool:
+		return self._is_finished
 
-# class LevelTransition(Animation):
-# 	""" LevelTransition is responsible for animating the transition between levels."""
-	
-# 	def __init__(self, renderer: Renderer, status_bar: StatusBar, ui_display: UIDisplay, level_number: int):
-# 		self.renderer = renderer
-# 		self.status_bar = status_bar
-# 		self.ui_display = ui_display
-# 		self.level_number = level_number
-# 		self._is_finished = False
-	
-# 	def update(self) -> None:
-# 		self.animate_level_transition()
-# 		self.is_finished = True
-	
-# 	@property
-# 	def is_finished(self) -> bool:
-# 		return self._is_finished
-
-# 	@is_finished.setter
-# 	def is_finished(self, value: bool) -> None:
-# 		self._is_finished = value
-	
-# 	def animate_level_transition(self) -> None:
-		# y = (SCREEN_HEIGHT // 2) - FONT_REGULAR
-		# x = 0 - FONT_REGULAR
-
-		# pygame.time.wait(250)
-		# while x < SCREEN_WIDTH + 100:
-		# 	# self.renderer.render_level_transition_animation(text, (x, y), self.status_bar, self.ui_display)
-		# 	x += 1
-		# 	pygame.display.flip()
+	@is_finished.setter
+	def is_finished(self, value: bool) -> None:
+		self._is_finished = value
 
 class SpriteHoverEffect(Animation):
 	""" SpriteHoverEffect is responsible for animating the hover effect on sprites."""
@@ -123,4 +112,4 @@ class SpriteHoverEffect(Animation):
 					sprite.scale_by(scaling_factor=10)
 			else:
 				if sprite.scale > min_scale:
-					sprite.scale_by(scaling_factor=-10)
+					sprite.scale_by(scaling_factor=-7)

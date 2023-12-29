@@ -60,6 +60,9 @@ class ProcessPointResult(Enum):
   """ Represents the result of processing a point gain."""
   LEVEL_COMPLETED = 1
   START_NEW_TURN = 2
+  
+class TextElementTypes(Enum):
+  LEVEL_UP = 1
 
 class Language(Enum):
   """ Represents a language to be used in the game."""

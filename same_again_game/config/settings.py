@@ -25,7 +25,7 @@ SHAPE_WIDTH = 140
 SHAPE_HEIGHT = 140
 
 # Frames per second
-FPS = 30
+FPS = 60
 
 # Fonts
 FONT_NAME = "Verdana"
