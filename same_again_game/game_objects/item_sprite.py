@@ -23,9 +23,9 @@ class ItemSprite(pygame.sprite.Sprite):
     original_image(pygame.Surface): The original image of the item.
     scale(int): The scale of the item.
   """
-  image: pygame.Surface
+  image: pygame.Surface = pygame.Surface((0, 0))
   # sound: pygame.mixer.Sound
-  text_identifier: str
+  text_identifier: str = ""
   metadata: Optional[ItemConfig] = None
 
   def __post_init__(self):
