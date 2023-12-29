@@ -35,20 +35,22 @@ class Game:
   """ Represents a game of Same Again.
   
   Attributes:
-    renderer(Renderer): The game renderer.
-    ui_display(UIDisplay): The UI display.
-    audio_player(AudioPlayer): The audio player.
-    event_listener(EventListener): The event listener.
-    status_bar(StatusBar): The status bar.
-    game_menu(GameMenu): The game menu.
-    levels(list[Level]): The levels of the game.
-    animation_engine(AnimationEngine): The animation engine.
-    current_level(Level): The current level of the game.
-    selected_language(Language): The selected language of the game.
-    player_name(str): The name of the player.
-    game_state(GameState): The state of the game.
+    renderer (Renderer): The renderer.
+    ui_display (UIDisplay): The UI display.
+    animation_engine (AnimationEngine): The animation engine.
+    audio_player (AudioPlayer): The audio player.
+    event_listener (EventListener): The event listener.
+    status_bar (StatusBar): The status bar.
+    game_menu (GameMenu): The game menu.
+    levels (list[Level]): The list of levels.
+    game_states (dict[GameState, Type[GameStateMachine]]): The game states.
+    current_state (GameState): The current game state.
+    current_level (Level): The current level.
+    selected_language (Language): The selected language.
+    player_name (str): The player name.
+    item_to_match (ItemSprite): The item to match.
+    items (Group): The group of items.
   """
-
   def __init__(self, renderer: Renderer, ui_display: UIDisplay, animation_engine: AnimationEngine, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language):
     self.renderer: Renderer = renderer
     self.ui_display = ui_display
@@ -67,15 +69,15 @@ class Game:
       GameState.TRANSITION_TO_NEXT_TURN: TransitionTurnsState,
       GameState.TRANSITION_TO_NEXT_LEVEL: TransitionLevelState,
       GameState.START_NEW_TURN: StartNewTurnState,
-      GameState.OPEN_MENU: OpenMenuState
     }
-    self.game_state: GameState = GameState.OPEN_MENU
     
     # also game state (candidates for extraction)
+    self.current_state: GameState = GameState.MENU_IS_OPEN
     self.current_level: Level = self.levels[0]
     self.selected_language: Language = language
     self.player_name: str = "Player"
-  
+    self.item_to_match: ItemSprite = ItemSprite()
+    self.items: Group = Group()
 
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game.
@@ -84,24 +86,24 @@ class Game:
       events (list[pygame.event.Event]): The list of pygame events.
     """
     action: Optional[GameAction] = self.event_listener.process_events(events)
-    items: Group = self.current_level.puzzle.items
-    item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
+    self.items: Group = self.current_level.puzzle.items
+    self.item_to_match: ItemSprite = self.current_level.puzzle.item_to_match
     
     if action == GameAction.QUIT:
       self.quit()
     
-    game_context: GameContext = GameContext(game_instance=self, events=events, action=action, item_to_match=item_to_match, items=items)
-    next_state: GameState = self.game_states[self.game_state](game_context=game_context).execute()
+    game_context: GameContext = GameContext(game_instance=self, events=events, action=action, item_to_match=self.item_to_match, items=self.items)
+    next_state: GameState = self.game_states[self.current_state](game_context).execute()
     self.renderer.draw(
-      item_to_match,
-      items,
+      self.item_to_match,
+      self.items,
       self.status_bar,
       self.ui_display,
       self.game_menu,
-      self.game_state,
+      self.current_state,
       self.current_level.level_number
       )
-    self.game_state = next_state
+    self.current_state = next_state
 
   def reset_game_levels(self):
     """ Resets the game levels."""
