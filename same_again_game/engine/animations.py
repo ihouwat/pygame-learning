@@ -23,18 +23,14 @@ class Animation(Protocol):
 
 class ScaleSprites(Animation):
 	""" ScaleSprites is responsible for scaling sprites up or down."""
-	def __init__(self, scaling_factor: float, renderer: Renderer, items: Group, item_to_match: ItemSprite, status_bar: StatusBar, ui_display: UIDisplay, draw_transitions: bool = False):
+	def __init__(self, scaling_factor: float, items: Group, item_to_match: ItemSprite):
 		self.scaling_factor = scaling_factor
-		self.renderer = renderer
 		self.items = items
 		self.item_to_match = item_to_match
-		self.draw_transitions = draw_transitions
-		self.status_bar = status_bar
-		self.ui_display = ui_display
 		self._is_finished = False
 	
 	def update(self) -> None:
-		self.scale_sprites(self.scaling_factor, self.items, self.item_to_match, self.draw_transitions)
+		self.scale_sprites(self.scaling_factor, self.items, self.item_to_match)
 		self.is_finished = True
 	
 	@property
@@ -45,7 +41,7 @@ class ScaleSprites(Animation):
 	def is_finished(self, value: bool) -> None:
 		self._is_finished = value
 	
-	def scale_sprites(self, scaling_factor: float, items: Group, item_to_match: ItemSprite, draw_transitions: bool = False) -> None:
+	def scale_sprites(self, scaling_factor: float, items: Group, item_to_match: ItemSprite) -> None:
 		""" Scales sprites up or down.
 
 		Args:
@@ -57,22 +53,20 @@ class ScaleSprites(Animation):
 		sprites: list[ItemSprite] = [item_to_match] + items.sprites()
 
 		def execute_animation():
-			self.animate_sprite_scale(scaling_factor=scaling_factor, sprite=sprite, item_to_match=item_to_match, items=items, draw_transitions=draw_transitions)
+			self.animate_sprite_scale(scaling_factor=scaling_factor, sprite=sprite)
 
 		for sprite in sprites:
 			if scaling_factor < 0:
-				while sprite.scale > 0:
+				if sprite.scale > 0:
 					execute_animation()
 				pygame.time.wait(10)
 			else:
-				while sprite.scale < 100:
+				if sprite.scale < 100:
 					execute_animation()
 				pygame.time.wait(10)
 	
-	def animate_sprite_scale(self, scaling_factor: float, sprite: ItemSprite, items: Group, item_to_match: ItemSprite, draw_transitions: bool = False) -> None:
+	def animate_sprite_scale(self, scaling_factor: float, sprite: ItemSprite) -> None:
 		sprite.scale_by(scaling_factor=scaling_factor)
-		if draw_transitions:
-			self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
 		pygame.display.update()
 
 class LevelTransition(Animation):

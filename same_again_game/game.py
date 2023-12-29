@@ -213,9 +213,8 @@ class Game:
     """
     pygame.time.wait(350)
     # scale sprites down to prepare for spawn in, and then spawn in
-    self.animation_engine.add_animation(
-      ScaleSprites(scaling_factor=-100, items=items, item_to_match=item_to_match, renderer=self.renderer, status_bar=self.status_bar, ui_display=self.ui_display)
-    ).add_animation(ScaleSprites(scaling_factor=5, items=items, item_to_match=item_to_match, renderer=self.renderer, status_bar=self.status_bar, ui_display=self.ui_display, draw_transitions=True, )
+    self.animation_engine.add_animation(ScaleSprites(scaling_factor=-100, items=items, item_to_match=item_to_match)
+    ).add_animation(ScaleSprites(scaling_factor=10, items=items, item_to_match=item_to_match)
     ).execute()
 
   def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite):
@@ -233,7 +232,7 @@ class Game:
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
     pygame.time.wait(150)
     self.animation_engine.add_animation(
-      ScaleSprites(scaling_factor=-5, items=items, item_to_match=item_to_match, draw_transitions=True, renderer=self.renderer, status_bar=self.status_bar, ui_display=self.ui_display)
+      ScaleSprites(scaling_factor=-10, items=items, item_to_match=item_to_match)
     ).execute()
     self.kill_sprites()
 
