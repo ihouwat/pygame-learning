@@ -23,7 +23,7 @@ class GameStateMachine(ABC):
 		self.events = game_context.events
 		self.item_to_match = game_context.item_to_match
 		self.items = game_context.items
-	
+
 	def execute(self) -> GameState:
 		""" Where the game logic is executed. """
 		...
