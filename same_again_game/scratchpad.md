@@ -61,7 +61,7 @@
 	- DONE add `AudioPlayer` class with dummy implementations to test the code structure
 	- DONE Where to put those scaling animations? `SpriteHandler` or somewhere else? Answer is `AnimationEngine` that consumes`Animation` objects and executes them.
 
-	- Consider splitting game states using state machine pattern (wait a bit before doing this one)
+	- Split game states using state machine pattern
 
 - download more pngs and add attributions
 - record and add languages to the game

@@ -1,17 +1,29 @@
 
 import sys
-from typing import Optional
+from typing import Optional, Type
 
 import pygame
 from audio.audio_player import AudioPlayer
 from config.logger import logger
 from engine.animation_engine import AnimationEngine
-from engine.animations import LevelTransition, ScaleSprites, SpriteHoverEffect
+from engine.animations import ScaleSprites
 from engine.event_listener import EventListener
+from engine.game_states import (
+  GameCompletedState,
+  LevelCompletedState,
+  MenuOpenState,
+  OpenMenuState,
+  PausedState,
+  PlayingState,
+  StartNewTurnState,
+  TransitionLevelState,
+  TransitionTurnsState,
+)
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
+from models.game_state_machine import GameContext, GameStateMachine
 from models.game_types import GameAction, GameState, Language, ProcessPointResult
 from pygame.sprite import Group
 from ui.game_menu import GameMenu
@@ -46,12 +58,23 @@ class Game:
     self.status_bar: StatusBar = status_bar
     self.game_menu: GameMenu = game_menu
     self.levels: list[Level] = levels
+    self.game_states: dict[GameState, Type[GameStateMachine]] = {
+      GameState.PLAYING: PlayingState,
+      GameState.MENU_IS_OPEN: MenuOpenState,
+      GameState.LEVEL_COMPLETED: LevelCompletedState,
+      GameState.GAME_COMPLETED: GameCompletedState,
+      GameState.PAUSED: PausedState,
+      GameState.TRANSITION_TO_NEXT_TURN: TransitionTurnsState,
+      GameState.TRANSITION_TO_NEXT_LEVEL: TransitionLevelState,
+      GameState.START_NEW_TURN: StartNewTurnState,
+      GameState.OPEN_MENU: OpenMenuState
+    }
+    self.game_state: GameState = GameState.OPEN_MENU
     
-    # game state (candidates for extraction)
+    # also game state (candidates for extraction)
     self.current_level: Level = self.levels[0]
     self.selected_language: Language = language
     self.player_name: str = "Player"
-    self.game_state: GameState = GameState.MENU_OPEN
   
 
   def run(self, events: list[pygame.event.Event]) -> None:
@@ -67,81 +90,24 @@ class Game:
     if action == GameAction.QUIT:
       self.quit()
     
-    if self.game_state == GameState.MENU_OPEN:
+    game_context: GameContext = GameContext(game_instance=self, events=events, action=action, item_to_match=item_to_match, items=items)
+    next_state: GameState = self.game_states[self.game_state](game_context=game_context).execute()
+    self.renderer.draw(
+      item_to_match,
+      items,
+      self.status_bar,
+      self.ui_display,
+      self.game_menu,
+      self.game_state,
+      self.current_level.level_number
+      )
+    self.game_state = next_state
 
-      if action == GameAction.START_NEW_GAME:
-        for level in self.levels:
-          level.reset()
-        self.current_level = self.levels[0]
-        self.save_user_settings(events[0])
-        self.animation_engine.add_animation(
-          LevelTransition(level_number=self.current_level.level_number, renderer=self.renderer, status_bar=self.status_bar, ui_display=self.ui_display) 
-        ).execute()
-        
-        #play soundtrack
-        # self.audio_player.playsoundtrack(music='audio/soundtrack.mp3', num=-1, vol=0.5)
-        
-        self.start_new_turn()
-        self.game_state = GameState.PLAYING
-
-      if action == GameAction.RESUME_GAME:
-        self.save_user_settings(events[0])
-        self.game_state = GameState.PLAYING
-      
-      else:
-        if not self.game_menu.menu.is_enabled():
-          self.game_menu.open_menu()
-        self.renderer.draw_game_menu(self.game_menu)
-        self.game_menu.menu.update(events)
-
-    elif self.game_state == GameState.PAUSED:
-      if action == GameAction.MOUSE_ENTERED_WINDOW:
-        self.game_state = GameState.PLAYING
-    
-    elif self.game_state == GameState.TRANSITION_TO_NEXT_TURN:
-      self.transition_to_next_turn(items, item_to_match)
-      self.game_state = GameState.START_NEW_TURN
-    
-    elif self.game_state == GameState.START_NEW_TURN:
-      self.start_new_turn()
-      self.game_state = GameState.PLAYING
-    
-    elif self.game_state == GameState.LEVEL_COMPLETED:
-      self.transition_to_next_turn(items, item_to_match)
-      self.level_up()
-      
-      self.start_new_turn()
-      self.game_state = GameState.PLAYING
-    
-    elif self.game_state == GameState.GAME_COMPLETED:
-      logger.info('You have completed all levels!')
-      # play a big cheer sound effect
-      # self.audio_player.playsound(sound='audio/game_completed.wav', vol=0.5)
-      self.quit()
-    
-    elif self.game_state == GameState.PLAYING:
-      if action == GameAction.MOUSE_EXITED_WINDOW:
-        self.game_state = GameState.PAUSED
-      if action == GameAction.OPEN_MENU:
-        self.game_menu.open_menu()
-        self.game_state = GameState.MENU_OPEN
-      if action == GameAction.SELECT:
-        if(self.match_detected(items, item_to_match, pygame.mouse.get_pos())):
-          logger.info('match detected')
-          result: ProcessPointResult = self.process_point_gain()
-          if result == ProcessPointResult.LEVEL_COMPLETED:
-            if(self.completed_all_levels()):
-              self.game_state = GameState.GAME_COMPLETED
-            else:
-              self.game_state = GameState.LEVEL_COMPLETED
-          else:
-            self.game_state = GameState.TRANSITION_TO_NEXT_TURN
-
-      self.animation_engine.add_animation(
-        SpriteHoverEffect(items=items, min_scale=100, max_scale=125, renderer=self.renderer, status_bar=self.status_bar, ui_display=self.ui_display)
-      ).execute()
-
-      self.renderer.draw(item_to_match=item_to_match, items=items, status_bar=self.status_bar, ui_display=self.ui_display)
+  def reset_game_levels(self):
+    """ Resets the game levels."""
+    for level in self.levels:
+      level.reset()
+    self.current_level = self.levels[0]
 
   def save_user_settings(self, event: pygame.event.Event) -> None:
       """ Sets the language and player name from the game menu.
@@ -194,10 +160,7 @@ class Game:
     # play hand clap sound effect
     # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    
-    self.animation_engine.add_animation(
-      LevelTransition(level_number=self.current_level.level_number, renderer=self.renderer, status_bar=self.status_bar, ui_display=self.ui_display)
-    ).execute()
+
 
   def start_new_turn(self) -> None:
     """ Generates sprites t0 create a new puzzle"""
@@ -211,10 +174,13 @@ class Game:
       items (Group): The group of sprites.
       item_to_match (ItemSprite): The item to match.
     """
-    pygame.time.wait(350)
-    # scale sprites down to prepare for spawn in, and then spawn in
-    self.animation_engine.add_animation(ScaleSprites(scaling_factor=-100, items=items, item_to_match=item_to_match)
-    ).add_animation(ScaleSprites(scaling_factor=10, items=items, item_to_match=item_to_match)
+    if(item_to_match.scale != 0):
+      pygame.time.wait(350)
+      # scale sprites down to prepare for spawn in, and then spawn in
+      self.animation_engine.add_animation(ScaleSprites(scaling_factor=-100, items=items, item_to_match=item_to_match)
+      ).execute()
+    else:
+      self.animation_engine.add_animation(ScaleSprites(scaling_factor=10, items=items, item_to_match=item_to_match)
     ).execute()
 
   def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite):

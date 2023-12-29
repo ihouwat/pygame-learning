@@ -48,12 +48,14 @@ class GameAction(Enum):
 class GameState(Enum):
   """ State machine for the game."""
   PLAYING = 1
-  MENU_OPEN = 2
+  MENU_IS_OPEN = 2
   LEVEL_COMPLETED = 3
   GAME_COMPLETED = 4
   PAUSED = 5
   TRANSITION_TO_NEXT_TURN = 6
-  START_NEW_TURN = 7
+  TRANSITION_TO_NEXT_LEVEL = 7
+  START_NEW_TURN = 8
+  OPEN_MENU = 9
 
 class ProcessPointResult(Enum):
   """ Represents the result of processing a point gain."""

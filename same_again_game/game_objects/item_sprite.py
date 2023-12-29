@@ -28,7 +28,6 @@ class ItemSprite(pygame.sprite.Sprite):
   text_identifier: str
   metadata: Optional[ItemConfig] = None
 
-  
   def __post_init__(self):
     super().__init__()
     self.rect: pygame.Rect = self.image.get_rect()
