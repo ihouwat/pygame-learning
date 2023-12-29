@@ -22,8 +22,9 @@ class MenuOpenState(GameStateMachine):
 			return GameState.PLAYING
 
 		else:
-			if self.game_instance.game_menu.menu.is_enabled():
-				self.game_instance.game_menu.menu.update(self.events)
+			if not self.game_instance.game_menu.menu.is_enabled():
+				self.game_instance.game_menu.open_menu()
+			self.game_instance.game_menu.menu.update(self.events)
 			return GameState.MENU_IS_OPEN
 
 class PausedState(GameStateMachine):
