@@ -63,13 +63,11 @@ class StartNewTurnState(GameStateMachine):
 	""" StartNewTurnState is responsible for handling the game logic when starting a new turn. """
 	def __init__(self, game_context: GameContext):
 		super().__init__(game_context)
-		self.execute()
 	
 	def execute(self) -> GameState:
-		self.game_instance.start_new_turn()
-		if self.item_to_match.scale != 100:
-			return GameState.START_NEW_TURN
-		return GameState.PLAYING
+		if(self.game_instance.start_new_turn()):
+			return GameState.PLAYING
+		return GameState.START_NEW_TURN
 
 class LevelCompletedState(GameStateMachine):
 	""" LevelCompletedState is responsible for handling the game logic when a level is completed. """

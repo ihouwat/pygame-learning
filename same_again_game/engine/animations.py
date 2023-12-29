@@ -18,16 +18,15 @@ class Animation(Protocol):
 		""" Whether or not the animation is finished. """
 		...
 
-class ScaleSprites(Animation):
-	""" ScaleSprites is responsible for scaling sprites up or down."""
-	def __init__(self, scaling_factor: float, items: Group, item_to_match: ItemSprite):
+class ScaleSprite(Animation):
+	""" ScaleSprite is responsible for scaling sprites up or down."""
+	def __init__(self, scaling_factor: float, sprite: ItemSprite):
 		self.scaling_factor = scaling_factor
-		self.items = items
-		self.item_to_match = item_to_match
+		self.sprite = sprite
 		self._is_finished = False
 	
 	def update(self) -> None:
-		self.scale_sprites(self.scaling_factor, self.items, self.item_to_match)
+		self.scale_sprites(self.scaling_factor, self.sprite)
 		self.is_finished = True
 	
 	@property
@@ -38,7 +37,7 @@ class ScaleSprites(Animation):
 	def is_finished(self, value: bool) -> None:
 		self._is_finished = value
 	
-	def scale_sprites(self, scaling_factor: float, items: Group, item_to_match: ItemSprite) -> None:
+	def scale_sprites(self, scaling_factor: float, sprite: ItemSprite) -> None:
 		""" Scales sprites up or down.
 
 		Args:
@@ -47,25 +46,19 @@ class ScaleSprites(Animation):
 			item_to_match (ItemSprite): The item to match.
 			draw_transitions (bool): Whether or not to draw the transitions. Defaults to False.
 		"""
-		sprites: list[ItemSprite] = [item_to_match] + items.sprites()
 
 		def execute_animation():
 			self.animate_sprite_scale(scaling_factor=scaling_factor, sprite=sprite)
 
-		for sprite in sprites:
-			if scaling_factor < 0:
-				if sprite.scale >= 0:
-					execute_animation()
-				pygame.time.wait(10)
-			else:
-				if sprite.scale <= 100:
-					execute_animation()
-				pygame.time.wait(10)
+		if scaling_factor < 0:
+			if sprite.scale >= 0:
+				execute_animation()
+		else:
+			if sprite.scale <= 100:
+				execute_animation()
 	
 	def animate_sprite_scale(self, scaling_factor: float, sprite: ItemSprite) -> None:
-		print('before', sprite.scale)
 		sprite.scale_by(scaling_factor=scaling_factor)
-		print('after', sprite.scale)
 
 
 # class LevelTransition(Animation):
@@ -127,7 +120,7 @@ class SpriteHoverEffect(Animation):
 		for sprite in item_sprites:
 			if sprite.rect.collidepoint(pygame.mouse.get_pos()):
 				if sprite.scale < max_scale:
-					sprite.scale_by(scaling_factor=6)
+					sprite.scale_by(scaling_factor=10)
 			else:
 				if sprite.scale > min_scale:
-					sprite.scale_by(scaling_factor=-7)
+					sprite.scale_by(scaling_factor=-10)

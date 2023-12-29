@@ -6,13 +6,12 @@ import pygame
 from audio.audio_player import AudioPlayer
 from config.logger import logger
 from engine.animation_engine import AnimationEngine
-from engine.animations import ScaleSprites
+from engine.animations import ScaleSprite
 from engine.event_listener import EventListener
 from engine.game_states import (
   GameCompletedState,
   LevelCompletedState,
   MenuOpenState,
-  OpenMenuState,
   PausedState,
   PlayingState,
   StartNewTurnState,
@@ -163,27 +162,37 @@ class Game:
     # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
+  def prepare_sprites_for_new_turn(self) -> None:
+    """ Generates sprites for a new puzzle and scales them down."""
+    self.item_to_match, self.items = self.current_level.puzzle.generate()
+    for sprite in [self.item_to_match] + self.items.sprites():
+      self.animation_engine.add_animation(ScaleSprite(scaling_factor=-100, sprite=sprite))
+    self.animation_engine.execute()
 
-  def start_new_turn(self) -> None:
+  def start_new_turn(self) -> bool:
     """ Generates sprites t0 create a new puzzle"""
-    item_to_match, items = self.current_level.puzzle.generate()
-    self.spawn_sprites(items, item_to_match)
+    if len(self.items) == 0:
+      self.prepare_sprites_for_new_turn()
+
+    return self.spawn_sprites(self.items, self.item_to_match)
   
-  def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> None:
-    """ Scales sprites out and in to create a spawn effect.
+  def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:
+    """ Scales sprites in to create a spawn effect.
     
     Args:
       items (Group): The group of sprites.
       item_to_match (ItemSprite): The item to match.
+      
+    Returns:
+      bool: True if the sprites were successfully scaled in, False otherwise.
     """
-    if(item_to_match.scale != 0):
-      pygame.time.wait(350)
-      # scale sprites down to prepare for spawn in, and then spawn in
-      self.animation_engine.add_animation(ScaleSprites(scaling_factor=-100, items=items, item_to_match=item_to_match)
-      ).execute()
+    if item_to_match.scale < 100:
+      for sprite in [self.item_to_match] + self.items.sprites():
+        self.animation_engine.add_animation(ScaleSprite(scaling_factor=10, sprite=sprite))
+      self.animation_engine.execute()
+      return False
     else:
-      self.animation_engine.add_animation(ScaleSprites(scaling_factor=10, items=items, item_to_match=item_to_match)
-    ).execute()
+      return True
 
   def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite):
     """ Scales sprites down, kills sprites, and updates UI.
@@ -199,17 +208,17 @@ class Game:
 
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
     pygame.time.wait(150)
-    self.animation_engine.add_animation(
-      ScaleSprites(scaling_factor=-10, items=items, item_to_match=item_to_match)
-    ).execute()
+    for sprite in [self.item_to_match] + self.items.sprites():
+      self.animation_engine.add_animation(ScaleSprite(scaling_factor=-10, sprite=sprite))
+    self.animation_engine.execute()
     self.kill_sprites()
 
   def kill_sprites(self) -> None:
     """ Remove all sprites."""
-    if(self.current_level.puzzle.item_to_match):
-      SpriteHandler.kill_sprite(self.current_level.puzzle.item_to_match)
-    if(self.current_level.puzzle.items):
-      SpriteHandler.kill_sprite_group(self.current_level.puzzle.items)
+    if(self.item_to_match):
+      SpriteHandler.kill_sprite(self.item_to_match)
+    if(self.items):
+      SpriteHandler.kill_sprite_group(self.items)
 
   def quit(self) -> None:
     """ Quits game and exits program. """
