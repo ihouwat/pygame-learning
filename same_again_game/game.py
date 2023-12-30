@@ -192,7 +192,7 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=7, y_increment=0)).execute()
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=12, y_increment=0)).execute()
       return False
     else:
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
