@@ -1,5 +1,5 @@
 import pygame
-from config.settings import FONT_REGULAR, SCREEN_HEIGHT, SCREEN_WIDTH
+from config.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from game_objects.item_sprite import ItemSprite
 from game_objects.text_element import TextElement
 from models.game_types import GameState, TextElementType
@@ -16,11 +16,9 @@ class Renderer:
 	
 	Attributes:
 		display_surface(pygame.Surface): The surface to be rendered.
-		level_text_position(tuple[int, int]): The position of the level text.
 	"""
 	def __init__(self):
 		self.display_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-		self.level_text_position = (0 - FONT_REGULAR, (SCREEN_HEIGHT // 2) - FONT_REGULAR)
 		pygame.display.set_caption("Same Again")
 
 	def draw(self, item_to_match: ItemSprite, items: Group, status_bar: StatusBar, ui_display: UIDisplay, game_menu: GameMenu, game_state: GameState, text_elements: dict[TextElementType, TextElement]) -> None:
@@ -29,6 +27,8 @@ class Renderer:
 			self.draw_game_menu(game_menu)
 			return
 		if game_state == GameState.TRANSITION_TO_NEXT_LEVEL:
+			self.draw_background()
+			self.draw_items(items, item_to_match)
 			self.render_level_transition_animation(text_element=text_elements[TextElementType.LEVEL_UP], status_bar=status_bar, ui_display=ui_display)
 			return
 		elif not game_state == GameState.PAUSED:
@@ -76,6 +76,4 @@ class Renderer:
 		game_menu.menu.draw(self.display_surface)
 	
 	def render_level_transition_animation(self, text_element: TextElement, status_bar: StatusBar, ui_display: UIDisplay) -> None:
-		self.draw_background()
-		self.draw_status_bar(status_bar, ui_display)
 		self.display_surface.blit(text_element.draw(), text_element.current_position)

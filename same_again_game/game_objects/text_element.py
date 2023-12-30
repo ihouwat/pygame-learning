@@ -15,5 +15,8 @@ class TextElement:
 	def set_position(self, x: int, y: int) -> None:
 		self.current_position = (x, y)
 	
+	def reset_to_start_position(self) -> None:
+		self.current_position = self.start_position
+	
 	def draw(self) -> pygame.Surface:
 		return self.font.render(self.text, True, self.color)

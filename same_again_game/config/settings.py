@@ -31,6 +31,7 @@ FPS = 60
 FONT_NAME = "Verdana"
 FONT_REGULAR = 60
 FONT_SMALL = 20
+FONT_LARGE = 120
 
 # Custom events
 START_GAME = pygame.USEREVENT

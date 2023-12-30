@@ -5,7 +5,7 @@ from typing import Optional, Type
 import pygame
 from audio.audio_player import AudioPlayer
 from config.logger import logger
-from config.settings import FONT_NAME, FONT_REGULAR, SCREEN_HEIGHT, SCREEN_WIDTH
+from config.settings import FONT_LARGE, FONT_NAME, SCREEN_HEIGHT, SCREEN_WIDTH
 from engine.animation_engine import AnimationEngine
 from engine.animations import ScaleSprite, TextTransition
 from engine.event_listener import EventListener
@@ -90,10 +90,10 @@ class Game:
     self.text_elements: dict[TextElementType, TextElement] = {
       TextElementType.LEVEL_UP: TextElement(
                     text=f'Level {self.current_level.level_number}',
-                    font=pygame.font.Font(pygame.font.match_font(FONT_NAME), FONT_REGULAR),
+                    font=pygame.font.Font(pygame.font.match_font(FONT_NAME), FONT_LARGE),
                     color=pygame.Color(Color.WHITE.value),
-                    x=0 - FONT_REGULAR,
-                    y=(SCREEN_HEIGHT // 2) - FONT_REGULAR,
+                    x=-450,
+                    y=(SCREEN_HEIGHT // 2) - FONT_LARGE,
                     ),
     }
 
@@ -175,7 +175,10 @@ class Game:
     self.current_level = self.levels[self.current_level.level_number]
     # play hand clap sound effect
     # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
+    
+    # update UI elements
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+    self.text_elements[TextElementType.LEVEL_UP].set_text(f'Level {self.current_level.level_number}')
 
   def transition_to_next_level(self) -> bool:
     """ Transitions to the next level.
@@ -184,9 +187,10 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=10, y_increment=0)).execute()
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=7, y_increment=0)).execute()
       return False
     else:
+      self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
       return True
     
   def prepare_sprites_for_new_turn(self) -> None:
