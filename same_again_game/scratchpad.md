@@ -80,6 +80,7 @@
 	- need to add a language dict to toggle languages
 	- on success, load and play the sound in the target language and a sound effect (ex: applause)
 		- loading dynamically allows us to switch languages mid-game without resetting the sprites
+	- on failure, play some 'try again' sound
 - add music
 - consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
 - tidying up:
