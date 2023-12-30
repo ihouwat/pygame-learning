@@ -8,6 +8,8 @@ class Color(Enum):
   BLUE = 'Blue'
   YELLOW = 'Yellow'
   WHITE = 'White'
+  ORANGE = 'Orange'
+  PURPLE = 'Purple'
 
 class ItemCategory(Enum):
   """ Represents the category of item to be created.

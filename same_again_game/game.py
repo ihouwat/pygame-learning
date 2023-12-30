@@ -187,7 +187,7 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=7, y_increment=0)).execute()
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=70, y_increment=0)).execute()
       return False
     else:
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
@@ -220,8 +220,9 @@ class Game:
     Returns:
       bool: True if the sprites were successfully scaled in, False otherwise.
     """
-    if item_to_match.scale < 100:
-      for sprite in [item_to_match] + items.sprites():
+    all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
+    if any(sprite.scale < 100 for sprite in all_sprites):
+      for sprite in all_sprites:
         self.animation_engine.add_animation(ScaleSprite(scaling_factor=10, sprite=sprite))
       self.animation_engine.execute()
       return False

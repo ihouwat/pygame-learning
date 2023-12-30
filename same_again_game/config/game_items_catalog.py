@@ -68,6 +68,11 @@ items_config: list[ItemConfig] = [
     {"text_identifier": "pear", "image": PathSource("pear.png"), "sound": "mp3", "word": "Pear", "color": Color.RED, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "apple", "image": PathSource("apple.png"), "sound": "mp3", "word": "Apple", "color": Color.GREEN, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "pineapple", "image": PathSource("pineapple.png"), "sound": "mp3", "word": "Pineapple", "color": Color.YELLOW, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "orange", "image": PathSource("orange.png"), "sound": "mp3", "word": "Orange", "color": Color.ORANGE, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "watermelon", "image": PathSource("watermelon.png"), "sound": "mp3", "word": "Watermelon", "color": Color.GREEN, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "grapes", "image": PathSource("grapes.png"), "sound": "mp3", "word": "Grapes", "color": Color.PURPLE, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "peach", "image": PathSource("peach.png"), "sound": "mp3", "word": "Peach", "color": Color.ORANGE, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "cherry", "image": PathSource("cherry.png"), "sound": "mp3", "word": "Cherry", "color": Color.RED, "type": RealWorldObjectCategory.FRUIT},
   ]
 ]
 
