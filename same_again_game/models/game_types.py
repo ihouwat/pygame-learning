@@ -22,6 +22,7 @@ class ItemCategory(Enum):
 class RealWorldObjectCategory(Enum):
   """ Represents the type of item to be created."""
   FRUIT = 'Fruit'
+  VEGETABLE = 'Vegetable'
 
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""

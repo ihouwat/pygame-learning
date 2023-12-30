@@ -128,7 +128,12 @@ class ShapePuzzle(Puzzle):
 		return  [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.color == color]
 
 class SingleItemTypePuzzle(Puzzle):
-	""" Puzzle implementation for matching a single type of item."""
+	""" Puzzle implementation for matching a single type of item.
+
+	Attributes:
+		type: The type of item to be matched throughout the duration of the puzzle.
+ 	"""
+	type: RealWorldObjectCategory = random.choice(list(RealWorldObjectCategory))
 	
 	@property
 	def description(self) -> str:
@@ -144,5 +149,4 @@ class SingleItemTypePuzzle(Puzzle):
 	
 	@property
 	def puzzle_options(self) -> list[ItemConfig]:
-		type = random.choice([type for type in list(RealWorldObjectCategory)])
-		return  [x for x in Puzzle.item_catalog()[ItemCategory.REAL_WORLD_OBJECTS] if x.type == type]
+		return [x for x in Puzzle.item_catalog()[ItemCategory.REAL_WORLD_OBJECTS] if x.type == self.type]

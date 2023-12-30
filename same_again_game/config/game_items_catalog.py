@@ -73,9 +73,12 @@ items_config: list[ItemConfig] = [
     {"text_identifier": "grapes", "image": PathSource("grapes.png"), "sound": "mp3", "word": "Grapes", "color": Color.PURPLE, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "peach", "image": PathSource("peach.png"), "sound": "mp3", "word": "Peach", "color": Color.ORANGE, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "cherry", "image": PathSource("cherry.png"), "sound": "mp3", "word": "Cherry", "color": Color.RED, "type": RealWorldObjectCategory.FRUIT},
+    {"text_identifier": "eggplant", "image": PathSource("eggplant.png"), "sound": "mp3", "word": "Eggplant", "color": Color.PURPLE, "type": RealWorldObjectCategory.VEGETABLE},
+    {"text_identifier": "tomato", "image": PathSource("tomato.png"), "sound": "mp3", "word": "Tomato", "color": Color.RED, "type": RealWorldObjectCategory.VEGETABLE},
+    {"text_identifier": "sweet potato", "image": PathSource("sweet_potato.png"), "sound": "mp3", "word": "Sweet potato", "color": Color.ORANGE, "type": RealWorldObjectCategory.VEGETABLE},
+    {"text_identifier": "mushroom", "image": PathSource("mushroom.png"), "sound": "mp3", "word": "Mushroom", "color": Color.WHITE, "type": RealWorldObjectCategory.VEGETABLE},
   ]
 ]
-
 
 shapes_config: list[ItemConfig] = [
   ItemConfig(
