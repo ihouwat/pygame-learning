@@ -43,7 +43,8 @@ class TransitionTurnsState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		self.game_instance.transition_to_next_turn(self.items, self.item_to_match)
+		if not self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
+			return GameState.TRANSITION_TO_NEXT_TURN
 		return GameState.START_NEW_TURN
 
 class StartNewTurnState(GameStateMachine):
