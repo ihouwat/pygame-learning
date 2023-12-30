@@ -4,6 +4,7 @@ from engine.animations import SpriteHoverEffect
 from models.game_state_machine import GameContext, GameStateMachine
 from models.game_types import GameAction, GameState, ProcessPointResult
 
+
 class MenuOpenState(GameStateMachine):
 	""" MenuOpenState is responsible for handling the game logic when the menu is open. """
 	def __init__(self, game_context: GameContext):
