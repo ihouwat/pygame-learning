@@ -83,7 +83,9 @@
 - consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
 - tidying up:
 	- `Game` class has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
-	- `Renderer` class checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
+	- `Renderer` class:
+		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
+		- the game completed animation is a nested conditional. Let's clean that up.
 - update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
 
 Game states
