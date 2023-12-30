@@ -67,6 +67,8 @@ class LevelCompletedState(GameStateMachine):
 	def execute(self) -> GameState:
 		if not self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
 			return GameState.LEVEL_COMPLETED
+		if self.game_instance.completed_all_levels():
+			return GameState.GAME_COMPLETED
 		self.game_instance.level_up()
 		return GameState.TRANSITION_TO_NEXT_LEVEL
 
@@ -95,10 +97,7 @@ class PlayingState(GameStateMachine):
 				logger.info('match detected!')
 				result: ProcessPointResult = self.game_instance.process_point_gain()
 				if result == ProcessPointResult.LEVEL_COMPLETED:
-					if(self.game_instance.completed_all_levels()):
-						return GameState.GAME_COMPLETED
-					else:
-						return GameState.LEVEL_COMPLETED
+					return GameState.LEVEL_COMPLETED
 				else:
 					return GameState.TRANSITION_TO_NEXT_TURN
 		self.game_instance.animation_engine.add_animation(
@@ -116,11 +115,7 @@ class GameCompletedState(GameStateMachine):
 		# play a big cheer sound effect
 		# self.audio_player.playsound(sound='audio/game_completed.wav', vol=0.5)
 
-		# clean up sprites
-		if not self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
-			return GameState.GAME_COMPLETED
-		# play the animation
-		elif not self.game_instance.display_game_completed():
+		if not self.game_instance.display_game_completed():
 			return GameState.GAME_COMPLETED
 		# quit the game
 		logger.info('You have completed all levels!')

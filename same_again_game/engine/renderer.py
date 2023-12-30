@@ -40,6 +40,7 @@ class Renderer:
 			self.draw_status_bar(status_bar, ui_display)
 			self.render_level_transition_animation(text_element=text_elements[TextElementType.GAME_COMPLETED], status_bar=status_bar, ui_display=ui_display)
 			if game_state == GameState.GAME_COMPLETED:
+				self.draw_background()
 				self.render_level_transition_animation(text_element=text_elements[TextElementType.GAME_COMPLETED], status_bar=status_bar, ui_display=ui_display)
 			return
 
