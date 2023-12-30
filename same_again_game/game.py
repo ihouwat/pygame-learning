@@ -121,12 +121,6 @@ class Game:
       )
     self.current_state = next_state
 
-  def reset_game_levels(self):
-    """ Resets the game levels."""
-    for level in self.levels:
-      level.reset()
-    self.current_level = self.levels[0]
-
   def save_user_settings(self, event: pygame.event.Event) -> None:
       """ Sets the language and player name from the game menu.
       
@@ -164,21 +158,25 @@ class Game:
     else:
       return ProcessPointResult.TURN_COMPLETED
 
-  def completed_all_levels(self):
-    """ Returns True if all levels have been completed, False otherwise."""
-    return self.current_level.level_number == len(self.levels)
-  
   def level_up(self) -> None:
     """ Levels up the game."""
     logger.info('level up')
-    # level_number is 1 based, so just pass it in to get the right level from the list
-    self.current_level = self.levels[self.current_level.level_number]
+    # level_number is 1 based
+    self.set_current_level(level_number=self.current_level.level_number + 1)
     # play hand clap sound effect
     # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
     
     # update UI elements
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    self.text_elements[TextElementType.LEVEL_UP].set_text(f'Level {self.current_level.level_number}')
+
+  def set_current_level(self, level_number: int) -> None:
+    """ Sets the current level and updates the text element related to displaying the level number.
+    
+    Args:
+      level_number (int): The level number.
+    """
+    self.current_level = self.levels[level_number - 1]
+    self.text_elements[TextElementType.LEVEL_UP].set_text(f'Level {level_number}')
 
   def transition_to_next_level(self) -> bool:
     """ Transitions to the next level.
@@ -192,13 +190,45 @@ class Game:
     else:
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
       return True
-    
+
+  def reset_game_levels(self):
+    """ Resets the game levels."""
+    for level in self.levels:
+      level.reset()
+    self.set_current_level(level_number=1)
+
+  def completed_all_levels(self):
+    """ Returns True if all levels have been completed, False otherwise."""
+    return self.current_level.level_number == len(self.levels)
+
   def prepare_sprites_for_new_turn(self) -> None:
     """ Generates sprites for a new puzzle and scales them down."""
     self.item_to_match, self.items = self.current_level.puzzle.generate()
     for sprite in [self.item_to_match] + self.items.sprites():
       self.animation_engine.add_animation(ScaleSprite(scaling_factor=-100, sprite=sprite))
     self.animation_engine.execute()
+
+  def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite) -> bool:
+    """ Scales sprites down, kills sprites, and updates UI.
+    
+    Args:
+      items (Group): The group of sprites.
+      item_to_match (ItemSprite): The item to match.
+    """
+    # play some sound effect to indicate success
+    # self.audio_player.playsound(sound='audio/incorrect.wav', vol=0.5)
+    # play the word for the item that was matched
+    # self.audio_player.playsound(sound='audio/correct.wav', vol=0.5)
+
+    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+    if item_to_match.scale > 0:
+      for sprite in [item_to_match] + items.sprites():
+        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-10, sprite=sprite))
+      self.animation_engine.execute()
+      return False
+    else: 
+      self.kill_sprites()
+      return True
 
   def start_new_turn(self) -> bool:
     """ Generates sprites and spans them in to create a new puzzle
@@ -227,28 +257,6 @@ class Game:
       self.animation_engine.execute()
       return False
     else:
-      return True
-
-  def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite) -> bool:
-    """ Scales sprites down, kills sprites, and updates UI.
-    
-    Args:
-      items (Group): The group of sprites.
-      item_to_match (ItemSprite): The item to match.
-    """
-    # play some sound effect to indicate success
-    # self.audio_player.playsound(sound='audio/incorrect.wav', vol=0.5)
-    # play the word for the item that was matched
-    # self.audio_player.playsound(sound='audio/correct.wav', vol=0.5)
-
-    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    if item_to_match.scale > 0:
-      for sprite in [item_to_match] + items.sprites():
-        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-10, sprite=sprite))
-      self.animation_engine.execute()
-      return False
-    else: 
-      self.kill_sprites()
       return True
 
   def kill_sprites(self) -> None:

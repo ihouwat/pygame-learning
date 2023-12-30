@@ -23,22 +23,22 @@ class Renderer:
 
 	def draw(self, item_to_match: ItemSprite, items: Group, status_bar: StatusBar, ui_display: UIDisplay, game_menu: GameMenu, game_state: GameState, text_elements: dict[TextElementType, TextElement]) -> None:
 		""" Layouts and updates the screen with a new set of items, a target item, and updates status bar."""
+		self.draw_background()
+
 		if game_menu.menu.is_enabled() and game_state == GameState.MENU_IS_OPEN:
 			self.draw_game_menu(game_menu)
 			return
 		if game_state == GameState.TRANSITION_TO_NEXT_LEVEL:
-			self.draw_background()
-			self.draw_items(items, item_to_match)
 			self.render_level_transition_animation(text_element=text_elements[TextElementType.LEVEL_UP], status_bar=status_bar, ui_display=ui_display)
 			return
-		elif not game_state == GameState.PAUSED:
+		else:
 			# Layout
 			self.layout_items(items)
 			self.layout_item_to_match(item_to_match)
 			# Render
-			self.draw_background()
 			self.draw_items(items, item_to_match)
 			self.draw_status_bar(status_bar, ui_display)
+			return
 
 	def layout_items(self, items: Group) -> None:
 		""" Arranges a group of items on the screen. """

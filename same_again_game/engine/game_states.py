@@ -11,7 +11,8 @@ class MenuOpenState(GameStateMachine):
 	
 	def execute(self) -> GameState:
 		if self.action == GameAction.START_NEW_GAME:
-			self.game_instance.reset_game_levels()
+			self.game_instance.kill_sprites()
+			self.game_instance.reset_game_levels()			
 			self.game_instance.save_user_settings(self.events[0])
 			#play soundtrack
 			# self.audio_player.playsoundtrack(music='audio/soundtrack.mp3', num=-1, vol=0.5)
