@@ -63,6 +63,7 @@ from models.item_config import ItemConfig
 items_config: list[ItemConfig] = [
   ItemConfig(**x)
   for x in [
+    # Fruits
     {"text_identifier": "banana", "image": PathSource("banana.png"), "sound": "mp3", "word": "Banana", "color": Color.YELLOW, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "strawberry", "image": PathSource("strawberry.png"), "sound": "mp3", "word": "Strawberry", "color": Color.RED, "type":RealWorldObjectCategory.FRUIT},
     {"text_identifier": "pear", "image": PathSource("pear.png"), "sound": "mp3", "word": "Pear", "color": Color.RED, "type": RealWorldObjectCategory.FRUIT},
@@ -73,10 +74,17 @@ items_config: list[ItemConfig] = [
     {"text_identifier": "grapes", "image": PathSource("grapes.png"), "sound": "mp3", "word": "Grapes", "color": Color.PURPLE, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "peach", "image": PathSource("peach.png"), "sound": "mp3", "word": "Peach", "color": Color.ORANGE, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "cherry", "image": PathSource("cherry.png"), "sound": "mp3", "word": "Cherry", "color": Color.RED, "type": RealWorldObjectCategory.FRUIT},
+    
+    # Vegetables
     {"text_identifier": "eggplant", "image": PathSource("eggplant.png"), "sound": "mp3", "word": "Eggplant", "color": Color.PURPLE, "type": RealWorldObjectCategory.VEGETABLE},
     {"text_identifier": "tomato", "image": PathSource("tomato.png"), "sound": "mp3", "word": "Tomato", "color": Color.RED, "type": RealWorldObjectCategory.VEGETABLE},
     {"text_identifier": "sweet potato", "image": PathSource("sweet_potato.png"), "sound": "mp3", "word": "Sweet potato", "color": Color.ORANGE, "type": RealWorldObjectCategory.VEGETABLE},
     {"text_identifier": "mushroom", "image": PathSource("mushroom.png"), "sound": "mp3", "word": "Mushroom", "color": Color.WHITE, "type": RealWorldObjectCategory.VEGETABLE},
+    
+    # Animals
+    {"text_identifier": "cat", "image": PathSource("cat.png"), "sound": "mp3", "word": "Cat", "color": Color.ORANGE, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "chicken", "image": PathSource("chicken.png"), "sound": "mp3", "word": "Chicken", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "bear", "image": PathSource("bear.png"), "sound": "mp3", "word": "Bear", "color": Color.BROWN, "type": RealWorldObjectCategory.ANIMAL},
   ]
 ]
 

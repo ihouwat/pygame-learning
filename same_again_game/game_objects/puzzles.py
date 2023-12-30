@@ -132,7 +132,7 @@ class SingleItemTypePuzzle(Puzzle):
 
 	Attributes:
 		type: The type of item to be matched throughout the duration of the puzzle.
- 	"""
+	"""
 	type: RealWorldObjectCategory = random.choice(list(RealWorldObjectCategory))
 	
 	@property

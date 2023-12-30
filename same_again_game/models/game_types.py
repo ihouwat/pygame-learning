@@ -10,6 +10,7 @@ class Color(Enum):
   WHITE = 'White'
   ORANGE = 'Orange'
   PURPLE = 'Purple'
+  BROWN = 'Brown'
 
 class ItemCategory(Enum):
   """ Represents the category of item to be created.
@@ -23,6 +24,7 @@ class RealWorldObjectCategory(Enum):
   """ Represents the type of item to be created."""
   FRUIT = 'Fruit'
   VEGETABLE = 'Vegetable'
+  ANIMAL = 'Animal'
 
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""
