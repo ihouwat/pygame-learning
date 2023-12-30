@@ -83,7 +83,9 @@
 - add music
 - consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
 - tidying up:
-	- `Game` class has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
+	- `Game` class:
+		- has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
+		- a bunch of animations in there, should i split them out?
 	- `Renderer` class:
 		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 		- the game completed animation is a nested conditional. Let's clean that up.
