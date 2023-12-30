@@ -53,21 +53,30 @@
 	- DONE `ItemSprite` class:
 		- DONE the scaling function for shapes is buggy. i *think* it's because at some point the scaling factor is larger than the image size
 		- DONE clean up some of the properties now we have the metadata. perhaps combine word and text_identifier properties?
-
-	- Transitions in `Game` class:
+	- DONE Transitions in `Game` class:
 		- DONE destroy sprites when you end the turn, that allows you to split the sprite destruction from creation 
 		- DONE ??? Instead of animating the sprites in both the start and end states, create a transition state to manage animations? But that is exactly what the start state does...
 	- DONE Refactor the for loops that scale multiple sprites in the `Game` class. 
 	- DONE add `AudioPlayer` class with dummy implementations to test the code structure
 	- DONE Where to put those scaling animations? `SpriteHandler` or somewhere else? Answer is `AnimationEngine` that consumes`Animation` objects and executes them.
-
-	- Split game states using state machine pattern
+	- DONE Split game states using state machine pattern
+	- DONE Split sprite scaling animation such that it handles one sprite and then add different sprites to the animations list
+	- DONE Have animations return true if they have completed over a number of game loop turns.
+		- DONE This requires that we have class vars for sprites and text (also add Text class)
+	- DONE Create TextElement class to create text objects
+		- DONE use those for level transitions from game class
+		- replace the text elements in the status bar with TextElement objects
+	- DONE Fix the rest of the animations (turn ending fade out, level ending, etc.)
+	- DECISION: DON'T DO IT - Create a `GameState` or `GameContext` data class to pass game data around or reuse `Game` class???
+		- Advantage of data class means we pass only the context we need, as opposed to the entire game instance --> better encapsulation
+		- Disadvantage is coupling and we might be breaking encapsulation by passing too much `Game` data around
 
 - download more pngs and add attributions
 - record and add languages to the game
 	- need to add a language toggle
 	- on success, play the sound in the target language and a sound effect (ex: applause)
 - add music
+- consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
 - update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
 
 Game states
