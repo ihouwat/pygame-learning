@@ -77,8 +77,9 @@
 
 
 - record and add languages to the game
-	- need to add a language toggle
-	- on success, play the sound in the target language and a sound effect (ex: applause)
+	- need to add a language dict to toggle languages
+	- on success, load and play the sound in the target language and a sound effect (ex: applause)
+		- loading dynamically allows us to switch languages mid-game without resetting the sprites
 - add music
 - consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
 - tidying up:
@@ -87,12 +88,6 @@
 		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 		- the game completed animation is a nested conditional. Let's clean that up.
 - update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
-
-Game states
-* Menu: the menu screen
-* Game: the game screen
-* Pause: the game is paused (no need, we will not be using a timer)
-* Game Over: the game is over (nah we don't want that with a kiddo :) )
 
 ## Learnings
 ### State machine pattern
