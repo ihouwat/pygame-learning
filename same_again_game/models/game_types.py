@@ -68,6 +68,7 @@ class ProcessPointResult(Enum):
   
 class TextElementType(Enum):
   LEVEL_UP = 1
+  GAME_COMPLETED = 2
 
 class Language(Enum):
   """ Represents a language to be used in the game."""

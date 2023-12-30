@@ -95,6 +95,13 @@ class Game:
                     x=-450,
                     y=(SCREEN_HEIGHT // 2) - FONT_LARGE,
                     ),
+      TextElementType.GAME_COMPLETED: TextElement(
+                    text='YOU WIN!',
+                    font=pygame.font.Font(pygame.font.match_font(FONT_NAME), FONT_LARGE),
+                    color=pygame.Color(Color.WHITE.value),
+                    x=-600,
+                    y=(SCREEN_HEIGHT // 2) - FONT_LARGE,
+                    ),
     }
 
   def run(self, events: list[pygame.event.Event]) -> None:
@@ -185,7 +192,7 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=70, y_increment=0)).execute()
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=7, y_increment=0)).execute()
       return False
     else:
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
@@ -197,9 +204,22 @@ class Game:
       level.reset()
     self.set_current_level(level_number=1)
 
-  def completed_all_levels(self):
+  def completed_all_levels(self) -> bool:
     """ Returns True if all levels have been completed, False otherwise."""
     return self.current_level.level_number == len(self.levels)
+
+  def display_game_completed(self) -> bool:
+    """ Displays the game completed text element.
+    
+    Returns:
+      bool: True if the transition is complete, False otherwise.
+    """
+    if self.text_elements[TextElementType.GAME_COMPLETED].current_position[0] < (SCREEN_WIDTH - self.text_elements[TextElementType.GAME_COMPLETED].surface.get_width()) / 2:
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.GAME_COMPLETED], x_increment=7, y_increment=0)).execute()
+      return False
+    else:
+      self.text_elements[TextElementType.GAME_COMPLETED].reset_to_start_position()
+      return True
 
   def prepare_sprites_for_new_turn(self) -> None:
     """ Generates sprites for a new puzzle and scales them down."""

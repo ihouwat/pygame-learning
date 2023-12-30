@@ -70,13 +70,20 @@
 	- DECISION: DON'T DO IT - Create a `GameState` or `GameContext` data class to pass game data around or reuse `Game` class???
 		- Advantage of data class means we pass only the context we need, as opposed to the entire game instance --> better encapsulation
 		- Disadvantage is coupling and we might be breaking encapsulation by passing too much `Game` data around
+- DONE add a game completed screen
 
-- download more pngs and add attributions
+
+- ONGOING download more pngs and add attributions
+
+
 - record and add languages to the game
 	- need to add a language toggle
 	- on success, play the sound in the target language and a sound effect (ex: applause)
 - add music
 - consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
+- tidying up:
+	- `Game` class has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
+	- `Renderer` class checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 - update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
 
 Game states

@@ -31,6 +31,9 @@ class Renderer:
 		if game_state == GameState.TRANSITION_TO_NEXT_LEVEL:
 			self.render_level_transition_animation(text_element=text_elements[TextElementType.LEVEL_UP], status_bar=status_bar, ui_display=ui_display)
 			return
+		if game_state == GameState.GAME_COMPLETED:
+			self.render_level_transition_animation(text_element=text_elements[TextElementType.GAME_COMPLETED], status_bar=status_bar, ui_display=ui_display)
+			return
 		else:
 			# Layout
 			self.layout_items(items)

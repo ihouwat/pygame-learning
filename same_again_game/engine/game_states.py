@@ -112,8 +112,18 @@ class GameCompletedState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		logger.info('You have completed all levels!')
 		# play a big cheer sound effect
 		# self.audio_player.playsound(sound='audio/game_completed.wav', vol=0.5)
+
+		# clean up sprites
+		self.game_instance.kill_sprites()
+		if not self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
+			return GameState.GAME_COMPLETED
+		# play the animation
+		if not self.game_instance.display_game_completed():
+			return GameState.GAME_COMPLETED
+		# quit the game
+		logger.info('You have completed all levels!')
+		pygame.time.wait(3000)
 		self.game_instance.quit()
 		return GameState.GAME_COMPLETED
