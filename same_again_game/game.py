@@ -7,7 +7,7 @@ from audio.audio_player import AudioPlayer
 from config.logger import logger
 from config.settings import FONT_LARGE, FONT_NAME, SCREEN_HEIGHT, SCREEN_WIDTH
 from engine.animation_engine import AnimationEngine
-from engine.animations import ScaleSprite, TextTransition
+from engine.animations import ScaleSprite, SpriteHoverEffect, TextTransition
 from engine.event_listener import EventListener
 from engine.game_states import (
   GameCompletedState,
@@ -127,6 +127,9 @@ class Game:
       self.text_elements
       )
     self.current_state = next_state
+    self.animation_engine.add_animation(
+			SpriteHoverEffect(items=self.items, min_scale=100, max_scale=125, renderer=self.renderer, ui_display=self.ui_display)
+		).execute()
 
   def save_user_settings(self, event: pygame.event.Event) -> None:
       """ Sets the language and player name from the game menu.

@@ -1,6 +1,5 @@
 import pygame
 from config.logger import logger
-from engine.animations import SpriteHoverEffect
 from models.game_state_machine import GameContext, GameStateMachine
 from models.game_types import GameAction, GameState, ProcessPointResult
 
@@ -45,9 +44,9 @@ class TransitionTurnsState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		if not self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
-			return GameState.TRANSITION_TO_NEXT_TURN
-		return GameState.START_NEW_TURN
+		if self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
+			return GameState.START_NEW_TURN
+		return GameState.TRANSITION_TO_NEXT_TURN
 
 class StartNewTurnState(GameStateMachine):
 	""" StartNewTurnState is responsible for handling the game logic when starting a new turn. """
@@ -55,7 +54,7 @@ class StartNewTurnState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		if(self.game_instance.start_new_turn()):
+		if self.game_instance.start_new_turn():
 			return GameState.PLAYING
 		return GameState.START_NEW_TURN
 
@@ -78,9 +77,9 @@ class TransitionLevelState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		if not self.game_instance.transition_to_next_level():
-			return GameState.TRANSITION_TO_NEXT_LEVEL
-		return GameState.START_NEW_TURN
+		if self.game_instance.transition_to_next_level():
+			return GameState.START_NEW_TURN
+		return GameState.TRANSITION_TO_NEXT_LEVEL
 
 class PlayingState(GameStateMachine):
 	""" PlayingState is responsible for handling the game logic when the game is playing. """
@@ -100,9 +99,6 @@ class PlayingState(GameStateMachine):
 					return GameState.LEVEL_COMPLETED
 				else:
 					return GameState.TRANSITION_TO_NEXT_TURN
-		self.game_instance.animation_engine.add_animation(
-			SpriteHoverEffect(items=self.items, min_scale=100, max_scale=125, renderer=self.game_instance.renderer, ui_display=self.game_instance.ui_display)
-		).execute()
 		
 		return GameState.PLAYING
 
