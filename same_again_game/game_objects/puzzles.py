@@ -88,8 +88,13 @@ class ColoredShapesPuzzle(Puzzle):
 		return Puzzle.item_catalog()[ItemCategory.SHAPES]
 
 class ColorPuzzle(Puzzle):
-	""" Puzzle implementation for matching shapes.""" 
-	
+	""" Puzzle implementation for matching shapes.
+
+	Attributes:
+		random_shape: The shape to be selected throughout the duration of the puzzle.
+  """
+	random_shape = random.choice(list(Shape))
+
 	@property
 	def description(self) -> str:
 		return 'Match a colored shape to a list of shapes of various colors'
@@ -104,12 +109,17 @@ class ColorPuzzle(Puzzle):
 	
 	@property
 	def puzzle_options(self) -> list[ItemConfig]:
-		random_shape = random.choice(list(Shape))
-		return [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.text_identifier == random_shape.value]
+		return [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.text_identifier == self.random_shape.value]
 
 class ShapePuzzle(Puzzle):
-	""" Puzzle implementation for matching shapes."""
+	""" Puzzle implementation for matching shapes.
+
+	Attributes:
+		color: The color to be applied to the shapes throughout the duration of the puzzle.
+	"""
 	
+	color = random.choice(list(Color))
+
 	@property
 	def description(self) -> str:
 		return 'Match a colored shape to a list of shapes'
@@ -124,8 +134,7 @@ class ShapePuzzle(Puzzle):
 	
 	@property
 	def puzzle_options(self) -> list[ItemConfig]:
-		color = random.choice(list(Color))
-		return  [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.color == color]
+		return  [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.color == self.color]
 
 class SingleItemTypePuzzle(Puzzle):
 	""" Puzzle implementation for matching a single type of item.
