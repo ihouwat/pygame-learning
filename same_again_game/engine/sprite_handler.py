@@ -1,6 +1,7 @@
 import random
 
 import pygame
+from config.logger import logger
 from game_objects.item_sprite import ItemSprite
 from models.game_types import SpriteOption
 from models.image_source import ImageSource
@@ -64,14 +65,19 @@ class SpriteHandler:
 
 		used_indexes = set()
 		items = []
+		counter = 0
 
 		while len(items) < max_number:
 			item_index = random.randint(0, len(list_of_items) - 1)
 			if item_index not in used_indexes:
 				used_indexes.add(item_index)
 				items.append(list_of_items[item_index])
-			else:
-				continue
+				counter += 1
+
+			if counter == len(list_of_items):
+				logger.warning('Ran out of items to pick from because the list. Resetting the list of used indexes.')
+				used_indexes.clear()
+				counter = 0
 
 		return items
 
