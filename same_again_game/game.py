@@ -197,7 +197,11 @@ class Game:
     self.animation_engine.execute()
 
   def start_new_turn(self) -> bool:
-    """ Generates sprites t0 create a new puzzle"""
+    """ Generates sprites and spans them in to create a new puzzle
+    
+      Returns:
+        bool: True if the sprites were successfully spawned, False otherwise.
+    """
     if len(self.items) == 0:
       self.prepare_sprites_for_new_turn()
     return self.spawn_sprites(self.items, self.item_to_match)
