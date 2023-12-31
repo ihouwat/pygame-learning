@@ -48,10 +48,11 @@ class GameAction(Enum):
   START_NEW_GAME = 0
   QUIT = 1
   ITEM_SELECTED = 2
-  OPEN_MENU = 3
-  RESUME_GAME = 4
-  MOUSE_ENTERED_WINDOW = 5
-  MOUSE_EXITED_WINDOW = 6
+  MATCH_DETECTED = 3
+  OPEN_MENU = 4
+  RESUME_GAME = 5
+  MOUSE_ENTERED_WINDOW = 6
+  MOUSE_EXITED_WINDOW = 7
 
 class GameState(Enum):
   """ State machine for the game."""

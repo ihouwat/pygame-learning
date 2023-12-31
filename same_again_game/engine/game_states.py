@@ -1,5 +1,6 @@
 import pygame
 from config.logger import logger
+from config.settings import MATCH_DETECTED
 from engine.animations import SpriteHoverEffect
 from models.game_state_machine import GameContext, GameStateMachine
 from models.game_types import GameAction, GameState, ProcessPointResult
@@ -97,6 +98,9 @@ class PlayingState(GameStateMachine):
 			return GameState.MENU_IS_OPEN
 		if self.action == GameAction.ITEM_SELECTED:
 			match = self.game_instance.match_detected(self.items, self.item_to_match, pygame.mouse.get_pos())
+			if match:
+				pygame.event.post(pygame.event.Event(MATCH_DETECTED))
+		if self.action == GameAction.MATCH_DETECTED:
 				logger.info('match detected!')
 				result: ProcessPointResult = self.game_instance.process_point_gain()
 				if result == ProcessPointResult.LEVEL_COMPLETED:

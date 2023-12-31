@@ -1,7 +1,7 @@
 from typing import Optional
 
 import pygame
-from config.settings import RESUME_GAME, START_GAME
+from config.settings import MATCH_DETECTED, RESUME_GAME, START_GAME
 from models.game_types import GameAction
 
 
@@ -33,7 +33,10 @@ class EventListener():
       if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:
           return GameAction.ITEM_SELECTED
-      
+            
+      if event.type == MATCH_DETECTED:
+        return GameAction.MATCH_DETECTED
+
       if event.type == START_GAME:
         return GameAction.START_NEW_GAME
       
