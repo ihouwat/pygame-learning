@@ -1,14 +1,15 @@
 from pygame import mixer
 
+from funcs import get_file
+
 
 class AudioPlayer:
-	def __init__(self):
-		self.volume = 0.5 # default volume
 		
-	def playsoundtrack(self, music, num, vol):
-		mixer.music.set_volume(vol)
-		mixer.music.load(music)
-		mixer.music.play(num)
+	def playsoundtrack(self, filepath: str, iterations: int, volume: float = 0.5):
+		track = self.load_music(filepath)
+		mixer.music.set_volume(volume)
+		mixer.music.load(track)
+		mixer.music.play(iterations)
 
 	def playsound(self, sound, vol):
 		sound.set_volume(vol)
@@ -16,3 +17,6 @@ class AudioPlayer:
 
 	def stop(self):
 		mixer.music.stop()
+	
+	def load_music(self, path) -> str:
+		return get_file('assets', 'music', path)
