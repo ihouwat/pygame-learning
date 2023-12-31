@@ -47,7 +47,7 @@ class GameAction(Enum):
   """ Represents an action to be applied in response to an event."""
   START_NEW_GAME = 0
   QUIT = 1
-  SELECT = 2
+  ITEM_SELECTED = 2
   OPEN_MENU = 3
   RESUME_GAME = 4
   MOUSE_ENTERED_WINDOW = 5

@@ -32,7 +32,7 @@ class EventListener():
       # on left click
       if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:
-          return GameAction.SELECT
+          return GameAction.ITEM_SELECTED
       
       if event.type == START_GAME:
         return GameAction.START_NEW_GAME

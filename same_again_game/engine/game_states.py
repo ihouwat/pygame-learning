@@ -95,7 +95,7 @@ class PlayingState(GameStateMachine):
 			return GameState.PAUSED
 		if self.action == GameAction.OPEN_MENU:
 			return GameState.MENU_IS_OPEN
-		if self.action == GameAction.SELECT:
+		if self.action == GameAction.ITEM_SELECTED:
 			if(self.game_instance.match_detected(self.items, self.item_to_match, pygame.mouse.get_pos())):
 				logger.info('match detected!')
 				result: ProcessPointResult = self.game_instance.process_point_gain()
