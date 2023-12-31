@@ -27,7 +27,7 @@ class SpriteHandler:
 			items (list[ItemConfig]): A list of gmae items to be used to create the sprite group.
 			option (Option): An option to be applied to the sprite.
 		"""
-		group = pygame.sprite.Group()
+		group = pygame.sprite.OrderedUpdates() # draws Sprites in order of addition 
 		for item in item_configs:
 			group.add(ItemSprite(
 			image=SpriteHandler.retrieve_image(item.image, option),
