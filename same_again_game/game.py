@@ -244,7 +244,7 @@ class Game:
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
     if any(sprite.scale > 0 for sprite in all_sprites):
       for sprite in [item_to_match] + items.sprites():
-        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-10, sprite=sprite))
+        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-8, sprite=sprite))
       self.animation_engine.execute()
       return False
     else: 
