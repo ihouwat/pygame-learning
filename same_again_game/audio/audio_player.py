@@ -1,6 +1,5 @@
-from pygame import mixer
-
 from funcs import get_file
+from pygame import mixer
 
 
 class AudioPlayer:
