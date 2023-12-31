@@ -85,6 +85,17 @@ items_config: list[ItemConfig] = [
     {"text_identifier": "cat", "image": PathSource("cat.png"), "sound": "mp3", "word": "Cat", "color": Color.ORANGE, "type": RealWorldObjectCategory.ANIMAL},
     {"text_identifier": "chicken", "image": PathSource("chicken.png"), "sound": "mp3", "word": "Chicken", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
     {"text_identifier": "bear", "image": PathSource("bear.png"), "sound": "mp3", "word": "Bear", "color": Color.BROWN, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "rabbit", "image": PathSource("rabbit.png"), "sound": "mp3", "word": "Rabbit", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "panda", "image": PathSource("panda.png"), "sound": "mp3", "word": "Panda", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "pig", "image": PathSource("pig.png"), "sound": "mp3", "word": "Pig", "color": Color.PINK, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "mouse", "image": PathSource("mouse.png"), "sound": "mp3", "word": "Mouse", "color": Color.GREY, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "monkey", "image": PathSource("monkey.png"), "sound": "mp3", "word": "Monkey", "color": Color.BROWN, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "horse", "image": PathSource("horse.png"), "sound": "mp3", "word": "Horse", "color": Color.BROWN, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "koala", "image": PathSource("koala.png"), "sound": "mp3", "word": "Koala", "color": Color.GREY, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "frog", "image": PathSource("frog.png"), "sound": "mp3", "word": "Frog", "color": Color.GREEN, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "dog", "image": PathSource("dog.png"), "sound": "mp3", "word": "Dog", "color": Color.BROWN, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "cow", "image": PathSource("cow.png"), "sound": "mp3", "word": "Cow", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "chick", "image": PathSource("chick.png"), "sound": "mp3", "word": "Chick", "color": Color.YELLOW, "type": RealWorldObjectCategory.ANIMAL},
   ]
 ]
 

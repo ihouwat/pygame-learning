@@ -85,7 +85,7 @@
 - consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
 - tidying up:
 	- `Game` class:
-		- has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
+		- has two methods that animatex`` text, one when we win a level, and one where we win the game. Combine them.
 		- a bunch of animations in there, should i split them out?
 		- Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
 	- `Renderer` class:

@@ -10,7 +10,10 @@ class Color(Enum):
   WHITE = 'White'
   ORANGE = 'Orange'
   PURPLE = 'Purple'
-  BROWN = 'Brown'
+  BROWN = 'Brown',
+  PINK = 'Pink',
+  GREY = 'Grey',
+  BLACK = 'Black'
 
 class ItemCategory(Enum):
   """ Represents the category of item to be created.
