@@ -15,7 +15,7 @@ from game_objects.puzzles import (
     SingleItemTypePuzzle,
     SpokenWordPuzzle,
 )
-from models.game_types import Language
+from models.game_types import Language, Soundtracks
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -34,6 +34,14 @@ puzzles: list[Puzzle] = [
 	SpokenWordPuzzle(),
 ]
 
+soundtrack: Soundtracks = {
+    "intro": ["alexander-nakarada-silly-intro(chosic.com).mp3"],
+    "game_music": [
+        "Monkeys-Spinning-Monkeys(chosic.com).mp3",
+        "Run-Amok(chosic.com).mp3"  
+    ]
+}
+
 # initialize levels, game, clock
 frames_per_sec = pygame.time.Clock()
 levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=2) for i, puzzle in enumerate(puzzles) ]
@@ -47,4 +55,5 @@ game = Game(
     game_menu=GameMenu(),
     levels=levels,
     language=Language.ENGLISH,
+    soundtrack=soundtrack
     )

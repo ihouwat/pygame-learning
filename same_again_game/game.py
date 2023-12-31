@@ -37,6 +37,7 @@ from models.game_types import (
   GameState,
   Language,
   ProcessPointResult,
+  Soundtracks,
   TextElementType,
 )
 from pygame.sprite import Group
@@ -66,7 +67,7 @@ class Game:
     items (Group): The group of items.
     text_elements (list[TextElement]): The list of text elements.
   """
-  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animation_engine: AnimationEngine, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language):
+  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animation_engine: AnimationEngine, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language, soundtrack: Soundtracks):
     self.renderer: Renderer = renderer
     self.ui_display = ui_display
     self.animation_engine = animation_engine
@@ -109,7 +110,11 @@ class Game:
                     y=(SCREEN_HEIGHT // 2) - FONT_LARGE,
                     ),
     }
-
+    self.soundtrack: Soundtracks = soundtrack
+    
+    # start music
+    self.audio_player.playsoundtrack(filepath=self.soundtrack['intro'][0], iterations=2, volume=0.5)
+    
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game.
     

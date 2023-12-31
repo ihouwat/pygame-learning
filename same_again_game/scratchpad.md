@@ -73,27 +73,33 @@
 - DONE add a game completed screen
 
 
-- ONGOING download more pngs and add attributions
-	- next add tiger then add one last vehicles category
-
+- ONGOING download more pngs
+	- next add tiger animal
+	- add vehicles category
+	- add clothes category
+	- add attributions
+- add music
+	- DONE add intro music
+	- DONE add background music
+	- add victory music
+	- add attributions
 
 - record and add languages to the game
 	- need to add a language dict to toggle languages
 	- on success, load and play the sound in the target language and a sound effect (ex: applause)
 		- loading dynamically allows us to switch languages mid-game without resetting the sprites
 	- on failure, play some 'try again' sound
-- add music
-- consider fancy animations for transitions
-	- DONE transition delays
-	- animate the sprites in succession but with some overlap
 - tidying up:
 	- `Game` class:
-		- has two methods that animatex`` text, one when we win a level, and one where we win the game. Combine them.
+		- has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
 		- a bunch of animations in there, should i split them out?
-		- Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
+		- DONE Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
 	- `Renderer` class:
 		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 		- the game completed animation is a nested conditional. Let's clean that up.
+- consider fancy animations for transitions
+	- DONE transition delays
+	- animate the sprites in succession but with some overlap
 - update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
 
 ## Learnings

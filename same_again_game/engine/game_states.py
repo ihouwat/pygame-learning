@@ -1,3 +1,4 @@
+import random
 import pygame
 from config.logger import logger
 from config.settings import MATCH_DETECTED
@@ -16,8 +17,8 @@ class MenuOpenState(GameStateMachine):
 			self.game_instance.kill_sprites()
 			self.game_instance.reset_game_levels()			
 			self.game_instance.save_user_settings(self.events[0])
-			#play soundtrack
-			# self.audio_player.playsoundtrack(music='audio/soundtrack.mp3', num=-1, vol=0.5)
+			# play music!
+			self.game_instance.audio_player.playsoundtrack(filepath=random.choice(self.game_instance.soundtrack['game_music']), iterations=5, volume=0.5)
 			return GameState.TRANSITION_TO_NEXT_LEVEL
 
 		if self.action == GameAction.RESUME_GAME:

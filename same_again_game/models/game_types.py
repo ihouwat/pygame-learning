@@ -69,7 +69,7 @@ class ProcessPointResult(Enum):
   """ Represents the result of processing a point gain."""
   LEVEL_COMPLETED = 1
   TURN_COMPLETED = 2
-  
+
 class TextElementType(Enum):
   LEVEL_UP = 1
   GAME_COMPLETED = 2
@@ -79,3 +79,5 @@ class Language(Enum):
   ENGLISH = "English"
   ARABIC = "Arabic"
   PORTUGUESE = "Portuguese"
+  
+Soundtracks = dict[str, list[str]]
