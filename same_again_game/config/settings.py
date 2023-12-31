@@ -20,7 +20,7 @@ colors: dict[Color, tuple[int, int, int]] = {
   Color.WHITE: WHITE,
   Color.ORANGE: ORANGE,
   Color.PURPLE: PURPLE,
-  Color.PINK: (255, 192, 203)
+  Color.PINK: PINK
 }
 
 # Screen dimensions

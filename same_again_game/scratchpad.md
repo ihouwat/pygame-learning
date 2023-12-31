@@ -83,7 +83,9 @@
 		- loading dynamically allows us to switch languages mid-game without resetting the sprites
 	- on failure, play some 'try again' sound
 - add music
-- consider fancy animations for transitions (ex: animate the sprites in succession but with some overlap)
+- consider fancy animations for transitions
+	- DONE transition delays
+	- animate the sprites in succession but with some overlap
 - tidying up:
 	- `Game` class:
 		- has two methods that animatex`` text, one when we win a level, and one where we win the game. Combine them.

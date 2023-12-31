@@ -159,6 +159,7 @@ class Game:
   def process_point_gain(self) -> ProcessPointResult:
     """ Increments points and controls leveling up. """
     self.current_level.increment_score(points=1)
+    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
     if self.current_level.is_completed():
       return ProcessPointResult.LEVEL_COMPLETED
@@ -172,9 +173,6 @@ class Game:
     self.set_current_level(level_number=self.current_level.level_number + 1)
     # play hand clap sound effect
     # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
-    
-    # update UI elements
-    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
   def set_current_level(self, level_number: int) -> None:
     """ Sets the current level and updates the text element related to displaying the level number.
@@ -195,7 +193,9 @@ class Game:
       self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=12, y_increment=0)).execute()
       return False
     else:
+      # update UI elements
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
+      self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
       pygame.time.delay(ANIMATION_DELAY)
       return True
 
@@ -240,8 +240,6 @@ class Game:
     # self.audio_player.playsound(sound='audio/incorrect.wav', vol=0.5)
     # play the word for the item that was matched
     # self.audio_player.playsound(sound='audio/correct.wav', vol=0.5)
-    
-    self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
     
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
     if any(sprite.scale > 0 for sprite in all_sprites):
