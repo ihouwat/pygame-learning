@@ -30,8 +30,9 @@ SCREEN_HEIGHT = 800
 SHAPE_WIDTH = 140
 SHAPE_HEIGHT = 140
 
-# Frames per second
+# Time settings
 FPS = 60
+ANIMATION_DELAY = 250
 
 # Fonts
 FONT_NAME = "Verdana"

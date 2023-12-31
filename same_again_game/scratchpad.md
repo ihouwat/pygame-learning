@@ -74,6 +74,7 @@
 
 
 - ONGOING download more pngs and add attributions
+	- next add tiger then add one last vehicles category
 
 
 - record and add languages to the game

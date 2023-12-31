@@ -5,7 +5,7 @@ from typing import Optional, Type
 import pygame
 from audio.audio_player import AudioPlayer
 from config.logger import logger
-from config.settings import FONT_LARGE, FONT_NAME, SCREEN_HEIGHT, SCREEN_WIDTH
+from config.settings import ANIMATION_DELAY, FONT_LARGE, FONT_NAME, SCREEN_HEIGHT, SCREEN_WIDTH
 from engine.animation_engine import AnimationEngine
 from engine.animations import ScaleSprite, TextTransition
 from engine.event_listener import EventListener
@@ -196,6 +196,7 @@ class Game:
       return False
     else:
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
+      pygame.time.delay(ANIMATION_DELAY)
       return True
 
   def reset_game_levels(self):
@@ -239,15 +240,18 @@ class Game:
     # self.audio_player.playsound(sound='audio/incorrect.wav', vol=0.5)
     # play the word for the item that was matched
     # self.audio_player.playsound(sound='audio/correct.wav', vol=0.5)
-
+    
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    if item_to_match.scale > 0:
+    
+    all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
+    if any(sprite.scale > 0 for sprite in all_sprites):
       for sprite in [item_to_match] + items.sprites():
         self.animation_engine.add_animation(ScaleSprite(scaling_factor=-10, sprite=sprite))
       self.animation_engine.execute()
       return False
     else: 
       self.kill_sprites()
+      pygame.time.delay(ANIMATION_DELAY)
       return True
 
   def start_new_turn(self) -> bool:
