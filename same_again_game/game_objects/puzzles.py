@@ -1,7 +1,7 @@
 import random
 
+from config.settings import colors
 from models.game_types import (
-	Color,
 	ItemCategory,
 	RealWorldObjectCategory,
 	Shape,
@@ -118,7 +118,7 @@ class ShapePuzzle(Puzzle):
 		color: The color to be applied to the shapes throughout the duration of the puzzle.
 	"""
 	
-	color = random.choice(list(Color))
+	color = random.choice(list(colors.keys()))
 
 	@property
 	def description(self) -> str:
