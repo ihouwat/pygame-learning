@@ -78,17 +78,21 @@
 	- add vehicles category
 	- add clothes category
 	- add attributions
-- add music
-	- DONE add intro music
-	- DONE add background music
-	- add victory music
-	- add attributions
 
-- record and add languages to the game
-	- need to add a language dict to toggle languages
-	- on success, load and play the sound in the target language and a sound effect (ex: applause)
-		- loading dynamically allows us to switch languages mid-game without resetting the sprites
-	- on failure, play some 'try again' sound
+- Sounds
+	- add music
+		- DONE add intro music
+		- DONE add background music
+		- add victory music
+		- add attributions
+
+	- add sound effects
+		- on success, load and play the sound in the target language and a sound effect (ex: applause)
+			- loading dynamically allows us to switch languages mid-game without resetting the sprites
+		- on failure, play some 'try again' sound
+	- record and add languages to the game
+		- need to add a language dict to toggle languages
+
 - tidying up:
 	- `Game` class:
 		- has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
