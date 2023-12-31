@@ -1,11 +1,9 @@
 from typing import Protocol
 
 import pygame
-from engine.renderer import Renderer
 from game_objects.item_sprite import ItemSprite
 from game_objects.text_element import TextElement
 from pygame.sprite import Group
-from ui.ui_display import UIDisplay
 
 
 class Animation(Protocol):
@@ -84,9 +82,7 @@ class TextTransition(Animation):
 
 class SpriteHoverEffect(Animation):
 	""" SpriteHoverEffect is responsible for animating the hover effect on sprites."""
-	def __init__(self, renderer: Renderer, ui_display: UIDisplay, items: Group, min_scale: float, max_scale: float):
-		self.renderer = renderer
-		self.ui_display = ui_display
+	def __init__(self, items: Group, min_scale: float, max_scale: float):
 		self.items = items
 		self.min_scale = min_scale
 		self.max_scale = max_scale
