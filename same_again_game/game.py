@@ -5,7 +5,13 @@ from typing import Optional, Type
 import pygame
 from audio.audio_player import AudioPlayer
 from config.logger import logger
-from config.settings import ANIMATION_DELAY, FONT_LARGE, FONT_NAME, SCREEN_HEIGHT, SCREEN_WIDTH
+from config.settings import (
+  ANIMATION_DELAY,
+  FONT_LARGE,
+  FONT_NAME,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+)
 from engine.animation_engine import AnimationEngine
 from engine.animations import ScaleSprite, TextTransition
 from engine.event_listener import EventListener
@@ -142,7 +148,7 @@ class Game:
       
       self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
-  def match_detected(self, items: Group, item_to_match: ItemSprite, coordinates) -> bool:
+  def detect_match(self, items: Group, item_to_match: ItemSprite, coordinates) -> bool:
     """ Returns True if a user has match an item correctly against a list of items, False otherwise.
     Args:
       items (Group): A group of items to match against.
