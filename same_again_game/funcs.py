@@ -38,7 +38,6 @@ def load_pygame_image(*path_args) -> pygame.Surface:
   file_path = get_file(*path_args)
   return pygame.image.load(file_path).convert_alpha()
 
-
 def create_shape(shape: Shape, color: tuple[int, int, int], width: float = SHAPE_WIDTH, height: float = SHAPE_HEIGHT) -> pygame.Surface:
   """ Creates a surface with a shape drawn on it.
   
