@@ -97,7 +97,7 @@ class PlayingState(GameStateMachine):
 		if self.action == GameAction.OPEN_MENU:
 			return GameState.MENU_IS_OPEN
 		if self.action == GameAction.ITEM_SELECTED:
-			match = self.game_instance.match_detected(self.items, self.item_to_match, pygame.mouse.get_pos())
+			match = self.game_instance.detect_match(self.items, self.item_to_match, pygame.mouse.get_pos())
 			if match:
 				pygame.event.post(pygame.event.Event(MATCH_DETECTED))
 		if self.action == GameAction.MATCH_DETECTED:
