@@ -1,12 +1,13 @@
-from dataclasses import dataclass
-from funcs import get_file
-from pygame import mixer
 import pygame
+from funcs import get_file
+from models.sound_effect import SoundEffect
+from pygame import mixer
+
 
 class AudioPlayer:
 	def __init__(self) -> None:
 		mixer.init(frequency=44100)
-		self.soundtrack: list[SoundEffects] = []
+		self.soundtrack: list[SoundEffect] = []
 		
 	def playsoundtrack(self, filepath: str, iterations: int, volume: float = 0.5):
 		track = self.load_music(filepath)
@@ -14,16 +15,8 @@ class AudioPlayer:
 		mixer.music.load(track)
 		mixer.music.play(iterations)
 
-	def playsound(self, path: str, volume: float):
-		sound: pygame.mixer.Sound
-		
-		if self.sound_is_cached(path):
-			cached_sound = next(s for s in self.soundtrack if s.path == path) # next() is used by python to return the next item in an iterator
-			sound = pygame.mixer.Sound(cached_sound.sound)
-		else:
-			sound = self.load_sound(path)
-			cached_sound = SoundEffects(sound=sound, path=path)
-			self.soundtrack.append(cached_sound)
+	def playsound(self, path: str, volume: float) -> None:
+		sound, cached_sound = self.load_and_cache_sound(path)
 
 		if cached_sound.is_playing:
 			return
@@ -32,26 +25,36 @@ class AudioPlayer:
 		sound.play()
 		cached_sound.is_playing = True
 
-	def stop(self):
+	def stop(self) -> None:
 		mixer.music.stop()
 	
 	def sound_is_cached(self, path: str) -> bool:
 		return bool([s for s in self.soundtrack if s.path == path])
 
-	def stop_sound(self, path: str):
-		cached_sound = next(s for s in self.soundtrack if s.path == path)
-		sound: pygame.mixer.Sound = pygame.mixer.Sound(cached_sound.sound)
-		sound.stop()
-		cached_sound.is_playing = False
+	def load_and_cache_sound(self, path: str) -> tuple[pygame.mixer.Sound, SoundEffect]:
+		sound: pygame.mixer.Sound
+		cached_sound: SoundEffect | None = self.get_cached_sound(path)
+
+		if cached_sound:
+			sound = pygame.mixer.Sound(cached_sound.sound)
+		else:
+			sound = self.load_sound(path)
+			cached_sound = SoundEffect(sound=sound, path=path, is_playing=False)
+			self.soundtrack.append(cached_sound)
+
+		return sound, cached_sound
+
+	def stop_sound(self, path: str) -> None:
+		cached_sound = self.get_cached_sound(path)
+		if cached_sound is not None:
+			cached_sound.sound.stop()
+			cached_sound.is_playing = False
+	
+	def get_cached_sound(self, path: str) -> SoundEffect | None:
+		return next((s for s in self.soundtrack if s.path == path), None) # next() returns the next item in an iterator
 
 	def load_music(self, path) -> str:
 		return get_file('assets', 'music', path)
 
 	def load_sound(self, path) -> pygame.mixer.Sound:
 		return pygame.mixer.Sound(get_file('assets', 'sounds', path))
-
-@dataclass
-class SoundEffects:
-	sound: pygame.mixer.Sound
-	path: str
-	is_playing: bool = False
