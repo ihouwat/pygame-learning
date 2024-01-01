@@ -62,6 +62,18 @@ class StartNewTurnState(GameStateMachine):
 			return GameState.PLAYING
 		return GameState.START_NEW_TURN
 
+class EndTurnState(GameStateMachine):
+	""" EndTurnState is responsible for handling the game logic when ending a turn. """
+	def __init__(self, game_context: GameContext):
+		super().__init__(game_context)
+	
+	def execute(self) -> GameState:
+		result: ProcessPointResult = self.game_instance.end_turn()
+		if result == ProcessPointResult.LEVEL_COMPLETED:
+			return GameState.LEVEL_COMPLETED
+		else:
+			return GameState.TRANSITION_TO_NEXT_TURN
+
 class LevelCompletedState(GameStateMachine):
 	""" LevelCompletedState is responsible for handling the game logic when a level is completed. """
 	def __init__(self, game_context: GameContext):
@@ -104,12 +116,9 @@ class PlayingState(GameStateMachine):
 				pygame.event.post(pygame.event.Event(MATCH_DETECTED))
 		if self.action == GameAction.MATCH_DETECTED:
 				logger.info('match detected!')
-				result: ProcessPointResult = self.game_instance.process_point_gain()
-				if result == ProcessPointResult.LEVEL_COMPLETED:
-					return GameState.LEVEL_COMPLETED
-				else:
-					return GameState.TRANSITION_TO_NEXT_TURN
-		
+				self.game_instance.process_point_gain()
+				return GameState.END_TURN
+
 		return GameState.PLAYING
 
 class GameCompletedState(GameStateMachine):

@@ -7,4 +7,3 @@ import pygame
 class SoundEffect:
 	sound: pygame.mixer.Sound
 	path: str
-	is_playing: bool = False
