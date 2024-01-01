@@ -91,6 +91,8 @@
 		- need to add a language dict to toggle languages
 
 - tidying up:
+	- Bug fixes
+		- Last level plays only one puzzle (`level_up()` method is called too early)
 	- `Game` class:
 		- has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
 		- a bunch of animations in there, should i split them out?
