@@ -170,6 +170,7 @@ class Game:
   def process_point_gain(self) -> ProcessPointResult:
     """ Increments points and controls leveling up. """
     self.current_level.increment_score(points=1)
+    self.audio_player.playsound(path=self.soundtrack['effects'][0], volume=1.0)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
     if self.current_level.is_completed():

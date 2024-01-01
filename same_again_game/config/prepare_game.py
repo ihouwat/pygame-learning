@@ -6,14 +6,14 @@ from engine.renderer import Renderer
 from game import Game
 from game_objects.level import Level
 from game_objects.puzzles import (
-    ColoredShapesPuzzle,
-    ColorPuzzle,
-    GrayscaleItemPuzzle,
-    ManyItemTypesPuzzle,
-    Puzzle,
-    ShapePuzzle,
-    SingleItemTypePuzzle,
-    SpokenWordPuzzle,
+	ColoredShapesPuzzle,
+	ColorPuzzle,
+	GrayscaleItemPuzzle,
+	ManyItemTypesPuzzle,
+	Puzzle,
+	ShapePuzzle,
+	SingleItemTypePuzzle,
+	SpokenWordPuzzle,
 )
 from models.game_types import Language, Soundtracks
 from ui.game_menu import GameMenu
@@ -35,25 +35,28 @@ puzzles: list[Puzzle] = [
 ]
 
 soundtrack: Soundtracks = {
-    "intro": ["alexander-nakarada-silly-intro(chosic.com).mp3"],
-    "game_music": [
-        "Monkeys-Spinning-Monkeys(chosic.com).mp3",
-        "Run-Amok(chosic.com).mp3"  
-    ]
+	"intro": ["alexander-nakarada-silly-intro(chosic.com).mp3"],
+	"game_music": [
+		"Monkeys-Spinning-Monkeys(chosic.com).mp3",
+		"Run-Amok(chosic.com).mp3"  
+	],
+	"effects": [
+		"644953__craigscottuk__quiz-gameshow-correct-ring-01.mp3"
+	]
 }
 
 # initialize levels, game, clock
 frames_per_sec = pygame.time.Clock()
 levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=2) for i, puzzle in enumerate(puzzles) ]
 game = Game(
-    renderer=Renderer(),
-    ui_display=UIDisplay(),
-    animation_engine=AnimationEngine(),
-    audio_player=AudioPlayer(),
-    event_listener=EventListener(),
-    status_bar=StatusBar(x_coordinate=10, y_coordinate=10),
-    game_menu=GameMenu(),
-    levels=levels,
-    language=Language.ENGLISH,
-    soundtrack=soundtrack
-    )
+	renderer=Renderer(),
+	ui_display=UIDisplay(),
+	animation_engine=AnimationEngine(),
+	audio_player=AudioPlayer(),
+	event_listener=EventListener(),
+	status_bar=StatusBar(x_coordinate=10, y_coordinate=10),
+	game_menu=GameMenu(),
+	levels=levels,
+	language=Language.ENGLISH,
+	soundtrack=soundtrack
+)
