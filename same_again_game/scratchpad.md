@@ -72,16 +72,14 @@
 
 - ONGOING download more pngs
 	- DONE add vehicles category
-	- add new tractor image
-	- add clothes category
-	- add attributions
+	- add new tractor image and attribution
+	- add clothes category and attributions
 
 - Sounds
 	- add music
 		- DONE add intro music
 		- DONE add background music
-		- add victory music
-		- add attributions
+		- add victory music and attribution
 
 	- add sound effects
 		- on success, load and play the sound in the target language and a sound effect (ex: applause)
