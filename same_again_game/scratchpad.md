@@ -76,10 +76,10 @@
 	- add clothes category and attributions
 
 - Sounds
-	- add music
+	- DONE add music
 		- DONE add intro music
 		- DONE add background music
-		- add victory music and attribution
+		- DONE victory music and attribution
 
 	- add sound effects
 		- on success
