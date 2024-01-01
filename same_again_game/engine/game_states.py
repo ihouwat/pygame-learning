@@ -1,10 +1,11 @@
 import random
+
 import pygame
 from config.logger import logger
 from config.settings import MATCH_DETECTED
 from engine.animations import SpriteHoverEffect
 from models.game_state_machine import GameContext, GameStateMachine
-from models.game_types import GameAction, GameState, ProcessPointResult
+from models.game_types import GameAction, GameState, ProcessPointResult, SoundType
 
 
 class MenuOpenState(GameStateMachine):
@@ -18,7 +19,7 @@ class MenuOpenState(GameStateMachine):
 			self.game_instance.reset_game_levels()			
 			self.game_instance.save_user_settings(self.events[0])
 			# play music!
-			self.game_instance.audio_player.playsoundtrack(filepath=random.choice(self.game_instance.soundtrack['game_music']), iterations=5, volume=0.5)
+			self.game_instance.audio_player.playsoundtrack(filepath=random.choice(self.game_instance.soundtrack[SoundType.GAME_MUSIC]), iterations=5, volume=0.5)
 			return GameState.TRANSITION_TO_NEXT_LEVEL
 
 		if self.action == GameAction.RESUME_GAME:

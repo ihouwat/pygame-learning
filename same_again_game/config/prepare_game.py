@@ -6,16 +6,16 @@ from engine.renderer import Renderer
 from game import Game
 from game_objects.level import Level
 from game_objects.puzzles import (
-	ColoredShapesPuzzle,
-	ColorPuzzle,
-	GrayscaleItemPuzzle,
-	ManyItemTypesPuzzle,
-	Puzzle,
-	ShapePuzzle,
-	SingleItemTypePuzzle,
-	SpokenWordPuzzle,
+    ColoredShapesPuzzle,
+    ColorPuzzle,
+    GrayscaleItemPuzzle,
+    ManyItemTypesPuzzle,
+    Puzzle,
+    ShapePuzzle,
+    SingleItemTypePuzzle,
+    SpokenWordPuzzle,
 )
-from models.game_types import Language, Soundtracks
+from models.game_types import Language, Soundtracks, SoundType
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -35,12 +35,12 @@ puzzles: list[Puzzle] = [
 ]
 
 soundtrack: Soundtracks = {
-	"intro": ["alexander-nakarada-silly-intro(chosic.com).mp3"],
-	"game_music": [
+	SoundType.INTRO: ["alexander-nakarada-silly-intro(chosic.com).mp3"],
+	SoundType.GAME_MUSIC: [
 		"Monkeys-Spinning-Monkeys(chosic.com).mp3",
 		"Run-Amok(chosic.com).mp3"  
 	],
-	"effects": [
+	SoundType.EFFECTS: [
 		"644953__craigscottuk__quiz-gameshow-correct-ring-01.mp3"
 	]
 }

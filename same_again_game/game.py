@@ -38,6 +38,7 @@ from models.game_types import (
   Language,
   ProcessPointResult,
   Soundtracks,
+  SoundType,
   TextElementType,
 )
 from pygame.sprite import Group
@@ -113,7 +114,7 @@ class Game:
     self.soundtrack: Soundtracks = soundtrack
     
     # start music
-    self.audio_player.playsoundtrack(filepath=self.soundtrack['intro'][0], iterations=2, volume=0.5)
+    self.audio_player.playsoundtrack(filepath=self.soundtrack[SoundType.INTRO][0], iterations=2, volume=0.5)
     
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game.
@@ -170,7 +171,7 @@ class Game:
   def process_point_gain(self) -> ProcessPointResult:
     """ Increments points and controls leveling up. """
     self.current_level.increment_score(points=1)
-    self.audio_player.playsound(path=self.soundtrack['effects'][0], volume=1.0)
+    self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][0], volume=1.0)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
     if self.current_level.is_completed():

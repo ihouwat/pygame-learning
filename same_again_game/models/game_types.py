@@ -81,4 +81,9 @@ class Language(Enum):
   ARABIC = "Arabic"
   PORTUGUESE = "Portuguese"
   
-Soundtracks = dict[str, list[str]]
+class SoundType(Enum):
+  INTRO = 1
+  GAME_MUSIC = 2
+  EFFECTS = 3
+  
+Soundtracks = dict[SoundType, list[str]]
