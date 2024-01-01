@@ -38,12 +38,15 @@ soundtrack: Soundtracks = {
 	SoundType.INTRO: ["alexander-nakarada-silly-intro(chosic.com).mp3"],
 	SoundType.GAME_MUSIC: [
 		"Monkeys-Spinning-Monkeys(chosic.com).mp3",
-		"Run-Amok(chosic.com).mp3"  
+		"Run-Amok(chosic.com).mp3",
+		"Silly-Fun(chosic.com).mp3",
+		"Pixelland(chosic.com).mp3"
 	],
 	SoundType.EFFECTS: [
 		"644953__craigscottuk__quiz-gameshow-correct-ring-01.mp3",
 		"178610__petillo__short-audience-applause.mp3"
-	]
+	],
+	SoundType.VICTORY: ["Fluffing-a-Duck(chosic.com).mp3"],
 }
 
 # initialize levels, game, clock

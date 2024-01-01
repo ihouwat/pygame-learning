@@ -45,8 +45,12 @@ The game has the following states:
 
 ### Music
 * Silly Intro by [Alexander Nakarada](https://creatorchords.com), Music promoted by https://www.chosic.com/free-music/all/free-music/, [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)
-*  Monkeys Spinning Monkeys by [Kevin MacLeod](incompetech.com), Music promoted by https://www.chosic.com/free-music/all/,  [Licensed under Creative Commons: By Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/)
+*  Monkeys Spinning Monkeys by [Kevin MacLeod](incompetech.com), Music promoted by https://www.chosic.com/free-music/all/, [Licensed under Creative Commons: By Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/)
 *  Run Amok by [Kevin MacLeod](https://incompetech.com/), Music promoted by https://www.chosic.com/free-music/all/, [Creative Commons CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+* Silly Fun by [Kevin MacLeod](https://incompetech.com/),Music promoted by https://www.chosic.com/free-music/all/
+[Creative Commons CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+* Pixelland by [Kevin MacLeod](https://incompetech.com/), Music promoted by https://www.chosic.com/free-music/all/, [Creative Commons CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+* Fluffing a Duck by [Kevin MacLeod](https://incompetech.com/), Music promoted by https://www.chosic.com/free-music/all/, [Licensed under Creative Commons: By Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/)
 
 ### Sound Effects
 * [Quiz Gameshow Correct Ring 01](https://freesound.org/people/craigscottuk/sounds/644953/) by [craigscottuk](https://freesound.org/people/craigscottuk/), [Creative Commons 0 license](https://creativecommons.org/publicdomain/zero/1.0/)
