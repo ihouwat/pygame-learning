@@ -96,6 +96,20 @@ items_config: list[ItemConfig] = [
     {"text_identifier": "dog", "image": PathSource("dog.png"), "sound": "mp3", "word": "Dog", "color": Color.BROWN, "type": RealWorldObjectCategory.ANIMAL},
     {"text_identifier": "cow", "image": PathSource("cow.png"), "sound": "mp3", "word": "Cow", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
     {"text_identifier": "chick", "image": PathSource("chick.png"), "sound": "mp3", "word": "Chick", "color": Color.YELLOW, "type": RealWorldObjectCategory.ANIMAL},
+    {"text_identifier": "tiger", "image": PathSource("tiger.png"), "sound": "mp3", "word": "Tiger", "color": Color.ORANGE, "type": RealWorldObjectCategory.ANIMAL},
+    
+    # Vehicles
+    {"text_identifier": "ambulance", "image": PathSource("ambulance.png"), "sound": "mp3", "word": "Ambulance", "color": Color.WHITE, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "bicycle", "image": PathSource("bicycle.png"), "sound": "mp3", "word": "Bicycle", "color": Color.RED, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "bus", "image": PathSource("bus.png"), "sound": "mp3", "word": "Bus", "color": Color.ORANGE, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "car", "image": PathSource("car.png"), "sound": "mp3", "word": "Car", "color": Color.GREEN, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "helicopter", "image": PathSource("helicopter.png"), "sound": "mp3", "word": "Helicopter", "color": Color.BLUE, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "plane", "image": PathSource("plane.png"), "sound": "mp3", "word": "Plane", "color": Color.YELLOW, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "ship", "image": PathSource("ship.png"), "sound": "mp3", "word": "Ship", "color": Color.GREY, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "tractor", "image": PathSource("tractor.png"), "sound": "mp3", "word": "Tractor", "color": Color.RED, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "train", "image": PathSource("train.png"), "sound": "mp3", "word": "Train", "color": Color.BLUE, "type": RealWorldObjectCategory.VEHICLE},
+    {"text_identifier": "truck", "image": PathSource("truck.png"), "sound": "mp3", "word": "Truck", "color": Color.GREY, "type": RealWorldObjectCategory.VEHICLE},
+
   ]
 ]
 

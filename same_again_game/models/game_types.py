@@ -28,6 +28,7 @@ class RealWorldObjectCategory(Enum):
   FRUIT = 'Fruit'
   VEGETABLE = 'Vegetable'
   ANIMAL = 'Animal'
+  VEHICLE = 'Vehicle'
 
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""

@@ -71,8 +71,8 @@
 
 
 - ONGOING download more pngs
-	- next add tiger animal
-	- add vehicles category
+	- DONE add vehicles category
+	- add new tractor image
 	- add clothes category
 	- add attributions
 
