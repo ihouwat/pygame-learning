@@ -170,9 +170,12 @@ class Game:
 
   def process_point_gain(self) -> ProcessPointResult:
     """ Increments points and controls leveling up. """
+    soundeffect_path = self.soundtrack[SoundType.EFFECTS][0]
     self.current_level.increment_score(points=1)
-    self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][0], volume=1.0)
+    self.audio_player.playsound(path=soundeffect_path, volume=10.0)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+
+    self.audio_player.stop_sound(path=soundeffect_path) # mark sound as not playing
 
     if self.current_level.is_completed():
       return ProcessPointResult.LEVEL_COMPLETED
@@ -202,6 +205,9 @@ class Game:
     Returns:
       bool: True if the transition is complete, False otherwise.
     """
+    soundeffect_path = self.soundtrack[SoundType.EFFECTS][1]
+    self.audio_player.playsound(path=soundeffect_path, volume=0.2)
+    
     if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
       self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=12, y_increment=0)).execute()
       return False
@@ -210,6 +216,7 @@ class Game:
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
       self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
       pygame.time.delay(ANIMATION_DELAY)
+      self.audio_player.stop_sound(path=soundeffect_path) # mark sound as not playing
       return True
 
   def reset_game_levels(self):

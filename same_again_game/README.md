@@ -50,3 +50,4 @@ The game has the following states:
 
 ### Sound Effects
 * [Quiz Gameshow Correct Ring 01](https://freesound.org/people/craigscottuk/sounds/644953/) by [craigscottuk](https://freesound.org/people/craigscottuk/), [Creative Commons 0 license](https://creativecommons.org/publicdomain/zero/1.0/)
+* [Short Audience Applause](https://freesound.org/people/petillo/sounds/178610/) by [petillo](https://freesound.org/people/petillo/), [Creative Commons CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)

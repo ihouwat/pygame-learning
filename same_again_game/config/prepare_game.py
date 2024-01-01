@@ -41,7 +41,8 @@ soundtrack: Soundtracks = {
 		"Run-Amok(chosic.com).mp3"  
 	],
 	SoundType.EFFECTS: [
-		"644953__craigscottuk__quiz-gameshow-correct-ring-01.mp3"
+		"644953__craigscottuk__quiz-gameshow-correct-ring-01.mp3",
+		"178610__petillo__short-audience-applause.mp3"
 	]
 }
 
