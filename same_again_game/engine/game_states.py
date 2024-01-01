@@ -71,6 +71,8 @@ class EndTurnState(GameStateMachine):
 		result: ProcessPointResult = self.game_instance.end_turn()
 		if result == ProcessPointResult.LEVEL_COMPLETED:
 			return GameState.LEVEL_COMPLETED
+		elif result == ProcessPointResult.GAME_COMPLETED:
+			return GameState.GAME_COMPLETED
 		else:
 			return GameState.TRANSITION_TO_NEXT_TURN
 
@@ -132,8 +134,5 @@ class GameCompletedState(GameStateMachine):
 
 		if not self.game_instance.display_game_completed():
 			return GameState.GAME_COMPLETED
-		# quit the game
-		logger.info('You have completed all levels!')
-		pygame.time.wait(3000)
-		self.game_instance.quit()
+		self.game_instance.end_game()
 		return GameState.GAME_COMPLETED

@@ -177,7 +177,11 @@ class Game:
     self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][0], volume=1.0) # mark sound as not playing
 
   def end_turn(self) -> ProcessPointResult:
-    if self.current_level.is_completed():
+    if self.completed_all_levels():
+      self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][1], volume=1.0)
+      self.audio_player.playsoundtrack(filepath=self.soundtrack[SoundType.VICTORY][0], iterations=1, volume=0.75)
+      return ProcessPointResult.GAME_COMPLETED
+    elif self.current_level.is_completed():
       self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][1], volume=1.0)
       return ProcessPointResult.LEVEL_COMPLETED
     else:
@@ -304,6 +308,11 @@ class Game:
       SpriteHandler.kill_sprite(self.item_to_match)
     if(self.items):
       SpriteHandler.kill_sprite_group(self.items)
+
+  def end_game(self) -> None:
+    logger.info('You have completed all levels!')
+    pygame.time.wait(30000)
+    self.quit()
 
   def quit(self) -> None:
     """ Quits game and exits program. """
