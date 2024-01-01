@@ -19,7 +19,6 @@
 	- NOT NEEDED: need to decouple rendering from the game logic?? (rendering logic is simple enough)
 	- DONE perhaps need a class for user event handling...
 - DONE generate docstrings
-
 - create more levels
 	- DONE many shapes with one color
 	- DONE many shapes with many colors
@@ -27,7 +26,7 @@
 	- DONE many types of colored items (ex: fruits, vehicles, animals, etc.)
 	- DONE grayscale items
 	- DONE one type of colored items (ex: only fruits)
-	
+
 - PARTIALLY DONE voice only target item (need to still record sounds)
 
 - DONE tidying up stage: move classes into separate files
@@ -43,13 +42,11 @@
 	- DONE enter name
 	- DONE choose language
 - DONE configure logging
-
-- add animations
+- DONE add animations
 	- DONE increase sprite size on hover, decrease on mouse out
 	- DONE fade sprites in/out between puzzles
 	- DONE new level animation
-
-- tidying up stage:
+- DONE tidying up stage:
 	- DONE `ItemSprite` class:
 		- DONE the scaling function for shapes is buggy. i *think* it's because at some point the scaling factor is larger than the image size
 		- DONE clean up some of the properties now we have the metadata. perhaps combine word and text_identifier properties?
@@ -101,10 +98,12 @@
 	- `Renderer` class:
 		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 		- the game completed animation is a nested conditional. Let's clean that up.
-- consider fancy animations for transitions
-	- DONE transition delays
-	- animate the sprites in succession but with some overlap
-- update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot)
+- consider 'fancy' animations for transitions
+	- DONE transition delays at the end of the scale up/scale down animations
+	- **cascade animate the sprites** (ie each sprite in a group starts getting animated but delayed by a few frames): **The problem is that we have to manage the sprite animations for every frame**. So, in addition to having `Animation` classes, which execute the animations per sprite per frame, we need a `Transition` class or function that tracks a group sprites over the animation lifecycle. To implement the cascade delay
+		- a quick way is to track the sprite scales, set some scale threshold after which the next sprite can be animated, and use that calculation to determine which sprites should be animated at each frame.
+		- A better way is to store the starting frame at which the animations begin and then delay the animation start for each sprite by a few frames. We'd need some way to `start()` and detect when the group animation `is_completed()`. This second approach is a bit more complicated as we need to store an initial frame and track frame numbers over multiple game loops.
+- update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot, you have to think at the level of each frame, which gets tricky the moment the animations or game states get slightly complicated (ex: staggered animations, transitions between turns/levels))
 
 ## Learnings
 ### State machine pattern
