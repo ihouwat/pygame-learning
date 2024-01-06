@@ -91,7 +91,7 @@ class Game:
       GameState.END_TURN: EndTurnState
     }
     
-    # also game state (candidates for extraction)
+    # game state variables (candidates for extraction)
     self.current_state: GameState = GameState.MENU_IS_OPEN
     self.current_level: Level = self.levels[0]
     self.selected_language: Language = language
@@ -182,6 +182,8 @@ class Game:
     """ Increments points and controls leveling up. """
     self.current_level.increment_score(points=1)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
+    
+    self.audio_player.load_spoken_work(language='english', path=self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav').play()
     self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][0], volume=1.0) # mark sound as not playing
 
   def end_turn(self) -> ProcessPointResult:
@@ -203,8 +205,6 @@ class Game:
     logger.info('level up')
     # level_number is 1 based
     self.set_current_level(level_number=self.current_level.level_number + 1)
-    # play hand clap sound effect
-    # self.audio_player.playsound(sound='audio/level_up.wav', vol=0.5)
 
   def set_current_level(self, level_number: int) -> None:
     """ Sets the current level and updates the text element related to displaying the level number.
@@ -268,11 +268,6 @@ class Game:
       items (Group): The group of sprites.
       item_to_match (ItemSprite): The item to match.
     """
-    # play some sound effect to indicate success
-    # self.audio_player.playsound(sound='audio/incorrect.wav', vol=0.5)
-    # play the word for the item that was matched
-    # self.audio_player.playsound(sound='audio/correct.wav', vol=0.5)
-    
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
     if any(sprite.scale > 0 for sprite in all_sprites):
       for sprite in [item_to_match] + items.sprites():
