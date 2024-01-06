@@ -32,8 +32,8 @@ class AudioPlayer:
 			sound = cached_sound.sound
 		else:
 			sound = self.load_sound_effect(path)
-			cached_sound = SoundEffect(sound=sound, path=path)
-			self.sound_effects.append(cached_sound)
+			new_sound_effect = SoundEffect(sound=sound, path=path)
+			self.sound_effects.append(new_sound_effect)
 
 		return sound
 
