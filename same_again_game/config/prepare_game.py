@@ -44,7 +44,8 @@ soundtrack: Soundtracks = {
 	],
 	SoundType.EFFECTS: [
 		"644953__craigscottuk__quiz-gameshow-correct-ring-01.mp3",
-		"178610__petillo__short-audience-applause.mp3"
+		"178610__petillo__short-audience-applause.mp3",
+		"131657__bertrof__game-sound-wrong.wav"
 	],
 	SoundType.VICTORY: ["Fluffing-a-Duck(chosic.com).mp3"],
 }
