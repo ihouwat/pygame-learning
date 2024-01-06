@@ -84,8 +84,6 @@ class LevelCompletedState(GameStateMachine):
 	def execute(self) -> GameState:
 		if not self.game_instance.transition_to_next_turn(self.items, self.item_to_match):
 			return GameState.LEVEL_COMPLETED
-		if self.game_instance.completed_all_levels():
-			return GameState.GAME_COMPLETED
 		self.game_instance.level_up()
 		return GameState.TRANSITION_TO_NEXT_LEVEL
 
