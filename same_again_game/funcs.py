@@ -38,6 +38,18 @@ def load_pygame_image(*path_args) -> pygame.Surface:
   file_path = get_file(*path_args)
   return pygame.image.load(file_path).convert_alpha()
 
+def load_pygame_sound(*path_args) -> pygame.mixer.Sound:
+  """
+  Load a sound using pygame and return it as a pygame.mixer.Sound object.
+  Args:
+    *path_args: Variable number of string arguments representing the path to the sound file.
+  
+  Returns:
+    pygame.mixer.Sound: The loaded sound as a pygame.mixer.Sound object.
+  """
+  file_path = get_file(*path_args)
+  return pygame.mixer.Sound(file_path)
+
 def create_shape(shape: Shape, color: tuple[int, int, int], width: float = SHAPE_WIDTH, height: float = SHAPE_HEIGHT) -> pygame.Surface:
   """ Creates a surface with a shape drawn on it.
   
