@@ -32,10 +32,10 @@ class RealWorldObjectCategory(Enum):
 
 class Shape(Enum):
   """ Represents a shape to construct a sprite with."""
-  CIRCLE = 'Circle'
-  SQUARE = 'Square'
-  TRIANGLE = 'Triangle'
-  RECTANGLE = 'Rectangle'
+  CIRCLE = 'circle'
+  SQUARE = 'square'
+  TRIANGLE = 'triangle'
+  RECTANGLE = 'rectangle'
 
 class SpriteOption(Enum):
   """ Represents an option to be applied to a sprite."""
