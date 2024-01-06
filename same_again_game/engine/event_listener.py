@@ -1,7 +1,12 @@
 from typing import Optional
 
 import pygame
-from config.settings import MATCH_DETECTED, RESUME_GAME, START_GAME
+from config.settings import (
+  ENTERED_WRONG_ANSWER,
+  MATCH_DETECTED,
+  RESUME_GAME,
+  START_GAME,
+)
 from models.game_types import GameAction
 
 
@@ -36,6 +41,9 @@ class EventListener():
             
       if event.type == MATCH_DETECTED:
         return GameAction.MATCH_DETECTED
+      
+      if event.type == ENTERED_WRONG_ANSWER:
+        return GameAction.WRONG_ITEM_SELECTED
 
       if event.type == START_GAME:
         return GameAction.START_NEW_GAME
