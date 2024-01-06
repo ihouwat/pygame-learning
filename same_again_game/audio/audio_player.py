@@ -1,5 +1,5 @@
 import pygame
-from config.settings import MUSIC_PATH, SOUND_EFFECTS_PATH
+from config.settings import MUSIC_PATH, SOUND_EFFECTS_PATH, SPOKEN_WORD_PATH
 from funcs import get_file, load_pygame_sound
 from models.sound_effect import SoundEffect
 from pygame import mixer
@@ -45,3 +45,6 @@ class AudioPlayer:
 
 	def load_sound_effect(self, path) -> pygame.mixer.Sound:
 		return load_pygame_sound(*SOUND_EFFECTS_PATH, path)
+
+	def load_spoken_work(self, language: str, path: str)  -> pygame.mixer.Sound:
+		return load_pygame_sound(*SPOKEN_WORD_PATH, language, path)
