@@ -137,9 +137,6 @@ class GameCompletedState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		# play a big cheer sound effect
-		# self.audio_player.playsound(sound='audio/game_completed.wav', vol=0.5)
-
 		if not self.game_instance.display_game_completed():
 			return GameState.GAME_COMPLETED
 		self.game_instance.end_game()
