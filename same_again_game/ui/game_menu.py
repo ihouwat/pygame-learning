@@ -19,7 +19,7 @@ class GameMenu:
 			is_game_in_progress(bool): Indicates if a game is running.
 			menu(pygame_menu.Menu): The menu.
 		"""
-		self.languages: list[Tuple[str, int]] = list(tuple([(language.name, index) for index, language in enumerate(Language)]))
+		self.languages: list[Tuple[str, int]] = list(tuple([(language.value, index) for index, language in enumerate(Language)]))
 		self.selected_language_index: int = 0
 		self.player_name: str = ""
 		self.is_game_in_progress: bool = False
