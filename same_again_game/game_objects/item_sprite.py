@@ -17,14 +17,12 @@ class ItemSprite(pygame.sprite.Sprite):
     image(pygame.Surface): The image of the item.
     word(str): The word that the item represents.
     text_identifier(str): The text identifier of the item.
-    sound(pygame.mixer.Sound): The sound of the word representing the item.
     initial_size(tuple[int, int]): The original size of the image.
     current_size(tuple[int, int]): The current size of the image.
     original_image(pygame.Surface): The original image of the item.
     scale(int): The scale of the item.
   """
   image: pygame.Surface = pygame.Surface((0, 0))
-  # sound: pygame.mixer.Sound
   text_identifier: str = ""
   metadata: Optional[ItemConfig] = None
 
