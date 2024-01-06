@@ -48,7 +48,7 @@ class SpriteHandler:
 			src_image=pygame.transform.grayscale(src_image)
 
 		return src_image
-	
+
 	@staticmethod
 	def pick_items_from_list(list_of_items: list, max_number: int) -> list:
 		""" Picks a random number of items from a list of game items. 
