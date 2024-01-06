@@ -1,5 +1,6 @@
 import pygame
-from funcs import get_file
+from config.settings import MUSIC_PATH, SOUND_EFFECTS_PATH
+from funcs import get_file, load_pygame_sound
 from models.sound_effect import SoundEffect
 from pygame import mixer
 
@@ -40,7 +41,7 @@ class AudioPlayer:
 		return next((s for s in self.sound_effects if s.path == path), None) # next() returns the next item in an iterator
 	
 	def load_music(self, path) -> str:
-		return get_file('assets', 'sounds', 'music', path)
+		return get_file(*MUSIC_PATH, path)
 
 	def load_sound_effect(self, path) -> pygame.mixer.Sound:
-		return pygame.mixer.Sound(get_file('assets', 'sounds', 'sound_effects', path))
+		return load_pygame_sound(*SOUND_EFFECTS_PATH, path)
