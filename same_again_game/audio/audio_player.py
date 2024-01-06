@@ -30,7 +30,7 @@ class AudioPlayer:
 		if cached_sound:
 			sound = cached_sound.sound
 		else:
-			sound = self.load_sound(path)
+			sound = self.load_sound_effect(path)
 			cached_sound = SoundEffect(sound=sound, path=path)
 			self.sound_effects.append(cached_sound)
 
@@ -40,7 +40,7 @@ class AudioPlayer:
 		return next((s for s in self.sound_effects if s.path == path), None) # next() returns the next item in an iterator
 	
 	def load_music(self, path) -> str:
-		return get_file('assets', 'music', path)
+		return get_file('assets', 'sounds', 'music', path)
 
-	def load_sound(self, path) -> pygame.mixer.Sound:
-		return pygame.mixer.Sound(get_file('assets', 'sounds', path))
+	def load_sound_effect(self, path) -> pygame.mixer.Sound:
+		return pygame.mixer.Sound(get_file('assets', 'sounds', 'sound_effects', path))

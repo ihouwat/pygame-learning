@@ -77,13 +77,13 @@
 		- DONE add background music
 		- DONE victory music and attribution
 
-	- add sound effects
+	- ONGOING add sound effects
 		- on success
 			- DONE load a 'ding' sound effect
 			- DONE load a 'clap' sound effect between levels
 			- load and play the sound in the target language and a sound effect: loading dynamically allows us to switch languages mid-game without resetting the sprites
 		- DONE on failure, play some 'try again' sound
-	- record and add languages to the game
+	- ONGOING record and add languages to the game
 		- need to add a language dict to toggle languages
 
 - tidying up:
