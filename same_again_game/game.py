@@ -239,7 +239,7 @@ class Game:
 
   def completed_all_levels(self) -> bool:
     """ Returns True if all levels have been completed, False otherwise."""
-    return self.current_level.level_number == len(self.levels)
+    return self.current_level.is_completed() and self.current_level.level_number == len(self.levels)
 
   def display_game_completed(self) -> bool:
     """ Displays the game completed text element.
