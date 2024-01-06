@@ -37,6 +37,7 @@ from models.game_types import (
   GameAction,
   GameState,
   Language,
+  MatchResult,
   ProcessPointResult,
   Soundtracks,
   SoundType,
@@ -156,19 +157,26 @@ class Game:
       
       self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
-  def detect_match(self, items: Group, item_to_match: ItemSprite, coordinates) -> bool:
-    """ Returns True if a user has match an item correctly against a list of items, False otherwise.
+  def detect_match(self, items: Group, item_to_match: ItemSprite, coordinates) -> MatchResult:
+    """ Detects if the user has selected the correct item.
     Args:
-      items (Group): A group of items to match against.
-      item_to_match (Sprite): The item to match.
-      coordinates (tuple): The coordinates of the mouse click event.
+      items (Group): The group of sprites.
+      item_to_match (ItemSprite): The item to match.
+      coordinates (tuple): The coordinates of the mouse click.
+      
+    Returns:
+      MatchResult: The result of the match.
     """
     selected_item: list[ItemSprite] = [sprite for sprite in items if sprite.rect.collidepoint(coordinates)]
-    if(selected_item):
-      if(selected_item[0].metadata == item_to_match.metadata):
+
+    if selected_item:
+      if selected_item[0].metadata == item_to_match.metadata:
         logger.info('this is the right answer!')
-        return True
-    return False
+        return MatchResult.MATCH
+      else:
+        return MatchResult.INCORRECT_MATCH
+    else: 
+      return MatchResult.NO_SELECTION
 
   def process_point_gain(self) -> None:
     """ Increments points and controls leveling up. """
@@ -186,6 +194,9 @@ class Game:
       return ProcessPointResult.LEVEL_COMPLETED
     else:
       return ProcessPointResult.TURN_COMPLETED
+  
+  def process_wrong_answer(self) -> None:
+    self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][2], volume=1.0)
 
   def level_up(self) -> None:
     """ Levels up the game."""

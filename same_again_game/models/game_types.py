@@ -50,10 +50,11 @@ class GameAction(Enum):
   QUIT = 1
   ITEM_SELECTED = 2
   MATCH_DETECTED = 3
-  OPEN_MENU = 4
-  RESUME_GAME = 5
-  MOUSE_ENTERED_WINDOW = 6
-  MOUSE_EXITED_WINDOW = 7
+  WRONG_ITEM_SELECTED = 4
+  OPEN_MENU = 5
+  RESUME_GAME = 6
+  MOUSE_ENTERED_WINDOW = 7
+  MOUSE_EXITED_WINDOW = 8
 
 class GameState(Enum):
   """ State machine for the game."""
@@ -72,6 +73,14 @@ class ProcessPointResult(Enum):
   LEVEL_COMPLETED = 1
   TURN_COMPLETED = 2
   GAME_COMPLETED = 3
+
+class MatchResult(Enum):
+  """ Represents the result of attempting to matching items.
+    Used to determine the type of feedback to provide to the user.
+  """
+  MATCH = 1 # correct answer
+  INCORRECT_MATCH = 2 # incorrect answer
+  NO_SELECTION = 3 # no item was selected on click
 
 class TextElementType(Enum):
   LEVEL_UP = 1

@@ -68,12 +68,8 @@
 		- Advantage of data class means we pass only the context we need, as opposed to the entire game instance --> better encapsulation
 		- Disadvantage is coupling and we might be breaking encapsulation by passing too much `Game` data around
 - DONE add a game completed screen
-
-
-- ONGOING download more pngs
+- DONE download more pngs
 	- DONE add vehicles category
-	- add new tractor image and attribution
-	- add clothes category and attributions
 
 - Sounds
 	- DONE add music
@@ -86,7 +82,7 @@
 			- DONE load a 'ding' sound effect
 			- DONE load a 'clap' sound effect between levels
 			- load and play the sound in the target language and a sound effect: loading dynamically allows us to switch languages mid-game without resetting the sprites
-		- on failure, play some 'try again' sound
+		- DONE on failure, play some 'try again' sound
 	- record and add languages to the game
 		- need to add a language dict to toggle languages
 

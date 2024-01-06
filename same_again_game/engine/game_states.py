@@ -2,10 +2,16 @@ import random
 
 import pygame
 from config.logger import logger
-from config.settings import MATCH_DETECTED
+from config.settings import ENTERED_WRONG_ANSWER, MATCH_DETECTED
 from engine.animations import SpriteHoverEffect
 from models.game_state_machine import GameContext, GameStateMachine
-from models.game_types import GameAction, GameState, ProcessPointResult, SoundType
+from models.game_types import (
+	GameAction,
+	GameState,
+	MatchResult,
+	ProcessPointResult,
+	SoundType,
+)
 
 
 class MenuOpenState(GameStateMachine):
@@ -111,9 +117,13 @@ class PlayingState(GameStateMachine):
 		if self.action == GameAction.OPEN_MENU:
 			return GameState.MENU_IS_OPEN
 		if self.action == GameAction.ITEM_SELECTED:
-			match = self.game_instance.detect_match(self.items, self.item_to_match, pygame.mouse.get_pos())
-			if match:
+			match: MatchResult = self.game_instance.detect_match(self.items, self.item_to_match, pygame.mouse.get_pos())
+			if match == MatchResult.MATCH:
 				pygame.event.post(pygame.event.Event(MATCH_DETECTED))
+			elif match == MatchResult.INCORRECT_MATCH:
+				pygame.event.post(pygame.event.Event(ENTERED_WRONG_ANSWER))
+		if self.action == GameAction.WRONG_ITEM_SELECTED:
+			self.game_instance.process_wrong_answer()
 		if self.action == GameAction.MATCH_DETECTED:
 				logger.info('match detected!')
 				self.game_instance.process_point_gain()
