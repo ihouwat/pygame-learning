@@ -1,6 +1,6 @@
 import pygame
-from config.settings import MUSIC_PATH, SOUND_EFFECTS_PATH, SPOKEN_WORD_PATH
-from funcs import get_file, load_pygame_sound
+from config.settings import SOUND_EFFECTS_PATH, SPOKEN_WORD_PATH
+from funcs import load_pygame_sound
 from models.sound_effect import SoundEffect
 from pygame import mixer
 
@@ -11,9 +11,8 @@ class AudioPlayer:
 		self.sound_effects: list[SoundEffect] = []
 		
 	def playsoundtrack(self, filepath: str, iterations: int, volume: float = 0.5):
-		track = self.load_music(filepath)
 		mixer.music.set_volume(volume)
-		mixer.music.load(track)
+		mixer.music.load(filepath)
 		mixer.music.play(iterations)
 
 	def stop_music(self) -> None:
@@ -40,9 +39,6 @@ class AudioPlayer:
 	def get_cached_sound(self, path: str) -> SoundEffect | None:
 		return next((s for s in self.sound_effects if s.path == path), None) # next() returns the next item in an iterator
 	
-	def load_music(self, path) -> str:
-		return get_file(*MUSIC_PATH, path)
-
 	def load_sound_effect(self, path) -> pygame.mixer.Sound:
 		return load_pygame_sound(*SOUND_EFFECTS_PATH, path)
 

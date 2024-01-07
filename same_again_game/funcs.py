@@ -4,7 +4,7 @@ import pathlib
 import sys
 
 import pygame
-from config.settings import SHAPE_HEIGHT, SHAPE_WIDTH
+from config.settings import MUSIC_PATH, SHAPE_HEIGHT, SHAPE_WIDTH
 from models.game_types import Shape
 
 
@@ -49,6 +49,17 @@ def load_pygame_sound(*path_args) -> pygame.mixer.Sound:
   """
   file_path = get_file(*path_args)
   return pygame.mixer.Sound(file_path)
+
+def get_music_track(track_name: str) -> str:
+  """ Get the absolute file path for a music track.
+  
+  Args:
+    track_name (str): The name of the track.
+    
+  Returns:
+    str: The absolute file path for the track.
+  """
+  return get_file(*MUSIC_PATH, track_name)
 
 def create_shape(shape: Shape, color: tuple[int, int, int], width: float = SHAPE_WIDTH, height: float = SHAPE_HEIGHT) -> pygame.Surface:
   """ Creates a surface with a shape drawn on it.
