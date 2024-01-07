@@ -60,10 +60,10 @@ def get_music_track_path(track_name: str) -> str:
   """ Get the absolute file path for a music track.
   
   Args:
-    track_name (str): The name of the track.
+    track_name (str): The name of the track, including the file extension.
     
   Returns:
-    str: The absolute file path for the track, including the file extension.
+    str: The absolute file path for the track.
   """
   return get_file(*MUSIC_PATH, track_name)
 
