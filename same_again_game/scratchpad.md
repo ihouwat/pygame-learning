@@ -76,19 +76,19 @@
 		- DONE add intro music
 		- DONE add background music
 		- DONE victory music and attribution
-
-	- ONGOING add sound effects
-		- on success
+	- DONE add sound effects
+		- DONE on success
 			- DONE load a 'ding' sound effect
 			- DONE load a 'clap' sound effect between levels
 			- DONE load and play the sound in the target language and a sound effect: loading dynamically allows us to switch languages mid-game without resetting the sprites
 		- DONE on failure, play some 'try again' sound
+
 	- ONGOING record and add languages to the game
 		- DONE English
 		- Arabic
 		- Portuguese
 		- DONE need to add a language dict to toggle languages
-		- refactor audioplayer to load spoken words and cache
+		- DONE refactor audioplayer to load spoken words and cache
 
 - tidying up:
 	- DONE Bug fixes
@@ -96,6 +96,7 @@
 	- `Game` class:
 		- has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
 		- a bunch of animations in there, should i split them out?
+		- there is a mention of a 'default.wav' file in the code. that is a temp placeholder when loading a spoken word. need better handling of that.
 		- DONE Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
 	- `Renderer` class:
 		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
