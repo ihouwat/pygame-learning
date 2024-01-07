@@ -11,6 +11,7 @@ from config.settings import (
   FONT_NAME,
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
+  language_paths
 )
 from engine.animation_engine import AnimationEngine
 from engine.animations import ScaleSprite, TextTransition
@@ -286,7 +287,7 @@ class Game:
       self.prepare_sprites_for_new_turn()
     are_sprites_spawned: bool = self.spawn_sprites(self.items, self.item_to_match)
     if are_sprites_spawned:
-      self.audio_player.load_spoken_work(language='english', path=self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav').play()
+      self.audio_player.load_spoken_work(language=language_paths[self.selected_language.name], path=self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav').play()
     return are_sprites_spawned
   
   def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:
