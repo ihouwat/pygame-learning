@@ -200,8 +200,11 @@ class Game:
     are_sprites_spawned: bool = self.spawn_sprites(self.items, self.item_to_match)
     if are_sprites_spawned:
       language: str = language_paths[self.selected_language.name]
-      word: str =self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav'
-      self.audio_player.playsound(path=get_spoken_word_path(language=language, word=word), volume=1.0)
+      if self.item_to_match.metadata:
+        word: str =self.item_to_match.metadata.sound
+        self.audio_player.playsound(path=get_spoken_word_path(language=language, word=word), volume=1.0)
+      else:
+        logger.error(f"Could not find sound for item {self.item_to_match.text_identifier} in language {language}.")
     return are_sprites_spawned
   
   def prepare_sprites_for_new_turn(self) -> None:
