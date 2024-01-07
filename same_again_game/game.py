@@ -161,7 +161,7 @@ class Game:
   def start_new_game(self) -> None:
     self.kill_sprites()
     self.reset_game_levels()			
-    self.audio_player.playsoundtrack(get_music_track_path(random.choice(self.soundtrack[SoundType.GAME_MUSIC])), iterations=5, volume=0.25)
+    self.audio_player.playsoundtrack(get_music_track_path(random.choice(self.soundtrack[SoundType.GAME_MUSIC])), iterations=5, volume=0.2)
 
   def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite) -> bool:
     """ Scales sprites down, kills sprites, and updates UI.

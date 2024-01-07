@@ -9,7 +9,7 @@ class AudioPlayer:
 		mixer.init(frequency=44100)
 		self.sound_effects: list[SoundEffect] = []
 		
-	def playsoundtrack(self, filepath: str, iterations: int, volume: float = 0.5):
+	def playsoundtrack(self, filepath: str, iterations: int, volume: float = 0.25):
 		mixer.music.set_volume(volume)
 		mixer.music.load(filepath)
 		mixer.music.play(iterations)
