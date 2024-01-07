@@ -1,5 +1,5 @@
 import pygame
-from models.game_types import Color
+from models.game_types import Color, Language
 
 # Predefined color values
 BLUE = (0, 0, 255)
@@ -50,3 +50,4 @@ ENTERED_WRONG_ANSWER = pygame.USEREVENT + 3
 SOUND_EFFECTS_PATH = 'assets', 'sounds', 'sound_effects'
 MUSIC_PATH = 'assets', 'sounds', 'music'
 SPOKEN_WORD_PATH = 'assets', 'sounds', 'spoken_words'
+language_paths: dict[str, str] = { language.name: language.value.lower() for language in Language }
