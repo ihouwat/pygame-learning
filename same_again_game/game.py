@@ -16,6 +16,7 @@ from config.settings import (
 )
 from engine.animation_engine import AnimationEngine
 from engine.animations import ScaleSprite, TextTransition
+from engine.animator import Animator
 from engine.event_listener import EventListener
 from engine.game_states import (
   EndTurnState,
@@ -73,10 +74,11 @@ class Game:
     items (Group): The group of items.
     text_elements (list[TextElement]): The list of text elements.
   """
-  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animation_engine: AnimationEngine, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language, soundtrack: Soundtracks):
+  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animation_engine: AnimationEngine, animator: Animator, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language, soundtrack: Soundtracks):
     self.renderer: Renderer = renderer
     self.ui_display = ui_display
     self.animation_engine = animation_engine
+    self.animator = animator
     self.audio_player = audio_player
     self.event_listener: EventListener = event_listener
     self.status_bar: StatusBar = status_bar
@@ -169,17 +171,18 @@ class Game:
     Args:
       items (Group): The group of sprites.
       item_to_match (ItemSprite): The item to match.
+    
+    Returns:
+      bool: True if the transition is complete, False otherwise.
     """
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    if any(sprite.scale > 0 for sprite in all_sprites):
-      for sprite in [item_to_match] + items.sprites():
-        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-8, sprite=sprite))
-      self.animation_engine.execute()
-      return False
-    else: 
+    animation_completed = self.animator.transition_out_sprites(all_sprites=all_sprites, scale_factor=-8)
+    if animation_completed:
       self.kill_sprites()
       pygame.time.delay(ANIMATION_DELAY)
       return True
+    else:
+      return False
 
   def kill_sprites(self) -> None:
     """ Remove all sprites."""
@@ -296,7 +299,7 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=10, y_increment=0)).execute()
+      self.animate_text_element(text_element=self.text_elements[TextElementType.LEVEL_UP], x_increment=10, y_increment=0)
       return False
     else:
       # update UI elements
@@ -304,6 +307,9 @@ class Game:
       self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
       pygame.time.delay(ANIMATION_DELAY)
       return True
+
+  def animate_text_element(self, text_element: TextElement, x_increment: int, y_increment: int) -> None:
+    self.animation_engine.add_animation(TextTransition(text_element=text_element, x_increment=x_increment, y_increment=y_increment)).execute()
 
   def reset_game_levels(self):
     """ Resets the game levels."""
@@ -322,7 +328,7 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     if self.text_elements[TextElementType.GAME_COMPLETED].current_position[0] < (SCREEN_WIDTH - self.text_elements[TextElementType.GAME_COMPLETED].surface.get_width()) / 2:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.GAME_COMPLETED], x_increment=7, y_increment=0)).execute()
+      self.animate_text_element(text_element=self.text_elements[TextElementType.GAME_COMPLETED], x_increment=7, y_increment=0)
       return False
     else:
       self.text_elements[TextElementType.GAME_COMPLETED].reset_to_start_position()

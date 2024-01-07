@@ -95,8 +95,8 @@
 	- DONE Bug fixes
 		- DONE Last level plays only one puzzle (`level_up()` method is called too early)
 	- `Game` class:
-		- has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
-		- a bunch of animations in there, should i split them out?
+		- DONE has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
+		- ONGOING a bunch of animations in there, should i split them out?
 		- there is a mention of a 'default.wav' file in the code. that is a temp placeholder when loading a spoken word. need better handling of that.
 		- DONE Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
 	- `Renderer` class:

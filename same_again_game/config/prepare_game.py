@@ -1,6 +1,7 @@
 import pygame
 from audio.audio_player import AudioPlayer
 from engine.animation_engine import AnimationEngine
+from engine.animator import Animator
 from engine.event_listener import EventListener
 from engine.renderer import Renderer
 from game import Game
@@ -55,6 +56,7 @@ game = Game(
 	renderer=Renderer(),
 	ui_display=UIDisplay(),
 	animation_engine=AnimationEngine(),
+	animator=Animator(animation_engine=AnimationEngine()),
 	audio_player=AudioPlayer(),
 	event_listener=EventListener(),
 	status_bar=StatusBar(x_coordinate=10, y_coordinate=10),
