@@ -109,9 +109,7 @@ class PlayingState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		self.game_instance.animation_engine.add_animation(
-			SpriteHoverEffect(items=self.items, min_scale=100, max_scale=125)
-		).execute()
+		self.game_instance.animation_engine.add_animation(SpriteHoverEffect(items=self.items, min_scale=100, max_scale=125)).execute()
 		if self.action == GameAction.MOUSE_EXITED_WINDOW:
 			return GameState.PAUSED
 		if self.action == GameAction.OPEN_MENU:
