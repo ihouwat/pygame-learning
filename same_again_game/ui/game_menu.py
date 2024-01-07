@@ -36,7 +36,7 @@ class GameMenu:
 		""" Configures the menu depending on game state."""
 		self.menu.clear()
 
-		self.menu.add.text_input('Enter Your Name: ', default=self.player_name, onchange=self.set_name)
+		self.menu.add.text_input('Enter Your Name: ', default=self.player_name, onchange=self.set_player_name)
 		self.menu.add.selector(title='Select Language :', default=self.selected_language_index, items=self.languages, onchange=self.set_language)
 		
 		if self.is_game_in_progress:
@@ -86,6 +86,7 @@ class GameMenu:
   
 		raise ValueError('Invalid language: {}'.format(selected_language))
 
+	def set_player_name(self, value: str) -> None:
 		""" Sets the player's name."""
 		logger.info('Name set to {}'.format(value))
 		self.player_name = value
