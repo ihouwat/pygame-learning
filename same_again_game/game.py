@@ -149,9 +149,7 @@ class Game:
       Args:
         event (pygame.event.Event): The pygame event we extract the data from.
       """
-      for lang in Language:
-        if(lang.name == event.language):
-          self.selected_language = lang
+      self.selected_language = event.language
       if len(event.player) > 0:
         self.player_name = event.player
       

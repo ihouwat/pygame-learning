@@ -52,12 +52,15 @@ class GameMenu:
 		""" Starts the game and emits an event containing the player configured settings."""
 		self.menu.disable()
 		self.is_game_in_progress = True
-		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.languages[self.selected_language_index][0], 'player': self.player_name}))
+		
+		pygame.event.post(pygame.event.Event(START_GAME, {'language': self.to_language_enum(), 'player': self.player_name}))
+	
 	
 	def save_settings(self) -> None:
 		""" Saves a user's settings while a game is in progress."""
 		self.menu.disable()
-		pygame.event.post(pygame.event.Event(RESUME_GAME, {'language': self.languages[self.selected_language_index][0], 'player': self.player_name}))
+		pygame.event.post(pygame.event.Event(RESUME_GAME, {'language': self.to_language_enum(), 'player': self.player_name}))
+
 
 	def quit_the_game(self) -> None:
 		""" Quits the game."""
@@ -69,7 +72,20 @@ class GameMenu:
 		logger.info('Language set to {}'.format(value))
 		self.selected_language_index = index
 
-	def set_name(self, value: str) -> None:
+	def get_selected_language_string(self) -> str:
+		""" Gets the name of the selected language from the menu's list of languages."""
+		return self.languages[self.selected_language_index][0]
+
+	def to_language_enum(self) -> Language:
+		""" Converts a string to a Language."""
+		selected_language = self.get_selected_language_string()
+		
+		for lang in Language:
+			if(selected_language == lang.value):
+				return lang
+  
+		raise ValueError('Invalid language: {}'.format(selected_language))
+
 		""" Sets the player's name."""
 		logger.info('Name set to {}'.format(value))
 		self.player_name = value
