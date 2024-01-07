@@ -89,6 +89,7 @@
 		- Portuguese
 		- DONE need to add a language dict to toggle languages
 		- DONE refactor audioplayer to load spoken words and cache
+		- configure volume settings so we can hear voice over the music
 
 - tidying up:
 	- DONE Bug fixes
@@ -101,6 +102,10 @@
 	- `Renderer` class:
 		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 		- the game completed animation is a nested conditional. Let's clean that up.
+	- Tidying:
+		- move constants, enums, and classes closer to where they are used. For example, there is a SoundTrack type that can be moved to the audio folder. There is a SoundEffect class that can be moved to the audio folder. Etc etc etc
+		- Instantiate GameState classes once, and instead of them having instance variables, just pass in the game instance and GameContext each time you invoke the execute() function
+
 - consider 'fancy' animations for transitions
 	- DONE transition delays at the end of the scale up/scale down animations
 	- **cascade animate the sprites** (ie each sprite in a group starts getting animated but delayed by a few frames): **The problem is that we have to manage the sprite animations for every frame**. So, in addition to having `Animation` classes, which execute the animations per sprite per frame, we need a `Transition` class or function that tracks a group sprites over the animation lifecycle. To implement the cascade delay
