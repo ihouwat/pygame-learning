@@ -26,7 +26,7 @@ class MenuOpenState(GameStateMachine):
 			self.game_instance.reset_game_levels()			
 			self.game_instance.save_user_settings(self.events[0])
 			# play music!
-			self.game_instance.audio_player.playsoundtrack(get_music_track_path(random.choice(self.game_instance.soundtrack[SoundType.GAME_MUSIC])), iterations=5, volume=0.5)
+			self.game_instance.audio_player.playsoundtrack(get_music_track_path(random.choice(self.game_instance.soundtrack[SoundType.GAME_MUSIC])), iterations=5, volume=0.25)
 			return GameState.TRANSITION_TO_NEXT_LEVEL
 
 		if self.action == GameAction.RESUME_GAME:

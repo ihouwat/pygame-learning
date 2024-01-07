@@ -119,7 +119,7 @@ class Game:
     self.soundtrack: Soundtracks = soundtrack
     
     # start music
-    self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.INTRO][0]), iterations=2, volume=0.5)
+    self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.INTRO][0]), iterations=2, volume=0.25)
     
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game.
@@ -190,7 +190,7 @@ class Game:
       self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.VICTORY][0]), iterations=1, volume=0.75)
       return NextTurnStatus.GAME_COMPLETED
     elif self.current_level.is_completed():
-      self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][1]), volume=1.0)
+      self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][1]), volume=0.7)
       return NextTurnStatus.LEVEL_COMPLETED
     else:
       return NextTurnStatus.TURN_COMPLETED
@@ -220,7 +220,7 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=12, y_increment=0)).execute()
+      self.animation_engine.add_animation(TextTransition(self.text_elements[TextElementType.LEVEL_UP], x_increment=10, y_increment=0)).execute()
       return False
     else:
       # update UI elements
