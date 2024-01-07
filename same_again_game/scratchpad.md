@@ -93,6 +93,7 @@
 		- create a shapes config where the sound is the color of the shape, and apply it to the appropriate puzzle. Need to figure out an elegant way of doing it.
 
 - tidying up:
+	- DONE name change from ProcessPointResult to something appropriate
 	- DONE Bug fixes
 		- DONE Last level plays only one puzzle (`level_up()` method is called too early)
 	- `Game` class:

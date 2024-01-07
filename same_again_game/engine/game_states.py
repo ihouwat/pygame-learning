@@ -10,7 +10,7 @@ from models.game_types import (
 	GameAction,
 	GameState,
 	MatchResult,
-	ProcessPointResult,
+	NextTurnStatus,
 	SoundType,
 )
 
@@ -75,10 +75,10 @@ class EndTurnState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		result: ProcessPointResult = self.game_instance.end_turn()
-		if result == ProcessPointResult.LEVEL_COMPLETED:
+		result: NextTurnStatus = self.game_instance.end_turn()
+		if result == NextTurnStatus.LEVEL_COMPLETED:
 			return GameState.LEVEL_COMPLETED
-		elif result == ProcessPointResult.GAME_COMPLETED:
+		elif result == NextTurnStatus.GAME_COMPLETED:
 			return GameState.GAME_COMPLETED
 		else:
 			return GameState.TRANSITION_TO_NEXT_TURN

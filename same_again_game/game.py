@@ -40,7 +40,7 @@ from models.game_types import (
   GameState,
   Language,
   MatchResult,
-  ProcessPointResult,
+  NextTurnStatus,
   Soundtracks,
   SoundType,
   TextElementType,
@@ -184,16 +184,16 @@ class Game:
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
     self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][0]), volume=1.0)
 
-  def end_turn(self) -> ProcessPointResult:
+  def end_turn(self) -> NextTurnStatus:
     if self.completed_all_levels():
       self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][1]), volume=1.0)
       self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.VICTORY][0]), iterations=1, volume=0.75)
-      return ProcessPointResult.GAME_COMPLETED
+      return NextTurnStatus.GAME_COMPLETED
     elif self.current_level.is_completed():
       self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][1]), volume=1.0)
-      return ProcessPointResult.LEVEL_COMPLETED
+      return NextTurnStatus.LEVEL_COMPLETED
     else:
-      return ProcessPointResult.TURN_COMPLETED
+      return NextTurnStatus.TURN_COMPLETED
   
   def process_wrong_answer(self) -> None:
     self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][2]), volume=1.0)

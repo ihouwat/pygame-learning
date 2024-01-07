@@ -68,7 +68,7 @@ class GameState(Enum):
   START_NEW_TURN = 8
   END_TURN = 9
 
-class ProcessPointResult(Enum):
+class NextTurnStatus(Enum):
   """ Represents the result of processing a point gain."""
   LEVEL_COMPLETED = 1
   TURN_COMPLETED = 2
