@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.game_types import Color, RealWorldObjectCategory
+from models.game_types import Color, RealWorldObjectCategory, Shape
 from models.image_source import ImageSource
 
 
@@ -12,7 +12,7 @@ class ItemConfig():
   sound: str
   word: str
   color: Color
-  type: RealWorldObjectCategory | str
+  type: RealWorldObjectCategory | Shape
 
   def __hash__(self) -> int:
     return hash((self.text_identifier, self.image, self.sound, self.word, self.color, self.type))

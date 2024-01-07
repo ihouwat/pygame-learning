@@ -62,7 +62,7 @@ class ItemSprite(pygame.sprite.Sprite):
     old_center = self.rect.center
 
     try:
-      if self.metadata and self.metadata.type == 'Shape':
+      if self.metadata and self.metadata.type == Shape:
         new_width, new_height = self.scale_shape(scaling_factor)
       else:
         new_width, new_height = self.scale_image(scaling_factor)
