@@ -10,18 +10,20 @@ class Color(Enum):
   WHITE = 'White'
   ORANGE = 'Orange'
   PURPLE = 'Purple'
-  BROWN = 'Brown',
-  PINK = 'Pink',
-  GREY = 'Grey',
+  BROWN = 'Brown'
+  PINK = 'Pink'
+  GREY = 'Grey'
   BLACK = 'Black'
 
 class ItemCategory(Enum):
   """ Represents the category of item to be created.
     Real-world objects: images that represent real-world objects, such as fruits, vegetables, vehicles, household items, etc.
     Shapes: a shape drawn with the Pygame API.
+    Colored shapes: a shape drawn with the Pygame API, with a focus on the color of the shape.
   """
   REAL_WORLD_OBJECTS = 'Real-world objects'
   SHAPES = 'Shapes'
+  COLORED_SHAPES = 'Colored shapes'
 
 class RealWorldObjectCategory(Enum):
   """ Represents the type of item to be created."""

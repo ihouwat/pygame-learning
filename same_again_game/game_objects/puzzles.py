@@ -89,7 +89,7 @@ class ColorPuzzle(Puzzle):
 	
 	@property
 	def puzzle_options(self) -> list[ItemConfig]:
-		return [x for x in Puzzle.item_catalog()[ItemCategory.SHAPES] if x.text_identifier == self.random_shape.value]
+		return [x for x in Puzzle.item_catalog()[ItemCategory.COLORED_SHAPES] if x.text_identifier == self.random_shape.value]
 
 class ShapePuzzle(Puzzle):
 	""" Puzzle implementation for matching shapes.

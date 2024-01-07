@@ -9,7 +9,7 @@ from models.game_types import (
 from models.image_source import PathSource, SurfaceSource
 from models.item_config import ItemConfig
 
-""" Game items will be used to create sprites for the puzzles that will be used in the game. 
+""" Game items will be used to create sprites for the puzzles that will be used in the game.
   There are two types of game items:
     1. Items: A sprite that represents an object from an image.
     2. Shapes: A sprite that represents a shape drawn with the Pygame API.
@@ -74,13 +74,13 @@ items_config: list[ItemConfig] = [
     {"text_identifier": "grapes", "image": PathSource("grapes.png"), "sound": "grapes.mp3", "word": "Grapes", "color": Color.PURPLE, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "peach", "image": PathSource("peach.png"), "sound": "peach.mp3", "word": "Peach", "color": Color.ORANGE, "type": RealWorldObjectCategory.FRUIT},
     {"text_identifier": "cherry", "image": PathSource("cherry.png"), "sound": "cherry.mp3", "word": "Cherry", "color": Color.RED, "type": RealWorldObjectCategory.FRUIT},
-    
+
     # Vegetables
     {"text_identifier": "eggplant", "image": PathSource("eggplant.png"), "sound": "eggplant.mp3", "word": "Eggplant", "color": Color.PURPLE, "type": RealWorldObjectCategory.VEGETABLE},
     {"text_identifier": "tomato", "image": PathSource("tomato.png"), "sound": "tomato.mp3", "word": "Tomato", "color": Color.RED, "type": RealWorldObjectCategory.VEGETABLE},
     {"text_identifier": "sweet potato", "image": PathSource("sweet_potato.png"), "sound": "sweet_potato.mp3", "word": "Sweet potato", "color": Color.ORANGE, "type": RealWorldObjectCategory.VEGETABLE},
     {"text_identifier": "mushroom", "image": PathSource("mushroom.png"), "sound": "mushroom.mp3", "word": "Mushroom", "color": Color.WHITE, "type": RealWorldObjectCategory.VEGETABLE},
-    
+
     # Animals
     {"text_identifier": "cat", "image": PathSource("cat.png"), "sound": "cat.mp3", "word": "Cat", "color": Color.ORANGE, "type": RealWorldObjectCategory.ANIMAL},
     {"text_identifier": "chicken", "image": PathSource("chicken.png"), "sound": "chicken.mp3", "word": "Chicken", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
@@ -97,7 +97,7 @@ items_config: list[ItemConfig] = [
     {"text_identifier": "cow", "image": PathSource("cow.png"), "sound": "cow.mp3", "word": "Cow", "color": Color.WHITE, "type": RealWorldObjectCategory.ANIMAL},
     {"text_identifier": "chick", "image": PathSource("chick.png"), "sound": "chick.mp3", "word": "Chick", "color": Color.YELLOW, "type": RealWorldObjectCategory.ANIMAL},
     {"text_identifier": "tiger", "image": PathSource("tiger.png"), "sound": "tiger.mp3", "word": "Tiger", "color": Color.ORANGE, "type": RealWorldObjectCategory.ANIMAL},
-    
+
     # Vehicles
     {"text_identifier": "ambulance", "image": PathSource("ambulance.png"), "sound": "ambulance.mp3", "word": "Ambulance", "color": Color.WHITE, "type": RealWorldObjectCategory.VEHICLE},
     {"text_identifier": "bicycle", "image": PathSource("bicycle.png"), "sound": "bicycle.mp3", "word": "Bicycle", "color": Color.RED, "type": RealWorldObjectCategory.VEHICLE},
@@ -120,7 +120,20 @@ shapes_config: list[ItemConfig] = [
         sound=str(shape.value) + '.mp3',
         word=str(shape.value),
         color=color_name,
-        type="Shape"
+        type=shape
+    )
+  for shape in Shape
+  for color_name, color_value in colors.items()
+]
+
+colored_shapes_config: list[ItemConfig] = [
+  ItemConfig(
+        text_identifier=str(shape.value),
+        image=SurfaceSource(create_shape(shape, color_value)),
+        sound=color_name.value.lower() + '.mp3',
+        word=color_name.value + ' ' + str(shape.value),
+        color=color_name,
+        type=shape
     )
   for shape in Shape
   for color_name, color_value in colors.items()
@@ -128,5 +141,6 @@ shapes_config: list[ItemConfig] = [
 
 game_items_catalog: dict[ItemCategory, list[ItemConfig]] = {
   ItemCategory.REAL_WORLD_OBJECTS: items_config,
-  ItemCategory.SHAPES: shapes_config
+  ItemCategory.SHAPES: shapes_config,
+  ItemCategory.COLORED_SHAPES: colored_shapes_config,
 }
