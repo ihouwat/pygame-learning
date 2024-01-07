@@ -70,8 +70,7 @@
 - DONE add a game completed screen
 - DONE download more pngs
 	- DONE add vehicles category
-
-- Sounds
+- DONE Sounds
 	- DONE add music
 		- DONE add intro music
 		- DONE add background music
@@ -82,17 +81,16 @@
 			- DONE load a 'clap' sound effect between levels
 			- DONE load and play the sound in the target language and a sound effect: loading dynamically allows us to switch languages mid-game without resetting the sprites
 		- DONE on failure, play some 'try again' sound
-
-	- ONGOING record and add languages to the game
+	- DONE record and add languages to the game
 		- DONE English
-		- Arabic
+		- DONE Arabic
 		- DONE Portuguese
 		- DONE need to add a language dict to toggle languages
 		- DONE refactor audioplayer to load spoken words and cache
-		- configure volume settings so we can hear voice over the music
+		- DONE configure volume settings so we can hear voice over the music
 		- DONE create a shapes config where the sound is the color of the shape, and apply it to the appropriate puzzle.
 
-- tidying up:
+- ONGOING tidying up:
 	- DONE name change from ProcessPointResult to something appropriate
 	- DONE Bug fixes
 		- DONE Last level plays only one puzzle (`level_up()` method is called too early)
