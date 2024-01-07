@@ -182,9 +182,7 @@ class Game:
     """ Increments points and controls leveling up. """
     self.current_level.increment_score(points=1)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    
-    self.audio_player.load_spoken_work(language='english', path=self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav').play()
-    self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][0], volume=1.0) # mark sound as not playing
+    self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][0], volume=1.0)
 
   def end_turn(self) -> ProcessPointResult:
     if self.completed_all_levels():
@@ -280,14 +278,18 @@ class Game:
       return True
 
   def start_new_turn(self) -> bool:
-    """ Generates sprites and spans them in to create a new puzzle
-    
+    """ Generates sprites and in order to start a new turn.
+        As a side effect, once the sprites are generated, we will play the spoken word.
+
       Returns:
         bool: True if the sprites were successfully spawned, False otherwise.
     """
     if len(self.items) == 0:
       self.prepare_sprites_for_new_turn()
-    return self.spawn_sprites(self.items, self.item_to_match)
+    are_sprites_spawned: bool = self.spawn_sprites(self.items, self.item_to_match)
+    if are_sprites_spawned:
+      self.audio_player.load_spoken_work(language='english', path=self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav').play()
+    return are_sprites_spawned
   
   def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:
     """ Scales sprites in to create a spawn effect.
