@@ -29,7 +29,7 @@ from engine.game_states import (
 )
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
-from funcs import get_music_track_path
+from funcs import get_music_track_path, get_sound_effect_path, get_spoken_word_path
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
 from game_objects.text_element import TextElement
@@ -182,21 +182,21 @@ class Game:
     """ Increments points and controls leveling up. """
     self.current_level.increment_score(points=1)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
-    self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][0], volume=1.0)
+    self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][0]), volume=1.0)
 
   def end_turn(self) -> ProcessPointResult:
     if self.completed_all_levels():
-      self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][1], volume=1.0)
+      self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][1]), volume=1.0)
       self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.VICTORY][0]), iterations=1, volume=0.75)
       return ProcessPointResult.GAME_COMPLETED
     elif self.current_level.is_completed():
-      self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][1], volume=1.0)
+      self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][1]), volume=1.0)
       return ProcessPointResult.LEVEL_COMPLETED
     else:
       return ProcessPointResult.TURN_COMPLETED
   
   def process_wrong_answer(self) -> None:
-    self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][2], volume=1.0)
+    self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][2]), volume=1.0)
 
   def level_up(self) -> None:
     """ Levels up the game."""
@@ -288,7 +288,9 @@ class Game:
       self.prepare_sprites_for_new_turn()
     are_sprites_spawned: bool = self.spawn_sprites(self.items, self.item_to_match)
     if are_sprites_spawned:
-      self.audio_player.load_spoken_work(language=language_paths[self.selected_language.name], path=self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav').play()
+      language: str = language_paths[self.selected_language.name]
+      word: str =self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav'
+      self.audio_player.playsound(path=get_spoken_word_path(language=language, word=word), volume=1.0)
     return are_sprites_spawned
   
   def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:

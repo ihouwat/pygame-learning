@@ -4,7 +4,13 @@ import pathlib
 import sys
 
 import pygame
-from config.settings import MUSIC_PATH, SHAPE_HEIGHT, SHAPE_WIDTH
+from config.settings import (
+  MUSIC_PATH,
+  SHAPE_HEIGHT,
+  SHAPE_WIDTH,
+  SOUND_EFFECTS_PATH,
+  SPOKEN_WORD_PATH,
+)
 from models.game_types import Shape
 
 
@@ -57,9 +63,32 @@ def get_music_track_path(track_name: str) -> str:
     track_name (str): The name of the track.
     
   Returns:
-    str: The absolute file path for the track.
+    str: The absolute file path for the track, including the file extension.
   """
   return get_file(*MUSIC_PATH, track_name)
+
+def get_sound_effect_path(sound_effect_name: str) -> str:
+  """ Get the absolute file path for a sound effect.
+  
+  Args:
+    sound_effect_name (str): The name of the sound effect, including the file extension.
+    
+  Returns:
+    str: The absolute file path for the sound effect.
+  """
+  return get_file(*SOUND_EFFECTS_PATH, sound_effect_name)
+
+def get_spoken_word_path(language: str, word: str) -> str:
+  """ Get the absolute file path for a spoken word.
+  
+  Args:
+    language (str): The language of the spoken word
+    word (str): The word, including the file extension.
+    
+  Returns:
+    str: The absolute file path for the spoken word.
+  """
+  return get_file(*SPOKEN_WORD_PATH, language, word)
 
 def create_shape(shape: Shape, color: tuple[int, int, int], width: float = SHAPE_WIDTH, height: float = SHAPE_HEIGHT) -> pygame.Surface:
   """ Creates a surface with a shape drawn on it.

@@ -1,5 +1,4 @@
 import pygame
-from config.settings import SOUND_EFFECTS_PATH, SPOKEN_WORD_PATH
 from funcs import load_pygame_sound
 from models.sound_effect import SoundEffect
 from pygame import mixer
@@ -30,7 +29,7 @@ class AudioPlayer:
 		if cached_sound:
 			sound = cached_sound.sound
 		else:
-			sound = self.load_sound_effect(path)
+			sound = load_pygame_sound(path)
 			new_sound_effect = SoundEffect(sound=sound, path=path)
 			self.sound_effects.append(new_sound_effect)
 
@@ -38,9 +37,3 @@ class AudioPlayer:
 
 	def get_cached_sound(self, path: str) -> SoundEffect | None:
 		return next((s for s in self.sound_effects if s.path == path), None) # next() returns the next item in an iterator
-	
-	def load_sound_effect(self, path) -> pygame.mixer.Sound:
-		return load_pygame_sound(*SOUND_EFFECTS_PATH, path)
-
-	def load_spoken_work(self, language: str, path: str)  -> pygame.mixer.Sound:
-		return load_pygame_sound(*SPOKEN_WORD_PATH, language, path)
