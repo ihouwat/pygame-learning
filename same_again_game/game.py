@@ -29,7 +29,7 @@ from engine.game_states import (
 )
 from engine.renderer import Renderer
 from engine.sprite_handler import SpriteHandler
-from funcs import get_music_track
+from funcs import get_music_track_path
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
 from game_objects.text_element import TextElement
@@ -119,7 +119,7 @@ class Game:
     self.soundtrack: Soundtracks = soundtrack
     
     # start music
-    self.audio_player.playsoundtrack(get_music_track(self.soundtrack[SoundType.INTRO][0]), iterations=2, volume=0.5)
+    self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.INTRO][0]), iterations=2, volume=0.5)
     
   def run(self, events: list[pygame.event.Event]) -> None:
     """ Primary method that runs the game.
@@ -187,7 +187,7 @@ class Game:
   def end_turn(self) -> ProcessPointResult:
     if self.completed_all_levels():
       self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][1], volume=1.0)
-      self.audio_player.playsoundtrack(get_music_track(self.soundtrack[SoundType.VICTORY][0]), iterations=1, volume=0.75)
+      self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.VICTORY][0]), iterations=1, volume=0.75)
       return ProcessPointResult.GAME_COMPLETED
     elif self.current_level.is_completed():
       self.audio_player.playsound(path=self.soundtrack[SoundType.EFFECTS][1], volume=1.0)

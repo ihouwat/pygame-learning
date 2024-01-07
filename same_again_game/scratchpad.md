@@ -81,10 +81,14 @@
 		- on success
 			- DONE load a 'ding' sound effect
 			- DONE load a 'clap' sound effect between levels
-			- load and play the sound in the target language and a sound effect: loading dynamically allows us to switch languages mid-game without resetting the sprites
+			- DONE load and play the sound in the target language and a sound effect: loading dynamically allows us to switch languages mid-game without resetting the sprites
 		- DONE on failure, play some 'try again' sound
 	- ONGOING record and add languages to the game
-		- need to add a language dict to toggle languages
+		- DONE English
+		- Arabic
+		- Portuguese
+		- DONE need to add a language dict to toggle languages
+		- refactor audioplayer to load spoken words and cache
 
 - tidying up:
 	- DONE Bug fixes

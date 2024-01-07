@@ -50,7 +50,7 @@ def load_pygame_sound(*path_args) -> pygame.mixer.Sound:
   file_path = get_file(*path_args)
   return pygame.mixer.Sound(file_path)
 
-def get_music_track(track_name: str) -> str:
+def get_music_track_path(track_name: str) -> str:
   """ Get the absolute file path for a music track.
   
   Args:
