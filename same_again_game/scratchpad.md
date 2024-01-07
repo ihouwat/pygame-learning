@@ -86,7 +86,7 @@
 	- ONGOING record and add languages to the game
 		- DONE English
 		- Arabic
-		- Portuguese
+		- DONE Portuguese
 		- DONE need to add a language dict to toggle languages
 		- DONE refactor audioplayer to load spoken words and cache
 		- configure volume settings so we can hear voice over the music
