@@ -90,7 +90,7 @@
 		- DONE need to add a language dict to toggle languages
 		- DONE refactor audioplayer to load spoken words and cache
 		- configure volume settings so we can hear voice over the music
-		- create a shapes config where the sound is the color of the shape, and apply it to the appropriate puzzle. Need to figure out an elegant way of doing it.
+		- DONE create a shapes config where the sound is the color of the shape, and apply it to the appropriate puzzle.
 
 - tidying up:
 	- DONE name change from ProcessPointResult to something appropriate
