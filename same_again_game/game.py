@@ -157,6 +157,73 @@ class Game:
       
       self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
 
+  def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite) -> bool:
+    """ Scales sprites down, kills sprites, and updates UI.
+    
+    Args:
+      items (Group): The group of sprites.
+      item_to_match (ItemSprite): The item to match.
+    """
+    all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
+    if any(sprite.scale > 0 for sprite in all_sprites):
+      for sprite in [item_to_match] + items.sprites():
+        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-8, sprite=sprite))
+      self.animation_engine.execute()
+      return False
+    else: 
+      self.kill_sprites()
+      pygame.time.delay(ANIMATION_DELAY)
+      return True
+
+  def kill_sprites(self) -> None:
+    """ Remove all sprites."""
+    if(self.item_to_match):
+      SpriteHandler.kill_sprite(self.item_to_match)
+    if(self.items):
+      SpriteHandler.kill_sprite_group(self.items)
+
+  def start_new_turn(self) -> bool:
+    """ Generates sprites and in order to start a new turn.
+        As a side effect, once the sprites are generated, we will play the spoken word.
+
+      Returns:
+        bool: True if the sprites were successfully spawned, False otherwise.
+    """
+    if len(self.items) == 0:
+      self.prepare_sprites_for_new_turn()
+    are_sprites_spawned: bool = self.spawn_sprites(self.items, self.item_to_match)
+    if are_sprites_spawned:
+      language: str = language_paths[self.selected_language.name]
+      word: str =self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav'
+      self.audio_player.playsound(path=get_spoken_word_path(language=language, word=word), volume=1.0)
+    return are_sprites_spawned
+  
+  def prepare_sprites_for_new_turn(self) -> None:
+    """ Generates sprites for a new puzzle and scales them down."""
+    self.item_to_match, self.items = self.current_level.puzzle.generate()
+    for sprite in [self.item_to_match] + self.items.sprites():
+      self.animation_engine.add_animation(ScaleSprite(scaling_factor=-100, sprite=sprite))
+    self.animation_engine.execute()
+
+  def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:
+    """ Scales sprites in to create a spawn effect.
+    
+    Args:
+      items (Group): The group of sprites.
+      item_to_match (ItemSprite): The item to match.
+      
+    Returns:
+      bool: True if the sprites were successfully scaled in, False otherwise.
+    """
+    all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
+    if any(sprite.scale < 100 for sprite in all_sprites):
+      for sprite in all_sprites:
+        self.animation_engine.add_animation(ScaleSprite(scaling_factor=10, sprite=sprite))
+      self.animation_engine.execute()
+      return False
+    else:
+      return True
+
   def detect_match(self, items: Group, item_to_match: ItemSprite, coordinates) -> MatchResult:
     """ Detects if the user has selected the correct item.
     Args:
@@ -183,6 +250,9 @@ class Game:
     self.current_level.increment_score(points=1)
     self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
     self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][0]), volume=1.0)
+  
+  def process_wrong_answer(self) -> None:
+    self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][2]), volume=1.0)
 
   def end_turn(self) -> NextTurnStatus:
     if self.completed_all_levels():
@@ -194,9 +264,6 @@ class Game:
       return NextTurnStatus.LEVEL_COMPLETED
     else:
       return NextTurnStatus.TURN_COMPLETED
-  
-  def process_wrong_answer(self) -> None:
-    self.audio_player.playsound(path=get_sound_effect_path(self.soundtrack[SoundType.EFFECTS][2]), volume=1.0)
 
   def level_up(self) -> None:
     """ Levels up the game."""
@@ -251,73 +318,6 @@ class Game:
     else:
       self.text_elements[TextElementType.GAME_COMPLETED].reset_to_start_position()
       return True
-
-  def prepare_sprites_for_new_turn(self) -> None:
-    """ Generates sprites for a new puzzle and scales them down."""
-    self.item_to_match, self.items = self.current_level.puzzle.generate()
-    for sprite in [self.item_to_match] + self.items.sprites():
-      self.animation_engine.add_animation(ScaleSprite(scaling_factor=-100, sprite=sprite))
-    self.animation_engine.execute()
-
-  def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite) -> bool:
-    """ Scales sprites down, kills sprites, and updates UI.
-    
-    Args:
-      items (Group): The group of sprites.
-      item_to_match (ItemSprite): The item to match.
-    """
-    all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    if any(sprite.scale > 0 for sprite in all_sprites):
-      for sprite in [item_to_match] + items.sprites():
-        self.animation_engine.add_animation(ScaleSprite(scaling_factor=-8, sprite=sprite))
-      self.animation_engine.execute()
-      return False
-    else: 
-      self.kill_sprites()
-      pygame.time.delay(ANIMATION_DELAY)
-      return True
-
-  def start_new_turn(self) -> bool:
-    """ Generates sprites and in order to start a new turn.
-        As a side effect, once the sprites are generated, we will play the spoken word.
-
-      Returns:
-        bool: True if the sprites were successfully spawned, False otherwise.
-    """
-    if len(self.items) == 0:
-      self.prepare_sprites_for_new_turn()
-    are_sprites_spawned: bool = self.spawn_sprites(self.items, self.item_to_match)
-    if are_sprites_spawned:
-      language: str = language_paths[self.selected_language.name]
-      word: str =self.item_to_match.metadata.sound if self.item_to_match.metadata else 'default.wav'
-      self.audio_player.playsound(path=get_spoken_word_path(language=language, word=word), volume=1.0)
-    return are_sprites_spawned
-  
-  def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:
-    """ Scales sprites in to create a spawn effect.
-    
-    Args:
-      items (Group): The group of sprites.
-      item_to_match (ItemSprite): The item to match.
-      
-    Returns:
-      bool: True if the sprites were successfully scaled in, False otherwise.
-    """
-    all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    if any(sprite.scale < 100 for sprite in all_sprites):
-      for sprite in all_sprites:
-        self.animation_engine.add_animation(ScaleSprite(scaling_factor=10, sprite=sprite))
-      self.animation_engine.execute()
-      return False
-    else:
-      return True
-
-  def kill_sprites(self) -> None:
-    """ Remove all sprites."""
-    if(self.item_to_match):
-      SpriteHandler.kill_sprite(self.item_to_match)
-    if(self.items):
-      SpriteHandler.kill_sprite_group(self.items)
 
   def end_game(self) -> None:
     logger.info('You have completed all levels!')
