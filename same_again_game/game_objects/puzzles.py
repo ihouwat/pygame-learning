@@ -48,26 +48,6 @@ class GrayscaleItemPuzzle(Puzzle):
 	@property
 	def puzzle_options(self) -> list[ItemConfig]:
 		return Puzzle.item_catalog()[ItemCategory.REAL_WORLD_OBJECTS]
-	
-class SpokenWordPuzzle(Puzzle):
-	""" Puzzle implementation for matching spoken words."""
-	
-	@property
-	def description(self) -> str:
-		return 'Match a spoken word to a list of colored shapes'
-	
-	@property
-	def option(self) -> SpriteOption:
-		return SpriteOption.SPOKENWORD
-	
-	@property
-	def max_number_of_items(self) -> int:
-		return 4
-	
-	@property
-	def puzzle_options(self) -> list[ItemConfig]:
-		return Puzzle.item_catalog()[ItemCategory.REAL_WORLD_OBJECTS]
-
 class ColoredShapesPuzzle(Puzzle):
 	""" Puzzle implementation for matching basic shapes with different colors."""
 
