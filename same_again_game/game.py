@@ -15,7 +15,7 @@ from config.settings import (
   language_paths,
 )
 from engine.animation_engine import AnimationEngine
-from engine.animations import ScaleSprite, TextTransition
+from engine.animations import TextTransition
 from engine.animator import Animator
 from engine.event_listener import EventListener
 from engine.game_states import (
@@ -166,7 +166,7 @@ class Game:
     self.audio_player.playsoundtrack(get_music_track_path(random.choice(self.soundtrack[SoundType.GAME_MUSIC])), iterations=5, volume=0.2)
 
   def transition_to_next_turn(self, items: Group, item_to_match: ItemSprite) -> bool:
-    """ Scales sprites down, kills sprites, and updates UI.
+    """ Transitions sprites out, kills sprites, and updates UI.
     
     Args:
       items (Group): The group of sprites.
@@ -179,7 +179,6 @@ class Game:
     animation_completed = self.animator.transition_out_sprites(all_sprites=all_sprites, scale_factor=-8)
     if animation_completed:
       self.kill_sprites()
-      pygame.time.delay(ANIMATION_DELAY)
       return True
     else:
       return False
@@ -211,11 +210,10 @@ class Game:
     return are_sprites_spawned
   
   def prepare_sprites_for_new_turn(self) -> None:
-    """ Generates sprites for a new puzzle and scales them down."""
+    """ Generates sprites for a new puzzle and makes the sprites disappear to prepare for a transition in effect."""
     self.item_to_match, self.items = self.current_level.puzzle.generate()
-    for sprite in [self.item_to_match] + self.items.sprites():
-      self.animation_engine.add_animation(ScaleSprite(scaling_factor=-100, sprite=sprite))
-    self.animation_engine.execute()
+    all_sprites: list[ItemSprite] = [self.item_to_match] + self.items.sprites()
+    self.animator.transition_out_sprites(all_sprites=all_sprites, scale_factor=-100)
 
   def spawn_sprites(self, items: Group, item_to_match: ItemSprite) -> bool:
     """ Scales sprites in to create a spawn effect.
@@ -228,10 +226,8 @@ class Game:
       bool: True if the sprites were successfully scaled in, False otherwise.
     """
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    if any(sprite.scale < 100 for sprite in all_sprites):
-      for sprite in all_sprites:
-        self.animation_engine.add_animation(ScaleSprite(scaling_factor=10, sprite=sprite))
-      self.animation_engine.execute()
+    animation_complete = self.animator.transition_in_sprites(all_sprites=all_sprites, scale_factor=10)
+    if animation_complete:
       return False
     else:
       return True
