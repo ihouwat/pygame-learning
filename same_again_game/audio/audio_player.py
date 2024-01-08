@@ -1,6 +1,6 @@
 import pygame
+from audio.sound_effect import SoundEffect
 from funcs import load_pygame_sound
-from models.sound_effect import SoundEffect
 from pygame import mixer
 
 
