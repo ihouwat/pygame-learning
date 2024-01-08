@@ -92,17 +92,20 @@
 
 - ONGOING tidying up:
 	- DONE name change from ProcessPointResult to something appropriate
+
 	- ONGOING Bug fixes
 		- DONE Last level plays only one puzzle (`level_up()` method is called too early)
 		- images transition in and then scale down abruptly at the beginning of each turn (the screen not wide enough??)
+
 	- DONE `Game` class:
 		- DONE has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
 		- DONE a bunch of animations in there, should i split them out?
 		- DONE there is a mention of a 'default.wav' file in the code. that is a temp placeholder when loading a spoken word. need better handling of that.
 		- DONE Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
-	- `Renderer` class:
+	- DONE `Renderer` class:
 		- NOT NEEDED - checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 		- DONE the game completed animation is a nested conditional. Let's clean that up.
+
 	- Tidying:
 		- move constants, enums, and classes closer to where they are used. For example, there is a SoundTrack type that can be moved to the audio folder. There is a SoundEffect class that can be moved to the audio folder. Etc etc etc
 		- Instantiate GameState classes once, and instead of them having instance variables, just pass in the game instance and GameContext each time you invoke the execute() function

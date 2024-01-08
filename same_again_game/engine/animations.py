@@ -41,23 +41,11 @@ class ScaleSprite(Animation):
 
 		Args:
 			scaling_factor (float): The amount to scale the sprite by.
-			items (Group): The group of sprites to scale.
-			item_to_match (ItemSprite): The item to match.
-			draw_transitions (bool): Whether or not to draw the transitions. Defaults to False.
+			sprite (ItemSprite): The item to match.
 		"""
 
-		def execute_animation():
-			self.animate_sprite_scale(scaling_factor=scaling_factor, sprite=sprite)
-
-		if scaling_factor < 0:
-			if sprite.scale >= 0:
-				execute_animation()
-		else:
-			if sprite.scale <= 100:
-				execute_animation()
-	
-	def animate_sprite_scale(self, scaling_factor: float, sprite: ItemSprite) -> None:
-		sprite.scale_by(scaling_factor=scaling_factor)
+		if (scaling_factor < 0 and sprite.scale >= 0) or (scaling_factor > 0 and sprite.scale <= 100):
+			sprite.scale_by(scaling_factor=scaling_factor)
 
 class TextTransition(Animation):
 	""" TextTransition is responsible for animating the text transition between levels."""
