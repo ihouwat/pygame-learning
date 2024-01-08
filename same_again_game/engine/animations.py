@@ -19,9 +19,9 @@ class Animation(Protocol):
 
 class ScaleSprite(Animation):
 	""" ScaleSprite is responsible for scaling sprites up or down."""
-	def __init__(self, scaling_factor: float, sprite: ItemSprite):
-		self.scaling_factor = scaling_factor
+	def __init__(self, sprite: ItemSprite, scaling_factor: float):
 		self.sprite = sprite
+		self.scaling_factor = scaling_factor
 		self._is_finished = False
 	
 	def update(self) -> None:
@@ -43,7 +43,6 @@ class ScaleSprite(Animation):
 			scaling_factor (float): The amount to scale the sprite by.
 			sprite (ItemSprite): The item to match.
 		"""
-
 		if (scaling_factor < 0 and sprite.scale >= 0) or (scaling_factor > 0 and sprite.scale <= 100):
 			sprite.scale_by(scaling_factor=scaling_factor)
 

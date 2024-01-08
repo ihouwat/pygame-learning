@@ -89,32 +89,30 @@
 		- DONE refactor audioplayer to load spoken words and cache
 		- DONE configure volume settings so we can hear voice over the music
 		- DONE create a shapes config where the sound is the color of the shape, and apply it to the appropriate puzzle.
-
-- ONGOING tidying up:
+- DONE tidying up:
 	- DONE name change from ProcessPointResult to something appropriate
-
-	- ONGOING Bug fixes
+	- DONE Bug fixes
 		- DONE Last level plays only one puzzle (`level_up()` method is called too early)
-		- images transition in and then scale down abruptly at the beginning of each turn (the screen not wide enough??)
-
+		- DONE images transition in and then scale down abruptly at the beginning of each turn (the screen not wide enough??)
 	- DONE `Game` class:
 		- DONE has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
 		- DONE a bunch of animations in there, should i split them out?
 		- DONE there is a mention of a 'default.wav' file in the code. that is a temp placeholder when loading a spoken word. need better handling of that.
 		- DONE Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
 	- DONE `Renderer` class:
-		- NOT NEEDED - checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
+		- DONE (NOT NEEDED) - checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
 		- DONE the game completed animation is a nested conditional. Let's clean that up.
-
 	- DONE Tidying:
 		- DONE move constants, enums, and classes closer to where they are used. For example, there is a SoundTrack type that can be moved to the audio folder. There is a SoundEffect class that can be moved to the audio folder. Etc etc etc
 		- DONE Instantiate GameState classes once, and instead of them having instance variables, just pass in the game instance and GameContext each time you invoke the execute() function
+
 
 - consider 'fancy' animations for transitions
 	- DONE transition delays at the end of the scale up/scale down animations
 	- **cascade animate the sprites** (ie each sprite in a group starts getting animated but delayed by a few frames): **The problem is that we have to manage the sprite animations for every frame**. So, in addition to having `Animation` classes, which execute the animations per sprite per frame, we need a `Transition` class or function that tracks a group sprites over the animation lifecycle. To implement the cascade delay
 		- a quick way is to track the sprite scales, set some scale threshold after which the next sprite can be animated, and use that calculation to determine which sprites should be animated at each frame.
 		- A better way is to store the starting frame at which the animations begin and then delay the animation start for each sprite by a few frames. We'd need some way to `start()` and detect when the group animation `is_completed()`. This second approach is a bit more complicated as we need to store an initial frame and track frame numbers over multiple game loops.
+
 - update readme with what i did and my learnings (PyGame, basic game design, practicing Python OOP, working with Copilot, you have to think at the level of each frame, which gets tricky the moment the animations or game states get slightly complicated (ex: staggered animations, transitions between turns/levels))
 
 ## Learnings

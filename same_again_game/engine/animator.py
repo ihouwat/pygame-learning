@@ -34,7 +34,7 @@ class Animator:
 		return True
 
 	def transition_in_sprites(self, all_sprites: list[ItemSprite], scale_factor: float) -> bool:
-		""" Scales all sprites in the list to 1.0, and returns True if all sprites are scaled to 1.0.
+		""" Scales all sprites in the list to 100.0, and returns True if all sprites are scaled to 100.0.
 	
 		Parameters:
 		all_sprites (list[ItemSprite]): The list of sprites to scale.
@@ -50,21 +50,27 @@ class Animator:
 			raise ValueError("scale_factor must be positive.")
 
 		if any(sprite.scale < 100 for sprite in all_sprites):
-			self.scale_sprites(all_sprites, scale_factor)
+			self.scale_sprites(sprites=all_sprites, scale_factor=scale_factor, max_scale=100)
 			return False
 
 		pygame.time.delay(ANIMATION_DELAY)
 		return True
 
-	def scale_sprites(self, sprites: list[ItemSprite], scale_factor: float) -> None:
-		""" Scales all sprites in the list by the given scaling factor.
+	def scale_sprites(self, sprites: list[ItemSprite], scale_factor: float, max_scale: float = 100) -> None:
+		""" Scales all sprites in the list by the given scaling factor up to the given max scale.
 
 		Args:
 		sprites (list[ItemSprite]): The list of sprites to scale.
 		scale_factor (float): The factor to scale the sprites by.
+		max_scale (float): The maximum scale of the sprites, beyond which the sprites will not scale.
 		"""
 		for sprite in sprites:
-			self.animation_engine.add_animation(ScaleSprite(scaling_factor=scale_factor, sprite=sprite))
+			# prevent scaling past the max scale
+			new_scale_factor = scale_factor 
+			if scale_factor + sprite.scale > max_scale:
+				new_scale_factor = max_scale - sprite.scale
+
+			self.animation_engine.add_animation(ScaleSprite(scaling_factor=new_scale_factor, sprite=sprite))
 		self.animation_engine.execute()
 	
 	def animate_text_element_if_needed(self, text_element: TextElement, condition_to_animate: bool, x_increment: int, y_increment: int) -> bool:
