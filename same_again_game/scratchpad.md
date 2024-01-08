@@ -26,9 +26,6 @@
 	- DONE many types of colored items (ex: fruits, vehicles, animals, etc.)
 	- DONE grayscale items
 	- DONE one type of colored items (ex: only fruits)
-
-- PARTIALLY DONE voice only target item (need to still record sounds)
-
 - DONE tidying up stage: move classes into separate files
 	- DONE Created config, engine, game_objects files
 	- DONE Need to find a home from game_manager
