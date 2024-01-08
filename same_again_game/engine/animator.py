@@ -95,4 +95,11 @@ class Animator:
 		self.animation_engine.add_animation(TextTransition(text_element=text_element, x_increment=x_increment, y_increment=y_increment)).execute()
 
 	def hover_effect(self, items: pygame.sprite.Group, min_scale: int, max_scale: int) -> None:
-		self.animation_engine.add_animation(SpriteHoverEffect(items=items, min_scale=100, max_scale=125)).execute()
+		""" Adds a hover effect to the given items.
+
+		Args:
+		items (pygame.sprite.Group): The items to add the hover effect to.
+		min_scale (int): The minimum scale of the hover effect, beyond which the hover effect will not scale.
+		max_scale (int): The maximum scale of the hover effect, beyond which the hover effect will not scale.
+		"""
+		self.animation_engine.add_animation(SpriteHoverEffect(items=items, min_scale=min_scale, max_scale=max_scale)).execute()

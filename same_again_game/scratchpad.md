@@ -92,12 +92,13 @@
 
 - ONGOING tidying up:
 	- DONE name change from ProcessPointResult to something appropriate
-	- DONE Bug fixes
+	- ONGOING Bug fixes
 		- DONE Last level plays only one puzzle (`level_up()` method is called too early)
-	- `Game` class:
+		- images transition in and then scale down abruptly at the beginning of each turn (the screen not wide enough??)
+	- DONE `Game` class:
 		- DONE has two methods that animate text, one when we win a level, and one where we win the game. Combine them.
-		- ONGOING a bunch of animations in there, should i split them out?
-		- there is a mention of a 'default.wav' file in the code. that is a temp placeholder when loading a spoken word. need better handling of that.
+		- DONE a bunch of animations in there, should i split them out?
+		- DONE there is a mention of a 'default.wav' file in the code. that is a temp placeholder when loading a spoken word. need better handling of that.
 		- DONE Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
 	- `Renderer` class:
 		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
