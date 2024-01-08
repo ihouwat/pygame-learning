@@ -15,7 +15,7 @@ from game_objects.puzzles import (
     ShapePuzzle,
     SingleItemTypePuzzle,
 )
-from models.game_types import Language, Soundtracks, SoundType
+from models.game_types import Language, Soundtrack, SoundType
 from ui.game_menu import GameMenu
 from ui.status_bar import StatusBar
 from ui.ui_display import UIDisplay
@@ -33,7 +33,7 @@ puzzles: list[Puzzle] = [
 	GrayscaleItemPuzzle(),
 ]
 
-soundtrack: Soundtracks = {
+soundtrack: Soundtrack = {
 	SoundType.INTRO: ["alexander-nakarada-silly-intro(chosic.com).mp3"],
 	SoundType.GAME_MUSIC: [
 		"Monkeys-Spinning-Monkeys(chosic.com).mp3",

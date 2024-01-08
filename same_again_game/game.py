@@ -41,7 +41,7 @@ from models.game_types import (
   Language,
   MatchResult,
   NextTurnStatus,
-  Soundtracks,
+  Soundtrack,
   SoundType,
   TextElementType,
 )
@@ -72,7 +72,7 @@ class Game:
     items (Group): The group of items.
     text_elements (list[TextElement]): The list of text elements.
   """
-  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animator: Animator, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language, soundtrack: Soundtracks):
+  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animator: Animator, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language, soundtrack: Soundtrack):
     self.renderer: Renderer = renderer
     self.ui_display = ui_display
     self.animator = animator
@@ -116,7 +116,7 @@ class Game:
                     y=(SCREEN_HEIGHT // 2) - FONT_LARGE,
                     ),
     }
-    self.soundtrack: Soundtracks = soundtrack
+    self.soundtrack: Soundtrack = soundtrack
     
     # start music
     self.audio_player.playsoundtrack(get_music_track_path(self.soundtrack[SoundType.INTRO][0]), iterations=2, volume=0.25)
