@@ -1,5 +1,5 @@
 import pygame
-from models.game_types import Color, Language
+from models.game_types import Color, Language, ColorsDict
 
 # Predefined color values
 BLUE = (0, 0, 255)
@@ -12,7 +12,8 @@ ORANGE = (255, 165, 0)
 PURPLE = (128, 0, 128)
 PINK = (255, 192, 203)
 
-colors: dict[Color, tuple[int, int, int]] = {
+
+colors: ColorsDict = {
   Color.RED: RED,
   Color.GREEN: GREEN,
   Color.BLUE: BLUE, 

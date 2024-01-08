@@ -11,7 +11,7 @@ from config.settings import (
   SOUND_EFFECTS_PATH,
   SPOKEN_WORD_PATH,
 )
-from models.game_types import Shape
+from models.game_types import Shape, RGB
 
 
 def get_file(*path_args) -> str:
@@ -90,12 +90,12 @@ def get_spoken_word_path(language: str, word: str) -> str:
   """
   return get_file(*SPOKEN_WORD_PATH, language, word)
 
-def create_shape(shape: Shape, color: tuple[int, int, int], width: float = SHAPE_WIDTH, height: float = SHAPE_HEIGHT) -> pygame.Surface:
+def create_shape(shape: Shape, color: RGB, width: float = SHAPE_WIDTH, height: float = SHAPE_HEIGHT) -> pygame.Surface:
   """ Creates a surface with a shape drawn on it.
   
   Args:
     shape (Shape): The shape to draw.
-    color (tuple[int, int, int]): The color of the shape.
+    color (RGB): The color of the shape in RGB format.
     width (float): The width of the surface.
     height (float): The height of the surface.
     

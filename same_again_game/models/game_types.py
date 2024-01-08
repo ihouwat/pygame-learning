@@ -1,4 +1,3 @@
-
 from enum import Enum
 
 
@@ -100,4 +99,7 @@ class SoundType(Enum):
   EFFECTS = 3
   VICTORY = 4
   
-Soundtracks = dict[SoundType, list[str]]
+Soundtrack = dict[SoundType, list[str]]
+
+RGB = tuple[int, int, int]
+ColorsDict = dict[Color, RGB]
