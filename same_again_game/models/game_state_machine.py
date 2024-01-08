@@ -1,5 +1,5 @@
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -13,37 +13,27 @@ class GameContext:
 	"""  Holds context for the game state machine.
 	
 	Attributes:
-		game_instance: The game instance.
+		game: The game instance.
 		events: The events to be processed.
 		item_to_match: The item to match.
 		items: The items.
 		action: The action to be processed.
 	"""
-	game_instance: Any
+	game: Any
 	events: list[pygame.event.Event]
 	item_to_match: ItemSprite
 	items: pygame.sprite.Group
 	action: Optional[GameAction] = None
 
-class GameStateMachine(ABC):
-	""" Abstract class for game state machines. 
+class StateMachine(ABC):
+	""" Abstract class for game state machines."""
 	
-	Attributes:
-		game_instance: The game instance.
-		events: The events to be processed.
-		item_to_match: The item to match.
-		items: The items.
-		action: The action to be processed.
-	"""
-	def __init__(self, game_context: GameContext):
-		self.game_instance = game_context.game_instance
-		self.action = game_context.action
-		self.events = game_context.events
-		self.item_to_match = game_context.item_to_match
-		self.items = game_context.items
-
-	def execute(self) -> GameState:
+	@abstractmethod
+	def execute(self, game_context: GameContext) -> GameState:
 		""" Where the game logic is executed. 
+
+		Args:
+			game_context: The game context object to be used by the state machine.
 
 		Returns:
 			The next game state.

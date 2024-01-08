@@ -1,7 +1,7 @@
 
 import random
 import sys
-from typing import Optional, Type
+from typing import Optional
 
 import pygame
 from audio.audio_player import AudioPlayer
@@ -33,7 +33,7 @@ from funcs import get_music_track_path, get_sound_effect_path, get_spoken_word_p
 from game_objects.item_sprite import ItemSprite
 from game_objects.level import Level
 from game_objects.text_element import TextElement
-from models.game_state_machine import GameContext, GameStateMachine
+from models.game_state_machine import GameContext, StateMachine
 from models.game_types import (
   Color,
   GameAction,
@@ -81,16 +81,16 @@ class Game:
     self.status_bar: StatusBar = status_bar
     self.game_menu: GameMenu = game_menu
     self.levels: list[Level] = levels
-    self.game_states: dict[GameState, Type[GameStateMachine]] = {
-      GameState.PLAYING: PlayingState,
-      GameState.MENU_IS_OPEN: MenuOpenState,
-      GameState.LEVEL_COMPLETED: LevelCompletedState,
-      GameState.GAME_COMPLETED: GameCompletedState,
-      GameState.PAUSED: PausedState,
-      GameState.TRANSITION_TO_NEXT_TURN: TransitionTurnsState,
-      GameState.TRANSITION_TO_NEXT_LEVEL: TransitionLevelState,
-      GameState.START_NEW_TURN: StartNewTurnState,
-      GameState.END_TURN: EndTurnState
+    self.game_states: dict[GameState, StateMachine] = {
+      GameState.PLAYING: PlayingState(),
+      GameState.MENU_IS_OPEN: MenuOpenState(),
+      GameState.LEVEL_COMPLETED: LevelCompletedState(),
+      GameState.GAME_COMPLETED: GameCompletedState(),
+      GameState.PAUSED: PausedState(),
+      GameState.TRANSITION_TO_NEXT_TURN: TransitionTurnsState(),
+      GameState.TRANSITION_TO_NEXT_LEVEL: TransitionLevelState(),
+      GameState.START_NEW_TURN: StartNewTurnState(),
+      GameState.END_TURN: EndTurnState()
     }
     
     # game state variables (candidates for extraction)
@@ -132,8 +132,8 @@ class Game:
     if action == GameAction.QUIT:
       self.quit()
     
-    game_context: GameContext = GameContext(game_instance=self, events=events, action=action, item_to_match=self.item_to_match, items=self.items)
-    next_state: GameState = self.game_states[self.current_state](game_context).execute()
+    game_context: GameContext = GameContext(game=self, events=events, action=action, item_to_match=self.item_to_match, items=self.items)
+    next_state: GameState = self.game_states[self.current_state].execute(game_context)
     self.renderer.draw(
       self.item_to_match,
       self.items,
