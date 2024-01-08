@@ -14,8 +14,6 @@ from config.settings import (
   SCREEN_WIDTH,
   language_paths,
 )
-from engine.animation_engine import AnimationEngine
-from engine.animations import TextTransition
 from engine.animator import Animator
 from engine.event_listener import EventListener
 from engine.game_states import (
@@ -59,7 +57,7 @@ class Game:
   Attributes:
     renderer (Renderer): The renderer.
     ui_display (UIDisplay): The UI display.
-    animation_engine (AnimationEngine): The animation engine.
+    animator (Animator): The animator.
     audio_player (AudioPlayer): The audio player.
     event_listener (EventListener): The event listener.
     status_bar (StatusBar): The status bar.
@@ -74,10 +72,9 @@ class Game:
     items (Group): The group of items.
     text_elements (list[TextElement]): The list of text elements.
   """
-  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animation_engine: AnimationEngine, animator: Animator, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language, soundtrack: Soundtracks):
+  def __init__(self, renderer: Renderer, ui_display: UIDisplay, animator: Animator, audio_player: AudioPlayer, event_listener: EventListener, status_bar: StatusBar, game_menu: GameMenu, levels: list[Level], language: Language, soundtrack: Soundtracks):
     self.renderer: Renderer = renderer
     self.ui_display = ui_display
-    self.animation_engine = animation_engine
     self.animator = animator
     self.audio_player = audio_player
     self.event_listener: EventListener = event_listener
@@ -226,11 +223,11 @@ class Game:
       bool: True if the sprites were successfully scaled in, False otherwise.
     """
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    animation_complete = self.animator.transition_in_sprites(all_sprites=all_sprites, scale_factor=10)
-    if animation_complete:
-      return False
-    else:
-      return True
+    animation_is_complete = self.animator.transition_in_sprites(all_sprites=all_sprites, scale_factor=10)
+    return animation_is_complete
+
+  def process_playing_animation(self) -> None:
+    self.animator.hover_effect(items=self.items, min_scale=100, max_scale=125)
 
   def detect_match(self, items: Group, item_to_match: ItemSprite, coordinates) -> MatchResult:
     """ Detects if the user has selected the correct item.
@@ -294,18 +291,13 @@ class Game:
     Returns:
       bool: True if the transition is complete, False otherwise.
     """
-    if self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100:
-      self.animate_text_element(text_element=self.text_elements[TextElementType.LEVEL_UP], x_increment=10, y_increment=0)
-      return False
-    else:
+    animation_is_complete = self.animator.animate_text_element_if_needed(text_element=self.text_elements[TextElementType.LEVEL_UP], condition_to_animate=self.text_elements[TextElementType.LEVEL_UP].current_position[0] < SCREEN_WIDTH + 100, x_increment=10, y_increment=0)
+    if animation_is_complete:
       # update UI elements
       self.text_elements[TextElementType.LEVEL_UP].reset_to_start_position()
       self.ui_display.update(player=self.player_name, score=self.current_level.score, level=self.current_level.level_number, language=self.selected_language)
       pygame.time.delay(ANIMATION_DELAY)
-      return True
-
-  def animate_text_element(self, text_element: TextElement, x_increment: int, y_increment: int) -> None:
-    self.animation_engine.add_animation(TextTransition(text_element=text_element, x_increment=x_increment, y_increment=y_increment)).execute()
+    return animation_is_complete
 
   def reset_game_levels(self):
     """ Resets the game levels."""
@@ -323,12 +315,10 @@ class Game:
     Returns:
       bool: True if the transition is complete, False otherwise.
     """
-    if self.text_elements[TextElementType.GAME_COMPLETED].current_position[0] < (SCREEN_WIDTH - self.text_elements[TextElementType.GAME_COMPLETED].surface.get_width()) / 2:
-      self.animate_text_element(text_element=self.text_elements[TextElementType.GAME_COMPLETED], x_increment=7, y_increment=0)
-      return False
-    else:
+    animation_complete: bool = self.animator.animate_text_element_if_needed(text_element=self.text_elements[TextElementType.GAME_COMPLETED], condition_to_animate=self.text_elements[TextElementType.GAME_COMPLETED].current_position[0] < (SCREEN_WIDTH - self.text_elements[TextElementType.GAME_COMPLETED].surface.get_width()) / 2, x_increment=7, y_increment=0)
+    if animation_complete:
       self.text_elements[TextElementType.GAME_COMPLETED].reset_to_start_position()
-      return True
+    return animation_complete
 
   def end_game(self) -> None:
     logger.info('You have completed all levels!')

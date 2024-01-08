@@ -1,7 +1,6 @@
 import pygame
 from config.logger import logger
 from config.settings import ENTERED_WRONG_ANSWER, MATCH_DETECTED
-from engine.animations import SpriteHoverEffect
 from models.game_state_machine import GameContext, GameStateMachine
 from models.game_types import (
 	GameAction,
@@ -103,7 +102,7 @@ class PlayingState(GameStateMachine):
 		super().__init__(game_context)
 	
 	def execute(self) -> GameState:
-		self.game_instance.animation_engine.add_animation(SpriteHoverEffect(items=self.items, min_scale=100, max_scale=125)).execute()
+		self.game_instance.process_playing_animation()
 		if self.action == GameAction.MOUSE_EXITED_WINDOW:
 			return GameState.PAUSED
 		if self.action == GameAction.OPEN_MENU:

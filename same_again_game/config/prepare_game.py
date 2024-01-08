@@ -55,7 +55,6 @@ levels: list[Level] = [ Level(puzzle=puzzle, level_number=i+1, max_score=5) for 
 game = Game(
 	renderer=Renderer(),
 	ui_display=UIDisplay(),
-	animation_engine=AnimationEngine(),
 	animator=Animator(animation_engine=AnimationEngine()),
 	audio_player=AudioPlayer(),
 	event_listener=EventListener(),
