@@ -1,17 +1,16 @@
 import pygame
-from models.game_types import Color, Language, ColorsDict
+from models.game_types import RGB, Color, Language, ColorsDict
 
 # Predefined color values
-BLUE = (0, 0, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLACK = (0,0,0)
-WHITE = (255, 255, 255)
-YELLOW = (255, 255, 0)
-ORANGE = (255, 165, 0)
-PURPLE = (128, 0, 128)
-PINK = (255, 192, 203)
-
+BLUE: RGB = (0, 0, 255)
+RED: RGB  = (255, 0, 0)
+GREEN: RGB = (0, 255, 0)
+BLACK: RGB = (0,0,0)
+WHITE: RGB = (255, 255, 255)
+YELLOW: RGB = (255, 255, 0)
+ORANGE: RGB = (255, 165, 0)
+PURPLE: RGB = (128, 0, 128)
+PINK: RGB = (255, 192, 203)
 
 colors: ColorsDict = {
   Color.RED: RED,
