@@ -101,8 +101,8 @@
 		- DONE there is a mention of a 'default.wav' file in the code. that is a temp placeholder when loading a spoken word. need better handling of that.
 		- DONE Move the mouse selection of correct sprites to event listener, that way the returned game action indicates the the right answer is selected
 	- `Renderer` class:
-		- checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
-		- the game completed animation is a nested conditional. Let's clean that up.
+		- NOT NEEDED - checks two game states to render text, one for completing a level, the other for completing a game. Can we combine them?
+		- DONE the game completed animation is a nested conditional. Let's clean that up.
 	- Tidying:
 		- move constants, enums, and classes closer to where they are used. For example, there is a SoundTrack type that can be moved to the audio folder. There is a SoundEffect class that can be moved to the audio folder. Etc etc etc
 		- Instantiate GameState classes once, and instead of them having instance variables, just pass in the game instance and GameContext each time you invoke the execute() function
