@@ -173,12 +173,10 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    animation_completed = self.animator.transition_out_sprites(all_sprites=all_sprites, scale_factor=-8)
-    if animation_completed:
+    animation_is_complete: bool = self.animator.transition_out_sprites(all_sprites=all_sprites, scale_factor=-8)
+    if animation_is_complete:
       self.kill_sprites()
-      return True
-    else:
-      return False
+    return animation_is_complete
 
   def kill_sprites(self) -> None:
     """ Remove all sprites."""
@@ -315,10 +313,10 @@ class Game:
     Returns:
       bool: True if the transition is complete, False otherwise.
     """
-    animation_complete: bool = self.animator.animate_text_element_if_needed(text_element=self.text_elements[TextElementType.GAME_COMPLETED], condition_to_animate=self.text_elements[TextElementType.GAME_COMPLETED].current_position[0] < (SCREEN_WIDTH - self.text_elements[TextElementType.GAME_COMPLETED].surface.get_width()) / 2, x_increment=7, y_increment=0)
-    if animation_complete:
+    animation_is_complete: bool = self.animator.animate_text_element_if_needed(text_element=self.text_elements[TextElementType.GAME_COMPLETED], condition_to_animate=self.text_elements[TextElementType.GAME_COMPLETED].current_position[0] < (SCREEN_WIDTH - self.text_elements[TextElementType.GAME_COMPLETED].surface.get_width()) / 2, x_increment=7, y_increment=0)
+    if animation_is_complete:
       self.text_elements[TextElementType.GAME_COMPLETED].reset_to_start_position()
-    return animation_complete
+    return animation_is_complete
 
   def end_game(self) -> None:
     logger.info('You have completed all levels!')
