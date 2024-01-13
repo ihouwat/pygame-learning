@@ -14,7 +14,7 @@ Learnings:
 
 Each puzzle in the game asks the kiddo to match an item against four options. The puzzle is preceded by a spoken word in a target language (English, Portuguese, or Arabic) in order to teach her new words and reinforce the matching skills. The items to match can be images or colored shapes as the levels progress. The game is designed to be played with a parent, who can help the kiddo learn the new words.
 
-See the demo below (be sure to unmute the audio):
+See the demo below (*note that the frames are janky and the sound quality low only due to recording on my machine.*. Be sure to unmute the audio):
 
 https://github.com/ihouwat/pygame-learning/assets/58915539/8dafdcb2-c4f1-4fe1-a752-a59dd2a0273c
 
