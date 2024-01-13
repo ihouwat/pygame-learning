@@ -10,12 +10,13 @@ class Animator:
 	def __init__(self, animation_engine: AnimationEngine):
 		self.animation_engine = animation_engine
 	
-	def transition_out_sprites(self, all_sprites: list[ItemSprite], scale_factor: float) -> bool:
+	def transition_out_sprites(self, all_sprites: list[ItemSprite], scale_factor: float, stagger_animation: bool = False) -> bool:
 		""" Scales all sprites in the list to 0.0, and returns True if all sprites are scaled to 0.0.
 	
 		Parameters:
 		all_sprites (list[ItemSprite]): The list of sprites to scale.
 		scale_factor (float): The factor to scale the sprites by.
+		stagger_animation (bool): Whether to stagger the animation by adding a delay.
 
 		Returns:
 		bool: True if all sprites are scaled to 0.0, False otherwise.
@@ -26,19 +27,26 @@ class Animator:
 		if scale_factor > 0:
 			raise ValueError("scale_factor must be negative.")
 
-		if any(sprite.scale > 0 for sprite in all_sprites):
-			self.scale_sprites(all_sprites, scale_factor)
+		updated_sprites_list = all_sprites
+
+		if stagger_animation:
+			new_sprites = all_sprites[::-1]
+			updated_sprites_list = [sprite for (i, sprite) in enumerate(new_sprites) if i == 0 or (i > 0 and new_sprites[i - 1].scale < 70)]
+		
+		if any(sprite.scale > 0 for sprite in updated_sprites_list):
+			self.scale_sprites(updated_sprites_list, scale_factor)
 			return False
 
 		pygame.time.delay(ANIMATION_DELAY)
 		return True
 
-	def transition_in_sprites(self, all_sprites: list[ItemSprite], scale_factor: float) -> bool:
+	def transition_in_sprites(self, all_sprites: list[ItemSprite], scale_factor: float, stagger_animation: bool = False) -> bool:
 		""" Scales all sprites in the list to 100.0, and returns True if all sprites are scaled to 100.0.
 	
 		Parameters:
 		all_sprites (list[ItemSprite]): The list of sprites to scale.
 		scale_factor (float): The factor to scale the sprites by.
+		stagger_animation (bool): Whether to stagger the animation by adding a delay.
 
 		Returns:
 		bool: True if all sprites are scaled to 1.0, False otherwise.
@@ -49,8 +57,13 @@ class Animator:
 		if scale_factor < 0:
 			raise ValueError("scale_factor must be positive.")
 
-		if any(sprite.scale < 100 for sprite in all_sprites):
-			self.scale_sprites(sprites=all_sprites, scale_factor=scale_factor, max_scale=100)
+		update_sprites_list = all_sprites
+
+		if stagger_animation:
+			update_sprites_list = [sprite for (i, sprite) in enumerate(all_sprites) if i == 0 or (i > 0 and all_sprites[i - 1].scale > 30)]
+		
+		if any(sprite.scale < 100 for sprite in update_sprites_list):
+			self.scale_sprites(sprites=update_sprites_list, scale_factor=scale_factor, max_scale=100)
 			return False
 
 		pygame.time.delay(ANIMATION_DELAY)

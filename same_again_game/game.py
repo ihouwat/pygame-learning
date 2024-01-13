@@ -173,7 +173,7 @@ class Game:
       bool: True if the transition is complete, False otherwise.
     """
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    animation_is_complete: bool = self.animator.transition_out_sprites(all_sprites=all_sprites, scale_factor=-8)
+    animation_is_complete: bool = self.animator.transition_out_sprites(all_sprites=all_sprites, scale_factor=-8, stagger_animation=True)
     if animation_is_complete:
       self.kill_sprites()
     return animation_is_complete
@@ -221,7 +221,7 @@ class Game:
       bool: True if the sprites were successfully scaled in, False otherwise.
     """
     all_sprites: list[ItemSprite] = [item_to_match] + items.sprites()
-    animation_is_complete = self.animator.transition_in_sprites(all_sprites=all_sprites, scale_factor=10)
+    animation_is_complete = self.animator.transition_in_sprites(all_sprites=all_sprites, scale_factor=10, stagger_animation=True)
     return animation_is_complete
 
   def process_playing_animation(self) -> None:
