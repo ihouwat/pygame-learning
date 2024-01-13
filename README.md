@@ -12,12 +12,10 @@ Learnings:
 ## The Game: Same Again!
 **Same Again!** is a matching and language skills game for my toddler. When she loves something, she'll keep asking for it, 'same again! same again!', hence the name :)
 
-Each puzzle in the game asks the kiddo to match an item against four options. The puzzle is preceded by a spoken word in a target language (English, Portuguese, or Arabic) in order to teach her new words and reinforce the matching skills. The items to match can be images or colored shapes as the levels progress.
+Each puzzle in the game asks the kiddo to match an item against four options. The puzzle is preceded by a spoken word in a target language (English, Portuguese, or Arabic) in order to teach her new words and reinforce the matching skills. The items to match can be images or colored shapes as the levels progress. The game is designed to be played with a parent, who can help the kiddo learn the new words.
 
-The game is designed to be played with a parent, who can help the kiddo learn the new words.
-
+See the demo below (be sure to unmute the audio):
 https://github.com/ihouwat/pygame-learning/assets/58915539/4c3bd946-10c9-47f4-9f3c-605fa823fb9a
-
 
 ### Game Play
 * Mouse left button selects the correct answer
