@@ -15,12 +15,13 @@ class ItemSprite(pygame.sprite.Sprite):
   
   Attributes:
     image(pygame.Surface): The image of the item.
-    word(str): The word that the item represents.
+    rect(pygame.Rect): The Rect based on the image.
     text_identifier(str): The text identifier of the item.
+    metadata(Optional[ItemConfig]): The data used to construct the sprite
     initial_size(tuple[int, int]): The original size of the image.
     current_size(tuple[int, int]): The current size of the image.
     original_image(pygame.Surface): The original image of the item.
-    scale(int): The scale of the item.
+    scale(float): The scale of the item, from 0.0 to 100.00
   """
   image: pygame.Surface = pygame.Surface((0, 0))
   text_identifier: str = ""
