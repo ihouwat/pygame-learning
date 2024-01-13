@@ -8,7 +8,7 @@
 			"name": "Same Again!",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/same_again_game/main.py",
+			"program": "${workspaceFolder}/main.py",
 			"console": "integratedTerminal",
 			"justMyCode": true
 		}
