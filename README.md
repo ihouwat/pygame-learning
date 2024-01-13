@@ -1,47 +1,28 @@
 # Same Again!
 
-## Introduction
-**Same Again!** is a matching and language skills game for my kiddo. When she loves something, she'll keep asking for it, 'same again! same again!' :)
+## Goal
+**I wanted to practice Python in an unfamiliar domain**. I chose PyGame since I've never done any game development before.
 
-The goal is to teach kiddo to match an item against four options. The item to be matched is an image. As the game becomes more difficult, the item is a spoken word that represents the correct image. The language is selected when we first start the game, and is one of English, Arabic, Portuguese, or French.
+Learnings:
+* **Coding in Python**
+* **OOP in Python** [see scratchpad for notes](/scratchpad.md)
+* **Using Github Copilot**: first time I've used the AI-assistant extensively for a project, and I had to learn how to prompt it effectively.
+* **Basic game design**: PyGame (see [tutorials](/tutorials/) folder), game states, game loop, thinking in terms of frames, etc.
 
-## Levels
-Progress to the next level by getting 5 answers correct.
+## The Game: Same Again!
+**Same Again!** is a matching and language skills game for my toddler. When she loves something, she'll keep asking for it, 'same again! same again!', hence the name :)
 
-Possible levels:
-* match an image to four options
-* match an image to four options, with the images being the same but with different colors
-* match an image to four options, with the images being grayscale
-* match an image to four options, add a timer to rotate the options
-* match a word to four images, with the word spoken out
-* match a word to four images, with the word written out
+Each puzzle in the game asks the kiddo to match an item against four options. The puzzle is preceded by a spoken word in a target language (English, Portuguese, or Arabic) in order to teach her new words and reinforce the matching skills. The items to match can be images or colored shapes as the levels progress.
 
-## Game Play
-The game starts with a menu screen. The menu screen has the following options:
-* Start Game: starts the game
-* Settings: allows the user to change the language
-* Quit: quits the game
+The game is designed to be played with a parent, who can help the kiddo learn the new words.
 
-## Controls
-The game is controlled by the mouse or keyboard. 
-*The mouse is used to select the correct answer. The keyboard can also be used to select the correct answer (1, 2, 3, 4), to exit the game (Ctrl + q), or to open the menu (Esc).*
-
-## Game States
-The game has the following states:
-* Menu: the menu screen
-* Game: the game screen
-* Pause: the game is paused
-* Game Over: the game is over
-
-## Folder structure CHANGE THIS:
-* `same_again_game`: a matching and language skills game for my kiddo, my own code
-* `tutorials`:
-	* `000_game-loop`: the Game Loop and how to initialize and end a pygame program
-	* `001_drawing`: surfaces, displaying images
-	* `002_events`: simple event handling
-	* `003_car-game`: a small game where the player controls a car and avoids crashing into oncoming traffic
-	* `004_rpg`: a simple RPG game with a player, enemies, and a dungeon
-
+### Game Play
+* Mouse left button selects the correct answer
+* Escape key opens a menu where a player can:
+	* set their name
+	* set the target language
+	* start a new game
+	* quit the game
 
 ## Attributions
 ### Icons
