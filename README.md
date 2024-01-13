@@ -16,7 +16,8 @@ Each puzzle in the game asks the kiddo to match an item against four options. Th
 
 The game is designed to be played with a parent, who can help the kiddo learn the new words.
 
-<video src="/assets/demo/same-again-demo.mp4" controls="controls" style="width: 100vw;"></video>
+https://github.com/ihouwat/pygame-learning/assets/58915539/4c3bd946-10c9-47f4-9f3c-605fa823fb9a
+
 
 ### Game Play
 * Mouse left button selects the correct answer
