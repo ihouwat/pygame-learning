@@ -16,6 +16,8 @@ Each puzzle in the game asks the kiddo to match an item against four options. Th
 
 The game is designed to be played with a parent, who can help the kiddo learn the new words.
 
+<video src="/assets/demo/same-again-demo.mp4" controls="controls" style="width: 100vw;"></video>
+
 ### Game Play
 * Mouse left button selects the correct answer
 * Escape key opens a menu where a player can:
