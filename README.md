@@ -16,7 +16,7 @@ Each puzzle in the game asks the kiddo to match an item against four options. Th
 
 See the demo below (be sure to unmute the audio):
 
-https://github.com/ihouwat/pygame-learning/assets/58915539/4c3bd946-10c9-47f4-9f3c-605fa823fb9a
+https://github.com/ihouwat/pygame-learning/assets/58915539/8dafdcb2-c4f1-4fe1-a752-a59dd2a0273c
 
 ### Game Play
 * Mouse left button selects the correct answer
