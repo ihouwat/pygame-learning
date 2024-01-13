@@ -103,7 +103,8 @@
 		- DONE move constants, enums, and classes closer to where they are used. For example, there is a SoundTrack type that can be moved to the audio folder. There is a SoundEffect class that can be moved to the audio folder. Etc etc etc
 		- DONE Instantiate GameState classes once, and instead of them having instance variables, just pass in the game instance and GameContext each time you invoke the execute() function
 
-
+- text in status bar
+- DONE clean up sprite handler dead code
 - consider 'fancy' animations for transitions
 	- DONE transition delays at the end of the scale up/scale down animations
 	- **cascade animate the sprites** (ie each sprite in a group starts getting animated but delayed by a few frames): **The problem is that we have to manage the sprite animations for every frame**. So, in addition to having `Animation` classes, which execute the animations per sprite per frame, we need a `Transition` class or function that tracks a group sprites over the animation lifecycle. To implement the cascade delay

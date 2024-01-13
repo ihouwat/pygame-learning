@@ -40,9 +40,6 @@ class SpriteHandler:
 	@staticmethod
 	def retrieve_image(image: ImageSource, option: SpriteOption) -> pygame.Surface:
 		""" Retrieves the image for a sprite based on an option."""
-		# if option == SpriteOption.SPOKENWORD:
-		# 	# TODO Change to use the 'sound' image
-		# 	src_image = load_pygame_image('assets', 'images', image)
 		src_image = image.get_image()
 		if option == SpriteOption.GRAYSCALE:
 			src_image=pygame.transform.grayscale(src_image)
