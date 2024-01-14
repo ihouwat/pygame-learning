@@ -6,7 +6,7 @@
 Learnings:
 * **Coding in Python**
 * **OOP in Python** ([see scratchpad for notes](/scratchpad.md))
-* **Using Github Copilot**: first time I've used the AI-assistant extensively for a project, and I had to learn how to prompt it effectively. This exercise ended up being a great way to learn about the tool and Python at the same time.
+* **Using Github Copilot**: first time I've used the AI-assistant extensively for a project, and I had to learn how to prompt it effectively. [This exercise](/tutorials/github-copilot-chat.json) ended up being a great way to learn about the tool and Python at the same time.
 * **Basic game design**: PyGame library (see [tutorials](/tutorials/) folder), the game loop, drawing, events, game states, thinking in terms of single frames, etc.
 
 ## The Game: Same Again!
