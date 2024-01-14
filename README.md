@@ -48,4 +48,4 @@ https://github.com/ihouwat/pygame-learning/assets/58915539/8dafdcb2-c4f1-4fe1-a7
 ### Sound Effects
 * [Quiz Gameshow Correct Ring 01](https://freesound.org/people/craigscottuk/sounds/644953/) by [craigscottuk](https://freesound.org/people/craigscottuk/), [Creative Commons 0 license](https://creativecommons.org/publicdomain/zero/1.0/)
 * [Short Audience Applause](https://freesound.org/people/petillo/sounds/178610/) by [petillo](https://freesound.org/people/petillo/), [Creative Commons CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
-* [Game Sound Wrong] (https://freesound.org/people/Bertrof/sounds/131657/) by [Bertrof](https://freesound.org/people/Bertrof/), [Creative Commons CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+* [Game Sound Wrong](https://freesound.org/people/Bertrof/sounds/131657/) by [Bertrof](https://freesound.org/people/Bertrof/), [Creative Commons CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
