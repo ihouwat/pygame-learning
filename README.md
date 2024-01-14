@@ -5,9 +5,9 @@
 
 Learnings:
 * **Coding in Python**
-* **OOP in Python** [see scratchpad for notes](/scratchpad.md)
-* **Using Github Copilot**: first time I've used the AI-assistant extensively for a project, and I had to learn how to prompt it effectively.
-* **Basic game design**: PyGame (see [tutorials](/tutorials/) folder), game states, game loop, thinking in terms of frames, etc.
+* **OOP in Python** ([see scratchpad for notes](/scratchpad.md))
+* **Using Github Copilot**: first time I've used the AI-assistant extensively for a project, and I had to learn how to prompt it effectively. This exercise ended up being a great way to learn about the tool and Python at the same time.
+* **Basic game design**: PyGame library (see [tutorials](/tutorials/) folder), the game loop, drawing, events, game states, thinking in terms of single frames, etc.
 
 ## The Game: Same Again!
 **Same Again!** is a matching and language skills game for my toddler. When she loves something, she'll keep asking for it, 'same again! same again!', hence the name :)
